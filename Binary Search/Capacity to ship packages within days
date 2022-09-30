@@ -1,0 +1,47 @@
+leetcode: https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/capacity-to-ship-packages-within-d-days/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=capacity-to-ship-packages-within-d-days
+
+class Solution {
+public:
+    
+    bool daysPossible(vector<int> &weights, int days, int mid)
+    {
+        int sum=0, count=1;
+        for(int x : weights)
+        {
+            if(sum+x <= mid)
+                sum += x;
+            else
+            {
+                count++;
+                sum=x;
+            }
+        }
+        return (count <= days);
+    }
+    
+    int shipWithinDays(vector<int>& weights, int days) {
+        if(days > weights.size())
+            return -1;
+        
+        int start=INT_MIN, end=0;
+        int ans = INT_MAX;
+        for(int x : weights)
+        {
+            start = max(x, start);
+            end += x;
+        }
+        while(start<=end)
+        {
+            int mid = start+(end-start)/2;
+            if(daysPossible(weights, days, mid))
+            {
+                ans = min(ans, mid);
+                end = mid-1;
+            }
+            else
+                start=mid+1;
+        }
+        return ans;
+    }
+};
