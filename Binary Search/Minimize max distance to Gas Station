@@ -1,0 +1,43 @@
+leetcode: https://leetcode.com/problems/minimize-max-distance-to-gas-station/
+tutorialsPoint: https://www.tutorialspoint.com/minimize-max-distance-to-gas-station-in-cplusplus#:~:text=On%20that%20number%20line%2C%20we,adjacent%20gas%20stations%2C%20is%20minimized.
+
+#include <iostream>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+bool stationsPossible(vector<int> &stations, int k ,double mid)
+{
+    int res=0;
+    for(int i=0;i<stations.size()-1;i++)
+        res += ceil((stations[i+1]-stations[i])/mid)-1;
+    return (res > k);
+}
+
+double minimizeGasStation(vector<int> &stations, int k)
+{
+    double start=0, end = stations[stations.size()-1]-stations[0] ,ans=0;
+    
+    while(end-start >= 1e-6)
+    {
+        double mid = start+(end-start)/2.0;
+        cout<<"start: "<<start<<" end: "<<end<<" mid: "<<mid<<endl;
+        if(stationsPossible(stations, k, mid))
+        {
+            ans=mid;
+            start=mid;
+        }
+        else
+            end=mid;
+    }
+    return ans;
+}
+
+int main()
+{
+    // vector<int> stations = {1,2,3,4,5,6,7,8,9,10};
+    // int k=9;
+    vector<int> stations = {3,6,12,19,33,44,67,72,89,95};
+    int k=2;
+    cout<<minimizeGasStation(stations, k);
+}
