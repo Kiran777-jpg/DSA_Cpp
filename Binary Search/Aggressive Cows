@@ -1,0 +1,50 @@
+
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+bool distancePossible(vector<int> &stalls, int n, int cows, int midDistance)
+{
+    int k = stalls[0];
+    cows--;
+    for(int i=1;i<n;i++)
+    {
+        if(stalls[i]-k >= midDistance)
+        {
+            cows--;
+            if(!cows)
+                return true;
+            k=stalls[i];
+        }
+    }
+    return false;
+}
+
+int cowstalls(vector<int> &stalls, int cows)
+{
+    int n=stalls.size();
+    int start=stalls[0], end=stalls[n-1], ans=INT_MIN;
+    while(start<=end)
+    {
+        int midDistance = start+(end-start)/2;
+        if(distancePossible(stalls, n, cows, midDistance))
+        {
+            start=midDistance+1;
+            ans = max(ans, midDistance);
+        }
+        else
+            end = midDistance-1;
+    }
+    return ans;
+}
+
+int main()
+{
+    vector<int> stalls = {1,2,8,4,9};
+    int cows = 3;
+    sort(stalls.begin(), stalls.end());
+    cout<<cowstalls(stalls, cows);   
+}
