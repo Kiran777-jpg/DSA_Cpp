@@ -1,0 +1,57 @@
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/allocate-minimum-number-of-pages0937/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=allocate-minimum-number-of-pages
+
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+bool pagesPossible(vector<int> &books, int students, int midPages)
+{
+    int allocatedStu = 1, sum=0;
+    for(int x : books)
+    {
+        if(midPages < x) return false;
+        if(sum+x > midPages)
+        {
+            allocatedStu++;
+            sum=x;
+        }
+        else
+            sum += x;
+    }
+    cout<<"midPages: "<<midPages<<" stu: "<<allocatedStu<<endl;
+    if(allocatedStu <= students)
+        return true;
+    return false;
+}
+
+int findPages(vector<int> &books, int students)
+{
+    if(students > books.size()) return -1;
+    int start = books[0], end=0, ans=0;
+    for(int x : books)
+        end += x;
+    cout<<"end: "<<end<<endl;
+    while(start<=end)
+    {
+        int midPages = start+(end-start)/2;
+        if(pagesPossible(books, students, midPages))
+        {
+            ans = midPages;
+            end =midPages-1;
+        }
+        else
+            start=midPages+1;
+    }
+    return ans;
+}
+
+int main()
+{
+    // vector<int> books = {12,34,67,90};
+    vector<int> books = {15,17,20};
+    int students=2;
+    sort(books.begin(), books.end());
+    cout<<findPages(books, students);
+}
