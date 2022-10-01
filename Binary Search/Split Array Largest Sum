@@ -2,6 +2,46 @@ leetcode: https://leetcode.com/problems/split-array-largest-sum/description/
 geeksforgeeks: https://practice.geeksforgeeks.org/problems/largest-sum-subarray-of-size-at-least-k3121/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=largest-sum-subarray-of-size-at-least-k
 
 
+*****************************************************************
+ bool midNumPossible(vector<int> &nums, int m, int midNum)
+    {
+        int sum=0, count=1;
+        for(int x : nums)
+        {
+            if(sum+x <= midNum)
+                sum += x;
+            else
+            {
+                count++;
+                sum = x;
+            }
+        }
+        return (count<=m);
+    }
+    int splitArray(vector<int>& nums, int m) {
+        if(m > nums.size()) return -1;
+        int start=0,end=0;
+        for(int x : nums)
+        {
+            start = max(start, x);
+            end += x;
+        }
+
+        while(start < end)
+        {
+            int midNum = start+(end-start)/2;
+            if(midNumPossible(nums, m, midNum))
+                end=midNum;
+            else
+                start=midNum+1;
+        }
+        return end;
+    }
+
+
+
+****************************************************************
+
 class Solution {
 public:
     bool splitPossible(vector<int> &nums, int m, int midSplit)
