@@ -1,6 +1,45 @@
 geeksforgeeks: https://practice.geeksforgeeks.org/problems/allocate-minimum-number-of-pages0937/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=allocate-minimum-number-of-pages
 
 
+***********************************************************************8
+bool midPagesPossible(int A[], int N, int M, int midPages)
+    {
+        int sum=0, count=1;
+        for(int i=0;i<N;i++)
+        {
+            if(sum+A[i] <= midPages)
+                sum += A[i];
+            else
+            {
+                count++;
+                sum=A[i];
+            }
+        }
+        return (count<=M);
+    }
+    
+    int findPages(int A[], int N, int M) 
+    {
+        //code here
+        if(M>N) return -1;
+        int start=0, end=0;
+        for(int i=0;i<N;i++)
+        {
+            start = max(start, A[i]);
+            end += A[i];
+        }
+        
+        while(start < end)
+        {
+            int midPages = start+(end-start)/2;
+            if(midPagesPossible(A, N, M, midPages))
+                end=midPages;
+            else
+                start=midPages+1;
+        }
+        return end;
+    }
+*************************************************
 #include <iostream>
 #include <vector>
 #include <algorithm>
