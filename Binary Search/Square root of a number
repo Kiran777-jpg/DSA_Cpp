@@ -1,0 +1,55 @@
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/square-root/0?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=square-root
+
+
+****************************************************
+long long int floorSqrt(long long int x) 
+    {
+        // Your code goes here 
+        if(x==0 || x==1)
+            return x;
+        long long int start=0, end=x/2, ans=1;
+        while(start<=end)
+        {
+            long long int mid = start+(end-start)/2;
+            long long int res = mid*mid;
+            
+            if(res <= x)
+            {
+                ans = mid;
+                start=mid+1;
+            }
+            else
+                end=mid-1;
+        }
+        return ans;
+    }
+    
+    ***************************************************
+    // x: element to find square root
+class Solution{
+  public:
+    long long int floorSqrt(long long int x) 
+    {
+        // Your code goes here 
+        if(x==0 || x==1)
+            return x;
+        
+        long long int start=0, end=x/2, ans=1;
+        while(start<=end)
+        {
+            long long int mid = start+(end-start)/2;
+            long long int res = mid*mid;
+            if(res == x)
+                return mid;
+            
+            if(res <= x)
+            {
+                start=mid+1;
+                ans = mid;
+            }
+            else
+                end=mid-1;
+        }
+        return ans;
+    }
+};
