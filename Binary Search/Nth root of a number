@@ -1,0 +1,29 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+double nthRoot(int m,int n)
+{
+    if(m==0 || m==1)
+        return m;
+        
+    double start=1, end=m, ans=1;
+    while(end-start > 1e-6)
+    {
+        double mid = start+(end-start)/2;
+        cout<<"start: "<<start<<" end: "<<end<<" mid: "<<mid<<endl;
+        double res = pow(mid,n);
+        if(res <= m)
+            start=mid;
+        else
+            end=mid;
+    }
+    return start;
+}
+
+int main()
+{
+    int m,n;
+    cin>>m>>n;
+    cout<<nthRoot(m,n);
+}
