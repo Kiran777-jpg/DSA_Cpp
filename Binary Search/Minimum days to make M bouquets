@@ -1,5 +1,46 @@
 leetcode: https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/description/
 
+
+********************************************
+ bool midDaysPossible(vector<int> &bloomDay, int m, int k, int midDays)
+    {
+        int sum=0, count=0;
+        for(int x : bloomDay)
+        {
+            if(x <= midDays)
+            {
+                sum++;
+
+                if(sum==k)
+                {
+                    count++;
+                    sum=0;
+                }
+            }
+            else
+                sum=0;
+        }
+        return (count >= m);
+    }
+
+    int minDays(vector<int>& bloomDay, int m, int k) {
+        if(m*k > bloomDay.size())
+            return -1;
+        
+        int start = *min_element(bloomDay.begin(), bloomDay.end());
+        int end = *max_element(bloomDay.begin(), bloomDay.end());
+
+        while(start < end)
+        {
+            int midDays = start+(end-start)/2;
+            if(midDaysPossible(bloomDay, m, k, midDays))
+                end=midDays;
+            else    
+                start=midDays+1;
+        }
+        return end;
+    }
+********************************************
 class Solution {
 public:
     
