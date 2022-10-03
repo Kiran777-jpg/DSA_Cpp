@@ -1,0 +1,88 @@
+leetcode: https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/minimum-element-in-a-sorted-and-rotated-array3611/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=minimum-element-in-a-sorted-and-rotated-array
+
+
+*****************************************************************************
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int n=nums.size();
+        int start=0, end=n-1;
+        int minValue=INT_MAX;
+        while(start<=end)
+        {
+            if(nums[start]<nums[end])
+                return min(minValue, nums[start]);
+            
+            int mid = start+(end-start)/2;
+            if(nums[start]<=nums[mid])
+            {
+                minValue = min(minValue, nums[start]);
+                start=mid+1;
+            }
+            else
+            {
+                minValue = min(minValue, nums[mid]);
+                end=mid-1;
+            }
+        }
+        return minValue;
+    }
+};
+
+
+****************************************************************
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int n=nums.size();
+        int start=0, end=n-1;
+        while(start<=end)
+        {
+            int mid = start+(end-start)/2;
+            if(mid>0 && nums[mid]<nums[mid-1])
+                return nums[mid];
+            if(mid<n-1 && nums[mid]>nums[mid+1])
+                return nums[mid+1];
+            if(nums[start]<=nums[mid])
+                start=mid+1;
+            else
+                end=mid-1;
+       } 
+       return nums[0];
+    }
+};
+
+***************************************************************
+
+#define nums arr
+class Solution {
+public:
+    int pivotBinary(vector<int> &nums)
+    {
+        int n = arr.size();
+        int start=0, end=n-1;
+        while(start<=end)
+        {
+            int mid = start+(end-start)/2;
+            if(mid<n-1 && arr[mid+1]<arr[mid])
+                return mid;
+            if(mid >0 && arr[mid-1]>arr[mid])
+                return mid-1;
+            
+            if(arr[start]>=arr[mid])
+                end=mid-1;
+            else
+                start=mid+1;
+        }
+        return -1;
+    }
+    
+    int findMin(vector<int>& nums) {
+        int pivot = pivotBinary(nums);
+        if(pivot!=-1)
+            return arr[0]<arr[pivot+1]?arr[0]:arr[pivot+1];
+        else
+            return arr[0];
+    }
+};
