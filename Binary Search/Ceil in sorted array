@@ -1,0 +1,32 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int upperBound(vector<int> &arr, int x)
+{
+    int start=0, end=arr.size();
+    if(x <= arr[start])
+        return arr[start];
+    while(start<=end)
+    {
+        int mid = start+(end-start)/2;
+        if(arr[mid] == x)
+            return arr[mid];
+        if(mid >0 && arr[mid]>=x && arr[mid-1]<x)   
+            return arr[mid];
+        if(arr[mid] > x)
+            end=mid-1;
+        else
+            start=mid+1;
+    }
+    return -1;
+}
+
+int main()
+{
+    vector<int> arr = {1,2,8,10,11,12,19};
+    int x;
+    cin>>x;
+    cout<<upperBound(arr, x);
+}
