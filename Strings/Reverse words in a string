@@ -1,0 +1,63 @@
+leetcode: https://leetcode.com/problems/reverse-words-in-a-string/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/reverse-words-in-a-given-string5459/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=reverse-words-in-a-given-string
+
+
+***********************************************************************
+optimized solution:
+
+
+class Solution {
+public:
+    string reverseWords(string s) {
+        int n = s.length();
+        string ans = "";
+        string temp = "";
+
+        for(int i=0;i<n;i++)
+        {
+            temp += s[i];
+            if((s[i]==' ' || i==n-1) && temp[0]!=' ')
+            {
+                if(i==n-1) temp += " ";
+                if(ans=="") temp.pop_back(), ans=temp;
+                else ans = temp+ans;
+                temp="";
+            } 
+            if(temp[0]==' ')
+                temp="";
+        }
+        return ans;
+    }
+};
+
+**************************************************
+
+class Solution {
+public:
+    string reverseWords(string s) {
+        int n = s.length();
+        stack<string> st;
+        string ans = "";
+        string temp = "";
+
+        for(int i=0;i<n;i++)
+        {
+            temp+=s[i];
+            if((s[i]==' ' || i==n-1) && temp[0]!=' ')
+            {
+                if(i==n-1) temp += " ";
+                if(st.empty()) temp.pop_back(), st.push(temp);
+                else st.push(temp);
+                temp="";
+            }
+            if(temp[0]==' ')
+                temp=ans;
+        }
+        while(!st.empty())
+        {
+            ans += st.top();
+            st.pop();
+        }
+        return ans;
+    }
+};
