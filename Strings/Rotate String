@@ -1,0 +1,55 @@
+leetcode: https://leetcode.com/problems/rotate-string/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/check-if-strings-are-rotations-of-each-other-or-not-1587115620/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=check-if-strings-are-rotations-of-each-other-or-not
+
+
+*******************************************
+class Solution {
+public:
+    void rearrange(string &s)
+    {
+        s.push_back(s[0]);
+        s.erase(s.begin());
+    }
+    bool rotateString(string s, string goal) {
+        if(s.size() != goal.size()) return false;
+        if(s == goal) return true;
+        
+        int n=s.size();
+        while(n--)
+        {
+            if(s == goal)
+                return true;
+            rearrange(s);
+        }
+        return false;
+    }
+};
+********************************************
+class Solution {
+public:
+    bool rotateString(string s, string goal) {
+        if(s.size() != goal.size()) return false;
+        if(s == goal) return true;
+        s=s+s;
+        for(int i=0;i<s.size();i++)
+        {
+            if(s.substr(i, goal.size())==goal)
+                return true;
+        }
+        return false;
+    }
+};
+
+***************************************************
+class Solution {
+public:
+    bool rotateString(string s, string goal) {
+        if(s.size() != goal.size()) return false;
+        if(s == goal) return true;
+        s=s+s;
+        if(s.find(goal) != string::npos)
+            return true;
+        else
+            return false;
+    }
+};
