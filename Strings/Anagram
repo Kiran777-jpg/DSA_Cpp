@@ -1,0 +1,56 @@
+leetcode: https://leetcode.com/problems/valid-anagram/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/anagram-1587115620/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=anagram
+
+
+**********************************************
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        vector<int> freq_s(26, 0);
+        vector<int> freq_t(26, 0);
+        
+        for (auto ch : s) {
+            freq_s[ch-'a']++;
+        }
+        for (auto ch : t) {
+            freq_t[ch-'a']++;
+        }
+        
+        return freq_s == freq_t;
+    }
+};
+***************************************
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+       if(s.size() != t.size()) return false;
+       priority_queue<char, vector<char>, greater<char>> pqs(s.begin(), s.end());
+       priority_queue<char, vector<char>, greater<char>> pqt(t.begin(), t.end());
+
+       while(!pqs.empty() && !pqt.empty())
+       {
+           if(pqs.top() != pqt.top())
+                return false;
+            pqs.pop();
+            pqt.pop();
+       }
+       return true;
+    }
+};
+*****************************************
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if(s.size() != t.size()) return false;
+        sort(s.begin(), s.end());
+        sort(t.begin(), t.end());
+        int i=0;
+        while(i<s.size())
+        {
+            if(s[i]!=t[i])
+                return false;
+            i++;
+        }
+        return true;
+    }
+};
