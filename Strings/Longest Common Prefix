@@ -1,0 +1,35 @@
+leetcode: https://leetcode.com/problems/longest-common-prefix/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/longest-common-prefix-in-an-array5129/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=longest-common-prefix-in-an-array
+
+
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        if(strs.size()==1) return strs[0];
+
+        int i=0, j=0;
+        while(i<strs[0].size() && j<strs[1].size())
+        {
+            if(strs[0][i] != strs[1][j])
+                break;
+            i++;
+            j++;
+        }
+
+        string ans = strs[0].substr(0, i);
+        for(int k=2;k<strs.size();k++)
+        {
+            i=0,j=0;
+            while(i<ans.size() && j<strs[k].size())
+            {
+                if(ans[i] != strs[k][j])
+                    break;
+                i++;
+                j++;
+            }
+
+            ans = ans.substr(0, i);
+        }
+        return ans;
+    }
+};
