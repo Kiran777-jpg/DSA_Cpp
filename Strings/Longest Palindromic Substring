@@ -1,0 +1,96 @@
+leetcode: https://leetcode.com/problems/longest-palindromic-substring/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/longest-palindrome-in-a-string3411/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=longest-palindrome-in-a-string
+
+
+
+*******************************************
+o(n2)
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        int n = s.length();
+        int maxLength = 1;
+        int start=0;
+        for(int i=0;i<n;i++)
+        {
+            int low=i-1;
+            int high=i+1;
+
+            while(high<n && s[high] == s[i])
+                high++;
+            while(low>=0 && s[low] == s[i])
+                low--;
+            while(high<n && low>=0 && s[high]==s[low])
+            {
+                high++;
+                low--;
+            }
+
+            int length = high-low-1;
+            if(length > maxLength)
+            {
+                maxLength = length;
+                start=low+1;
+            }
+        }
+        return s.substr(start, maxLength);
+    }
+};
+*********************************************
+o(n3)
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        int n=s.length();
+        string maxans="";
+        for(int i=0;i<n;i++)
+        {
+            string substring="";
+            for(int j=i;j<n;j++)
+            {
+                substring.push_back(s[j]);
+                int l=0, k=substring.size()-1;
+                while(l<=k)
+                {
+                    if(substring[l]!=substring[k])
+                        break;
+                    l++;
+                    k--;
+                }
+                if(k<l)
+                {
+                    if(substring.size() > maxans.size())
+                        maxans = substring;
+                }
+            }
+        }
+        return maxans;
+    }
+};
+
+*********************************************
+o(n3)
+
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        int n=s.length();
+        string maxans="";
+        for(int i=0;i<n;i++)
+        {
+            string substring="";
+            for(int j=i;j<n;j++)
+            {
+                substring.push_back(s[j]);
+                string temp = substring;
+                reverse(temp.begin(), temp.end());
+                if(temp == substring && substring.size() > maxans.size())
+                    maxans = substring;
+            }
+        }
+        return maxans;
+    }
+};
