@@ -1,0 +1,61 @@
+leetcode: https://leetcode.com/problems/sum-of-beauty-of-all-substrings/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/sum-of-beauty-of-all-substrings-1662962118/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=sum-of-beauty-of-all-substrings
+
+
+***********************************************8
+class Solution {
+public:
+    int beautySum(string s) {
+       int n = s.length();
+       unordered_map<char, int> map1;
+       int sum=0;
+
+       for(int i=0;i<n;i++)
+       {
+           map1.clear();
+           for(int j=i;j<n;j++)
+           {
+               map1[s[j]]++;
+               int minValue=INT_MAX, maxValue=INT_MIN;               
+               for(auto item : map1)
+               {
+                   minValue = min(minValue, item.second);
+                   maxValue = max(maxValue, item.second);
+               }
+
+               if(map1.size()>1)
+                    sum += (maxValue-minValue);
+           }
+       }
+       return sum;
+    }
+};
+
+*********************************************************
+class Solution {
+public:
+    int beautySum(string s) {
+       int n = s.length();
+       int sum=0;
+       for(int i=0;i<n;i++)
+       {
+           vector<int> v(26,0);
+           int count=0;
+           for(int j=i;j<n;j++)
+           {
+               if(v[s[j]-'a']==0) count++;
+               v[s[j]-'a']++;
+               int minValue=INT_MAX, maxValue=INT_MIN;
+               for(int item : v)
+               {
+                   if(item==0) continue;
+                   minValue = min(minValue, item);
+                   maxValue = max(maxValue, item);
+               }
+               if(count>1)
+                    sum += (maxValue-minValue);
+           }
+       }
+       return sum;
+    }
+};
