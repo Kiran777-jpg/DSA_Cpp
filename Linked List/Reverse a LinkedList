@@ -1,0 +1,128 @@
+leetcode: https://leetcode.com/problems/reverse-linked-list/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/reverse-a-linked-list/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=reverse-a-linked-list
+
+
+**************************************************
+recursive
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(head==NULL || head->next == NULL)
+            return head;
+        ListNode* temp = reverseList(head->next);
+        head->next->next = head;
+        head->next=NULL;
+        return temp;
+    }
+};
+
+***************************************************
+iterative
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* prevNode = NULL;
+        ListNode* currNode = head;
+        ListNode* nextNode = head;
+        while(currNode!=NULL)
+        {
+            nextNode = nextNode->next;
+            currNode->next = prevNode;
+            prevNode = currNode;
+            currNode = nextNode;
+        }
+        return prevNode;
+    }
+};
+
+*****************************************************
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverse(ListNode* nextNode, ListNode* currNode, ListNode* prevNode)
+    {
+        if(nextNode == NULL)
+        {
+            currNode->next = prevNode;
+            return currNode;
+        }
+
+        currNode->next = prevNode;
+        return reverse(nextNode->next, nextNode, currNode);
+    }
+    ListNode* reverseList(ListNode* head) {
+        if(head == NULL)
+            return NULL;
+        ListNode* prevNode = NULL;
+        ListNode* currNode = head;
+        ListNode* nextNode = head->next;
+        return reverse(nextNode, currNode, prevNode);
+    }
+};
+
+******************************************************
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverse(ListNode* head, ListNode* &revhead)
+    {
+        if(head == NULL || head->next == NULL)
+        {
+            revhead = head;
+            return head;
+        }
+
+        ListNode* temp = reverse(head->next, revhead);
+        temp->next = head;
+        return head;
+    }
+    ListNode* reverseList(ListNode* head) {
+       if(head==NULL) return head;
+       ListNode* revhead = head;
+       ListNode* temp = reverse(head, revhead);
+       temp->next = NULL;
+       return revhead;
+    }
+};
+
+
