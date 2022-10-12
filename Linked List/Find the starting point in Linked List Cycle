@@ -1,0 +1,60 @@
+leetcode: https://leetcode.com/problems/linked-list-cycle-ii/
+
+
+***************************************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        ListNode* entry = head;
+        ListNode* slow = head;
+        ListNode* fast = head;   
+        while(fast && fast->next)
+        {
+            slow=slow->next;
+            fast=fast->next->next;
+            if(slow == fast)
+            {
+                while(entry != slow)
+                {
+                    entry=entry->next;
+                    slow=slow->next;
+                }
+                return entry; // return slow
+            }
+        }
+        return NULL;     
+    }
+};
+
+*********************************************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        unordered_set<ListNode*> unset;
+        ListNode* temp = head;
+        while(unset.find(temp)==unset.end() && temp!=NULL)
+        {
+            unset.insert(temp);
+            temp=temp->next;
+        }
+        return temp;
+    }
+};
