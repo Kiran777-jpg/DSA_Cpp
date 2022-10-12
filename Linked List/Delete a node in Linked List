@@ -1,0 +1,44 @@
+leetcode: https://leetcode.com/problems/delete-node-in-a-linked-list/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/delete-a-node-in-single-linked-list/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=delete-a-node-in-single-linked-list
+
+
+**************************************************
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void deleteNode(ListNode* node) {
+        node->val = node->next->val;
+        node->next = node->next->next;
+    }
+};
+
+*******************************************************
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void deleteNode(ListNode* node) {
+        ListNode* tail;
+        ListNode* temp=node;
+        while(temp->next != NULL)
+        {
+            tail=temp;
+            swap(temp->val, temp->next->val);
+            temp=temp->next;
+        }
+        tail->next=NULL;
+    }
+};
