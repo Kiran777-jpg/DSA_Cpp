@@ -1,0 +1,108 @@
+leetcode: https://leetcode.com/problems/intersection-of-two-linked-lists/
+geetcode: https://practice.geeksforgeeks.org/problems/intersection-of-two-linked-list/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=intersection-of-two-linked-list
+
+
+*******************************************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if(headA==NULL || headB==NULL) return NULL;
+        ListNode *list1 = headA, *list2 = headB;
+        while(list1 != list2)
+        {
+            list1 = list1==NULL?headB:list1->next;
+            list2 = list2==NULL?headA:list2->next;
+        }
+        return list1;
+    }
+};
+
+******************************************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode* list1 = headA;
+        ListNode* list2 = headB;
+        int n=0, m=0;
+        while(list1!=NULL || list2!=NULL)
+        {
+            if(list1)
+            {
+                n++;
+                list1=list1->next;
+            }
+            else if(list2)
+            {
+                 m++;
+                list2=list2->next;
+            }
+        }
+        int t = abs(n-m);
+        if(n>m)
+        {
+            while(t--)
+                headA=headA->next;
+        }
+        else
+        {
+            while(t--)
+                headB=headB->next;
+        }
+        while(headA != headB)
+        {
+            if(headA == headB)
+                return headA;
+            headA=headA->next;
+            headB=headB->next;
+        }
+        return headA;
+    }
+};
+
+********************************************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        unordered_map<ListNode*, int> hashmap;
+        ListNode *temp1 = headA, *temp2=headB;
+        while(temp1!=NULL)
+        {
+            hashmap[temp1]++;
+            temp1=temp1->next;
+        }
+        while(temp2!=NULL)
+        {
+            if(hashmap.find(temp2)!=hashmap.end())
+                return temp2;
+            temp2=temp2->next;
+        }
+        return NULL;
+    }
+};
