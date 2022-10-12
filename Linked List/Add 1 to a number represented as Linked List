@@ -1,0 +1,121 @@
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/add-1-to-a-number-represented-as-linked-list/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=add-1-to-a-number-represented-as-linked-list
+
+class Solution
+{
+    public:
+    Node* addOne(Node *head) 
+    {
+        // Your Code here
+        // return head of list after adding one
+        if(head==NULL) return head;
+        Node* nonNine=NULL;
+        Node* temp=head;
+        while(temp->next)
+        {
+            if(temp->data!=9)
+                nonNine=temp;
+            temp=temp->next;
+        }
+        
+        if(temp->data==9)
+        {
+            if(nonNine==NULL)
+            {
+                Node* newnode = new Node(1);
+                newnode->next = head;
+                head = newnode;
+                temp=head->next;
+            }
+            else
+            {
+                nonNine->data += 1;
+                temp=nonNine->next;
+            }
+            while(temp)
+            {
+                temp->data=0;
+                temp=temp->next;
+            }
+        }
+        else
+            temp->data += 1;
+            
+        return head;
+    }
+};
+
+***************************************************
+
+class Solution
+{
+    public:
+    Node* reverse(Node* head)
+    {
+        if(head->next == NULL)
+            return head;
+        Node* temp = reverse(head->next);    
+        head->next->next = head;
+        head->next=NULL;
+        return temp;
+    }
+    
+    Node* addOneUtil(Node* head)
+    {
+        int carry=1;
+        Node *temp=head, *temp2=head;
+        while(temp!=NULL)
+        {
+            int sum = temp->data + carry;
+            carry = (sum>=10)?1:0;
+            temp->data = sum%10;
+            temp2=temp;
+            temp=temp->next;
+        }
+        if(carry)
+        {
+            Node* newnode = new Node(1);
+            temp2->next=newnode;
+        }
+        return head;
+    }
+    
+    Node* addOne(Node *head) 
+    {
+        // Your Code here
+        // return head of list after adding one
+        head = reverse(head);
+        head = addOneUtil(head);
+        return reverse(head);
+    }
+};
+
+
+**************************************************************
+
+class Solution
+{
+    public:
+    int addOneUtil(Node* head)
+    {
+        if(head == NULL) return 1;
+        
+        int sum = head->data + addOneUtil(head->next);
+        head->data = sum%10;
+        return sum/10;
+    }
+    
+    Node* addOne(Node *head) 
+    {
+        // Your Code here
+        // return head of list after adding one
+        if(head==NULL) return head;
+        if(addOneUtil(head))
+        {
+            Node* newnode = new Node(1);
+            newnode->next=head;
+            return newnode;
+        }
+        return head;
+    }
+};
+
