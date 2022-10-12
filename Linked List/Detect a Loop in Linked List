@@ -1,0 +1,57 @@
+leetcode: https://leetcode.com/problems/linked-list-cycle/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/detect-loop-in-linked-list/1?page=1&category[]=Linked+List&sortBy=submissions&utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=detect-loop-in-linked-list
+
+
+*****************************************************
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        ListNode *slow=head, *fast=head;
+        while(fast && fast->next)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+            if(slow == fast) return true;
+        }
+        return false;
+    }
+};
+
+*********************************************************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+
+    bool detectCycle(ListNode* head, unordered_set<ListNode*> &unset)
+    {
+        if(head==NULL)
+            return false;
+        auto it = unset.find(head);
+        if(it != unset.end())
+            return true;
+        unset.insert(head);
+        return detectCycle(head->next, unset);
+    }
+
+    bool hasCycle(ListNode *head) {
+        if(head==NULL) return false;
+        unordered_set<ListNode*> unset;
+        return detectCycle(head, unset);
+    }
+};
