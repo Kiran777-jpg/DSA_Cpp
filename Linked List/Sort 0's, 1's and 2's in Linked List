@@ -1,0 +1,153 @@
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/given-a-linked-list-of-0s-1s-and-2s-sort-it/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=given-a-linked-list-of-0s-1s-and-2s-sort-it
+
+
+*****************************************************
+
+ 
+  Node is defined as
+  struct Node {
+    int data;
+    struct Node *next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+*/
+class Solution
+{
+    public:
+    //Function to sort a linked list of 0s, 1s and 2s.
+    Node* segregate(Node *head) {
+        // Add code here
+        int count[3] = {0,0,0};
+        Node* temp=head;
+        while(temp!=NULL)
+        {
+            count[temp->data]++;
+            temp=temp->next;
+        }
+        int i=0;
+        temp=head;
+        while(temp!=NULL)
+        {
+            if(count[i]>0)
+            {
+                temp->data=i;
+                count[i]--;
+                temp=temp->next;
+            }
+            else
+                i++;   
+        }
+        return head;
+    }
+};
+
+*******************************************************
+
+ 
+  Node is defined as
+  struct Node {
+    int data;
+    struct Node *next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+*/
+class Solution
+{
+    public:
+    //Function to sort a linked list of 0s, 1s and 2s.
+    Node* merge(Node* list1, Node* list2)
+    {
+        Node* result;
+        if(list1==NULL) return list2;
+        if(list2==NULL) return list1;
+        
+        if(list1->data<=list2->data)
+        {
+            result=list1;
+            result->next=merge(list1->next, list2);
+        }
+        else
+        {
+            result=list2;
+            result->next=merge(list1, list2->next);
+        }
+        return result;
+    }
+    
+    Node* segregate(Node *head) {
+        // Add code here
+        if(head==NULL || head->next==NULL) return head;
+        
+        Node* slow=head;
+        Node* fast=head;
+        while(fast && fast->next)
+        {
+            fast = fast->next->next;
+            if(fast)
+                slow=slow->next;
+        }
+        Node* mid2 = slow->next;
+        slow->next=NULL;
+        Node* list1 = segregate(head);
+        Node* list2 = segregate(mid2);
+        
+        return merge(list1, list2);
+    }
+};
+
+******************************************************
+
+ 
+  Node is defined as
+  struct Node {
+    int data;
+    struct Node *next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+*/
+class Solution
+{
+    public:
+    //Function to sort a linked list of 0s, 1s and 2s.
+    Node* segregate(Node *head) {
+        // Add code here
+        if(head == NULL || head->next==NULL) return head;
+        priority_queue<int, vector<int>, greater<int>> pq;
+        // multiset<int> hashset;
+        // vector<int> v;
+        Node* temp = head;
+        while(temp!=NULL)
+        {
+            pq.push(temp->data);
+            // v.push_back(temp->data);
+            // hashset.insert(temp->data);
+            temp=temp->next;
+        }
+        // sort(v.begin(), v.end());
+        Node *head2=NULL, *tail=NULL;
+        while(!pq.empty())
+        {
+            Node* newnode = new Node(pq.top());
+            if(head2==NULL)
+                head2=newnode;
+            else
+                tail->next=newnode;
+            tail=newnode;
+            pq.pop();
+        }
+        return head2;
+        
+    }
+};
