@@ -1,0 +1,59 @@
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/find-pairs-with-given-sum-in-doubly-linked-list/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=find-pairs-with-given-sum-in-doubly-linked-list
+
+
+***********************************************
+
+class Solution
+{
+public:
+    vector<pair<int, int>> findPairsWithGivenSum(Node *head, int target)
+    {
+        // code here
+        Node* left=head;
+        Node* right=head;
+        vector<pair<int, int>> ans;
+        while(right->next)
+            right=right->next;
+        while(left!=right)
+        {
+            if(left->data+right->data==target)
+            {
+                ans.push_back({left->data,right->data});
+                left=left->next;
+            }
+            else if(left->data+right->data < target)
+                left=left->next;
+            else
+                right=right->prev;
+        }
+        return ans;
+    }
+};
+
+******************************************************************
+
+class Solution
+{
+public:
+    vector<pair<int, int>> findPairsWithGivenSum(Node *head, int target)
+    {
+        // code here
+        map<int, bool> hashmap;
+        vector<pair<int, int>> ans;
+        Node* temp=head;
+        while(temp)
+        {
+            if(hashmap.find(target - temp->data)!=hashmap.end())
+                   hashmap[target-temp->data]=true;
+            else
+                hashmap[temp->data]=false;
+            temp=temp->next;
+        }
+        for(auto item : hashmap)
+        {
+            if(item.second)
+                ans.push_back({item.first, target-item.first});
+        }
+        return ans;
+    }
+};
