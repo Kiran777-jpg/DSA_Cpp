@@ -1,0 +1,183 @@
+leetcode: https://leetcode.com/problems/sort-list/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/linked-list-that-is-sorted-alternatingly/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=linked-list-that-is-sorted-alternatingly
+
+
+**********************************************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        if(head==NULL || head->next==NULL) return head;
+
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while(fast && fast->next)
+        {
+            fast = fast->next->next;
+            if(fast)
+                slow=slow->next;
+        }
+        ListNode* mid2 = slow->next;
+        slow->next=NULL;
+
+        ListNode* list1 = sortList(head);
+        ListNode* list2 = sortList(mid2);
+        return merge(list1, list2);
+    }
+
+    ListNode* merge(ListNode* list1, ListNode* list2)
+    {
+        if(list1 == NULL) return list2;
+        if(list2 == NULL) return list1;
+
+        ListNode* temp = new ListNode();
+        ListNode* res = temp;
+        while(list1 && list2)
+        {
+            if(list1->val <= list2->val)
+            {
+                temp->next = list1;
+                list1=list1->next;
+            }
+            else
+            {
+                temp->next = list2;
+                list2=list2->next;
+            }
+            temp=temp->next;
+        }
+
+        if(list1)
+            temp->next=list1;
+        if(list2)
+            temp->next=list2;
+        return res->next;
+    }
+};
+
+**********************************************************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        if(head==NULL || head->next==NULL) return head;
+
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while(fast && fast->next)
+        {
+            fast = fast->next->next;
+            if(fast)
+                slow=slow->next;
+        }
+        ListNode* mid2 = slow->next;
+        slow->next=NULL;
+
+        ListNode* list1 = sortList(head);
+        ListNode* list2 = sortList(mid2);
+        return merge(list1, list2);
+    }
+
+    ListNode* merge(ListNode* list1, ListNode* list2)
+    {
+        ListNode* result;
+        if(list1==NULL) return list2;
+        if(list2==NULL) return list1;
+
+        if(list1->val <= list2->val)
+        {
+            result = list1;
+            result->next = merge(list1->next, list2);
+        }
+        else
+        {
+            result = list2;
+            result->next = merge(list1, list2->next);
+        }
+        return result;
+    }
+};
+
+**************************************************************************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+       if(head==NULL || head->next == NULL) return head;
+       ListNode* finalNode = mergesort(head,NULL);
+       return finalNode;
+    }
+
+    ListNode* mergesort(ListNode* head, ListNode* tail)
+    {
+        if(head==tail) return head;
+        ListNode* mid = dividehalf(head, tail);
+        ListNode* mid2 = mid->next;
+        mid->next=NULL;
+
+        return merge(mergesort(head, mid), mergesort(mid2, tail));
+    }
+
+    ListNode* merge(ListNode* list1, ListNode* list2)
+    {
+        ListNode* result;
+        if(list1==NULL) return list2;
+        if(list2==NULL) return list1;
+
+        if(list1->val <= list2->val)
+        {
+            result = list1;
+            result->next = merge(list1->next, list2);
+        }
+        else
+        {
+            result = list2;
+            result->next = merge(list1, list2->next);
+        }
+        return result;
+    }
+
+    ListNode* dividehalf(ListNode* head, ListNode* tail)
+    {
+        ListNode* slow = head;
+        ListNode* fast = head;
+
+        while(fast!=tail && fast->next!=tail)
+        {
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+        return slow;
+    }
+};
+
