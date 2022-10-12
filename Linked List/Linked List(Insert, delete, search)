@@ -1,0 +1,237 @@
+
+#include <iostream>
+using namespace std;
+
+//Forward Declaration
+class List;
+
+class Node{
+    int data;
+    Node *next;
+    
+    public:
+        Node(int d):data(d),next(NULL){}
+        
+        int getData()
+        {
+            return data;
+        }
+        
+        Node * getNext()
+        {
+            return next;
+        }
+        
+        ~Node()
+        {
+            if(next != NULL) // it will make recursive calls indirectly
+            {
+                delete next;
+            }
+            cout<<"Deleting node with data"<<data<<endl;
+        }
+        
+        friend class List;
+};
+
+
+class List{
+    Node *head;
+    Node *tail;
+    
+    int searchHelper(Node *start, int key)
+    {
+        //base case
+        if(start == 0)
+        {
+            return -1;
+            
+        }
+        
+        if(start->data == key)
+        {
+            return 0;
+        }
+        
+        int idx = searchHelper(start->next, key);
+        
+        if(idx == -1)
+        {
+            return idx;
+        }
+        return idx+1;
+    }
+    
+    public:
+        List():head(NULL),tail(NULL){}
+        
+        Node * gethead()
+        {
+            return head;
+        }
+        
+        void push_front(int data)
+        {
+            Node *newnode = new Node(data); 
+            if(head == NULL)
+            {
+                head = tail = newnode;
+            }
+            else{
+               newnode->next = head;
+               head = newnode;
+            }
+        }
+        
+        void push_back(int data)
+        {
+            Node *newnode = new Node(data);
+            if(head == NULL)
+            {
+                head = tail = newnode;
+            }
+            else{
+                tail->next = newnode;
+                tail = newnode;
+            }
+        }
+        
+        void insert(int data, int pos)
+        {
+            if(pos == 0)
+            {
+                push_front(data);
+            }
+            else{
+                int i=0;
+                Node *temp = head;
+                Node *newnode = new Node(data);
+                while(i<pos-1)
+                {
+                    temp = temp->next;
+                    i++;
+                }
+                newnode->next = temp->next;
+                temp->next = newnode;
+            }
+        }
+        
+        void print()
+        {
+            Node *temp = head;
+            while(temp != NULL)
+            {
+                cout<<temp->data<<" ";
+                temp = temp->next;
+            }
+        }
+        
+        int recursiveSearch(int key)
+        {
+           int idx = searchHelper(head, key);
+           return idx;
+        }
+        
+        void pop_front()
+        {
+            Node *temp =head;
+            head = head->next;
+            temp->next = NULL;
+            delete temp;
+        }
+        
+        void pop_back()
+        {
+            Node *temp = head;
+            while(temp->next != tail){
+                temp = temp->next;
+            }
+            
+            tail = temp;
+            tail->next = NULL;
+            temp = temp->next;
+            delete temp;
+        }
+        
+        void remove_node(int pos)
+        {
+            int i=0;
+            Node *current = head;
+            while(i<pos-1)
+            {
+                current = current->next;
+                i++;
+            }
+            
+            Node *temp = current->next;
+            current->next = temp->next;
+            temp->next = NULL;
+            delete temp;
+        }
+        
+        void reverse()
+        {
+            Node *prev = NULL;
+            Node *current = head;
+            Node *nextnode = current->next;
+    
+            while(nextnode != 0)
+            {
+                current->next = prev;
+                prev = current;
+                current = nextnode;
+                nextnode = nextnode->next;
+            }
+            
+            current->next = prev;
+            head = current;
+        }
+        
+        //Destructor
+        ~List()
+        {
+            if(head != NULL)
+            {
+                delete head;
+                head = NULL;
+            }
+        }
+};
+
+
+
+
+
+#include <iostream>
+#include "list.h"
+using namespace std;
+
+int main()
+{
+    List l;
+    
+    l.push_front(3);
+    l.push_front(1);
+    l.push_front(0);
+    l.push_back(4);
+    l.insert(2,2);
+    
+    l.print();
+    cout<<endl;
+    
+    l.reverse();
+    
+    // l.pop_front();
+    // l.pop_back();
+    // l.remove_node(2);
+    
+    Node *head = l.gethead();
+    while(head != NULL)
+    {
+        cout<<head->getData()<<" ";
+        head = head->getNext();
+    }
+    cout<<endl;
+    cout<<l.recursiveSearch(5)<<endl;
+    //l.print();
+}
