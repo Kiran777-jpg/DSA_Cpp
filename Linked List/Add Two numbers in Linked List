@@ -1,0 +1,168 @@
+leetcode: https://leetcode.com/problems/add-two-numbers/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/add-two-numbers-represented-by-linked-lists/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=add-two-numbers-represented-by-linked-lists
+
+
+****************************************************
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* temp = new ListNode();       
+        ListNode* res = temp;
+        int carry = 0;
+        while(l1 || l2 || carry)
+        {
+            int val1 = l1==NULL?0:l1->val;
+            int val2 = l2==NULL?0:l2->val;
+            int sum = val1+val2+carry;
+            carry = sum/10;
+            temp->next = l1==NULL?l2:l1;
+            if(temp->next==NULL)
+            {
+                ListNode* newnode = new ListNode(1);
+                temp->next=newnode;
+                return res->next;
+            }
+            temp=temp->next;
+            temp->val = sum%10;
+            l1 = l1==NULL?NULL:l1->next;
+            l2 = l2==NULL?NULL:l2->next;
+        }
+        return res->next;
+    }
+};
+
+**********************************************************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode *dummy = new ListNode(); 
+        ListNode *temp = dummy; 
+        int carry = 0;
+        while( (l1 != NULL || l2 != NULL) || carry) {
+            int sum = 0; 
+            if(l1 != NULL) {
+                sum += l1->val; 
+                l1 = l1 -> next; 
+            }
+            
+            if(l2 != NULL) {
+                sum += l2 -> val; 
+                l2 = l2 -> next; 
+            }
+            
+            sum += carry; 
+            carry = sum / 10; 
+            ListNode *node = new ListNode(sum % 10); 
+            temp -> next = node; 
+            temp = temp -> next; 
+        }
+        return dummy -> next; 
+    }
+};
+
+*******************************************************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+
+    ListNode* addList(ListNode* list1, ListNode* list2, int carry)
+    {
+        if(!list1 && !list2 && !carry) return NULL;
+        int val1 = list1==NULL?0:list1->val;
+        int val2 = list2==NULL?0:list2->val;
+
+        int sum = val1+val2+carry;
+        carry = sum>=10?1:0;
+        ListNode* temp = list1==NULL?list2:list1;
+        if(temp==NULL)
+        {
+            ListNode* newnode = new ListNode(1);
+            return newnode;
+        }
+        else
+            temp->val = sum%10; 
+
+        list1 = list1==NULL?NULL:list1->next;
+        list2 = list2==NULL?NULL:list2->next;
+        temp->next = addList(list1, list2, carry);
+        return temp;
+    }
+
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        if(l1==NULL) return l2;
+        if(l2==NULL) return l1;
+
+        return addList(l1,l2, 0);
+    }
+};
+
+**********************************************************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+
+    ListNode* addList(ListNode* list1, ListNode* list2, int carry)
+    {
+        if(!list1 && !list2 && !carry) return NULL;
+        int val1 = list1==NULL?0:list1->val;
+        int val2 = list2==NULL?0:list2->val;
+
+        int sum = val1+val2+carry;
+        carry = sum>=10?1:0;
+        ListNode* newnode = new ListNode(sum%10);
+
+        list1 = list1==NULL?NULL:list1->next;
+        list2 = list2==NULL?NULL:list2->next;
+        newnode->next = addList(list1, list2, carry);
+        return newnode;
+    }
+
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        if(l1==NULL) return l2;
+        if(l2==NULL) return l1;
+
+        return addList(l1,l2, 0);
+    }
+};
+
