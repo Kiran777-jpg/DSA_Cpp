@@ -2,6 +2,39 @@ leetcode: https://leetcode.com/problems/string-to-integer-atoi/
 geeksforgeeks: https://practice.geeksforgeeks.org/problems/implement-atoi/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=implement-atoi
 
 
+******************************************************************************************8
+
+class Solution {
+public:
+    int myAtoi(string s) {
+        int n = s.length();
+        long sum=0;
+        bool isPositive = true;
+        int count=0;
+        for(int i=0;i<n;i++)
+        {
+            if(s[i]==' ' && count==0) continue;
+            if((s[i]=='+' || s[i]=='-') && count==0) count++, isPositive=s[i]=='-'?false:true;
+            else if(s[i]>='0' && s[i]<='9')
+            {
+                count++;
+                sum = (sum*10)+(s[i]-48);
+                if(sum>=INT_MAX) break;
+            }
+            else
+                break;
+        }
+
+        if(!isPositive)
+        {
+            sum *= -1;
+            if(sum<=INT_MIN) return INT_MIN;
+        }
+        else if(sum>=INT_MAX)return INT_MAX;
+        return sum;
+    }
+};
+*******************************************************************
 class Solution {
 public:
     int myAtoi(string s) {
