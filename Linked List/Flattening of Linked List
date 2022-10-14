@@ -1,0 +1,77 @@
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/flattening-a-linked-list/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=flattening-a-linked-list
+
+
+**********************************************************
+recursive
+
+Node* merge(Node* list1, Node* list2)
+{
+    if(!list1) return list2;
+    if(!list2) return list1;
+    Node* temp=NULL;
+    
+    if(list1->data<=list2->data)
+    {
+        temp=list1;
+        temp->bottom=merge(list1->bottom, list2);
+    }
+    else
+    {
+        temp=list2;
+        temp->bottom=merge(list1, list2->bottom);
+    }
+    return temp;
+}
+
+Node *flatten(Node *root)
+{
+   // Your code here
+   if(root==NULL) return root;
+   
+   Node* down = root;
+   Node* right = down->next;
+   down->next = NULL;
+   
+   right = flatten(right);
+   return merge(down, right);
+}
+
+***********************************************************
+
+iterative
+
+Node* merge(Node* list1, Node* list2)
+{
+    if(!list1) return list2;
+    if(!list2) return list1;
+    Node* temp=NULL;
+    
+    if(list1->data<=list2->data)
+    {
+        temp=list1;
+        temp->bottom = merge(list1->bottom, list2);
+    }
+    else
+    {
+        temp=list2;
+        temp->bottom = merge(list1, list2->bottom);
+    }
+    return temp;
+}
+
+Node *flatten(Node *root)
+{
+   // Your code here
+   if(root==NULL) return root;
+   Node* list1 = root;
+   Node* list2 = root->next;
+   list1->next=NULL;
+   while(list2)
+   {
+       Node* temp = list2->next;
+       list2->next=NULL;
+       list1 = merge(list1, list2);
+       list2=temp;
+   }
+   return root;
+}
