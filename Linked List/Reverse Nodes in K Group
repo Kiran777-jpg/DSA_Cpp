@@ -1,0 +1,103 @@
+leetcode: https://leetcode.com/problems/reverse-nodes-in-k-group/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/find-pairs-with-given-sum-in-doubly-linked-list/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=find-pairs-with-given-sum-in-doubly-linked-list
+
+
+*******************************************
+recursive
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    int getlength(ListNode* head)
+    {
+        int count=0;
+        ListNode* temp=head;
+        while(temp)
+        {
+            count++;
+            temp=temp->next;
+        }
+        return count;
+    }
+
+    ListNode* reverseKGroupUtil(ListNode* head, int k, int len)
+    {
+        if(len < k) return head;
+
+        ListNode* currNode = head;
+        ListNode* prevNode = NULL;
+        ListNode* nextNode = head;
+        for(int i=0;i<k;i++)
+        {
+            nextNode = nextNode->next;
+            currNode->next = prevNode;
+
+            prevNode = currNode;
+            currNode = nextNode; 
+        }
+        head->next = reverseKGroupUtil(currNode, k, len-k);
+        return prevNode;
+    }
+
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        int len = getlength(head);
+        return reverseKGroupUtil(head, k, len);
+    }
+};
+
+*******************************************************
+iterative
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+
+    ListNode* reverse(ListNode* start, ListNode* end)
+    {
+        if(start->next==end) return start;
+        ListNode* temp = reverse(start->next, end);
+        start->next->next = start;
+        start->next = NULL;
+        return temp;
+    }
+
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        ListNode *start=head, *end=head, *temp=NULL;
+        int count=0;
+        while(end || count==k)
+        {
+            end=end->next;
+            count++;
+            if(count==k)
+            {
+                ListNode* temp2 = reverse(start,end);
+                if(temp!=NULL) temp->next = temp2;
+                else head=temp2;
+                start->next=end;
+                temp=start;
+                start=start->next;
+                count=0;
+            }
+        }
+        return head;
+    }
+};
