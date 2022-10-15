@@ -1,0 +1,123 @@
+geeksforgeeks: https://www.geeksforgeeks.org/generate-binary-strings-without-consecutive-1s/?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=generate-binary-strings-without-consecutive-1s
+
+
+***********************************************************
+char Array
+
+
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+void binaryString(char s[], int k, int n)
+{
+    if(n==k)
+    {
+        cout<<s<<endl;
+        return;
+    }
+    
+    if(s[n-1]=='1')
+    {
+        s[n]='0';
+        binaryString(s, k, n+1);
+    }
+    if(s[n-1]=='0')
+    {
+        s[n]='0';
+        binaryString(s, k, n+1);
+        s[n]='1';
+        binaryString(s, k, n+1);
+    }
+}
+
+int main()
+{
+    int k=4;
+    if(k==0) return;
+    char s[k];
+    s[0]='0';
+    binaryString(s, k, 1);
+    s[0]='1';
+    binaryString(s, k, 1);
+}
+
+*************************************************************
+
+bool Array
+
+
+#include <iostream>
+using namespace std;
+
+void binaryString(bool a[], int k, int n)
+{
+    if(k==n)
+    {
+        for(int i=0;i<n;i++)
+            cout<<a[i];
+        cout<<endl;
+        return;
+    }
+    
+    if(a[n-1])
+    {
+        a[n]=false;
+        binaryString(a, k, n+1);
+    }
+    else
+    {
+        a[n]=false;
+        binaryString(a, k, n+1);
+        a[n]=true;
+        binaryString(a, k, n+1);
+    }
+}
+
+int main()
+{
+    int k=3;
+    bool a[k];
+    a[0]=false;
+    binaryString(a,k,1);
+    a[0]=true;
+    binaryString(a,k,1);
+}
+
+********************************************************
+
+string 
+
+
+#include <iostream>
+using namespace std;
+
+void binaryString(string s, int k, int n)
+{
+    if(n==k)
+    {
+        cout<<s<<endl;
+        return;
+    }
+    
+    if(s[n-1]=='1')
+    {
+        s.push_back('0');
+        binaryString(s, k, n+1);
+    }
+    else
+    {
+        binaryString(s+'0', k, n+1);
+        binaryString(s+'1', k, n+1);
+    }
+}
+
+int main()
+{
+    int k=3;
+    string s;
+    s.push_back('0');
+    binaryString(s,k,1);
+    s[0]='1';
+    binaryString(s,k,1);
+}
