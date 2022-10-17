@@ -1,0 +1,24 @@
+leetcode: https://leetcode.com/problems/permutations/
+
+
+****************************************************************
+class Solution {
+public:
+    void permuteUtil(vector<int> &nums, vector<int> v, vector<vector<int>> &ans)
+    {
+        if(v.size() == nums.size()) ans.push_back(v);
+        for(int i=0;i<nums.size();i++)
+        {
+            if(find(v.begin(), v.end(), nums[i]) != v.end()) continue;
+            v.push_back(nums[i]);
+            permuteUtil(nums, v, ans);
+            v.pop_back();
+        }
+    }
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> ans;
+        vector<int> v;
+        permuteUtil(nums, v, ans);
+        return ans;
+    }
+};
