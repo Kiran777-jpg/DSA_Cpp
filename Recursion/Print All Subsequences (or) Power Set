@@ -68,3 +68,39 @@ private void backtrack(List<List<Integer>> list , List<Integer> tempList, int []
         tempList.remove(tempList.size() - 1);
     }
 }
+
+*****************************************************
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+void subsets(vector<int> &arr, int start, vector<int> v, vector<vector<int>> &ans)
+{
+    ans.push_back(v);
+    for(int i=start;i<arr.size();i++)
+    {
+        v.push_back(arr[i]);
+        subsets(arr, i+1, v, ans);
+        v.pop_back();
+    }
+}
+
+
+int main()
+{
+    // vector<int> arr = {2,3,4,6};
+    vector<int> arr = {1,2,3};
+    // vector<int> arr = {1,2,2};
+    vector<vector<int>> ans;
+    vector<int> v;
+    sort(arr.begin(), arr.end());
+    subsets(arr, 0, v, ans);
+    for(auto arrList : ans)
+    {
+        for(auto item : arrList)
+            cout<<item;
+        cout<<endl;
+    }
+}
