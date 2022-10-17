@@ -1,0 +1,35 @@
+leetcode: https://leetcode.com/problems/combination-sum-ii/description/
+
+
+***********************************************************
+correct Solution But TIME LIMIT EXCEEDED
+
+class Solution {
+public:
+    void combinationSum2Util(vector<int> &arr, int target, int i, int sum, vector<int> v, set<vector<int>> &hashset)
+    {
+        if(i==arr.size())
+        {
+            if(target == sum)
+            {
+                // auto it = find(hashset.begin(), hashset.end(), v);
+                // if(it == hashset.end()) hashset.insert(v);
+                hashset.insert(v);
+            }
+            return;
+        }
+
+        v.push_back(arr[i]);
+        combinationSum2Util(arr, target, i+1, sum+arr[i], v, hashset);
+        v.pop_back();
+        combinationSum2Util(arr, target, i+1, sum, v, hashset);
+    }
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<int> v;
+        set<vector<int>> hashset;
+        sort(candidates.begin(), candidates.end());
+        combinationSum2Util(candidates, target, 0, 0, v, hashset);
+        vector<vector<int>> ans(hashset.begin(), hashset.end());
+        return ans;
+    }
+};
