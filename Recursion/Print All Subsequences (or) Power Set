@@ -1,0 +1,70 @@
+leetcode: https://leetcode.com/problems/subsets/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/power-set4302/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=power-set
+
+
+************************************************
+By Power Set
+
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        int n=nums.size();
+        vector<vector<int>> ans;
+        for(int num=0;num<(1<<n);num++)
+        {
+            vector<int> v;
+            for(int i=0;i<n;i++)
+            {
+                if(num&(1<<i))
+                    v.push_back(nums[i]);
+            }
+            ans.push_back(v);
+        }
+        return ans;
+    }
+};
+
+*******************************************************
+Recursion
+
+class Solution {
+public:
+    vector<vector<int>> ans;
+    void subsetsUtil(vector<int> &nums, vector<int> v, int i)
+    {
+        if(i==nums.size())
+        {
+            ans.push_back(v);
+            return;
+        }
+        v.push_back(nums[i]);
+        subsetsUtil(nums, v, i+1);
+        v.pop_back();
+        subsetsUtil(nums, v, i+1);
+    }
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<int> v;
+        subsetsUtil(nums, v, 0);
+        // sort(ans.begin(), ans.end());
+        return ans;
+    }
+};
+
+*****************************************
+Recusion - Another approach
+
+public List<List<Integer>> subsets(int[] nums) {
+    List<List<Integer>> list = new ArrayList<>();
+    Arrays.sort(nums);
+    backtrack(list, new ArrayList<>(), nums, 0);
+    return list;
+}
+
+private void backtrack(List<List<Integer>> list , List<Integer> tempList, int [] nums, int start){
+    list.add(new ArrayList<>(tempList));
+    for(int i = start; i < nums.length; i++){
+        tempList.add(nums[i]);
+        backtrack(list, tempList, nums, i + 1);
+        tempList.remove(tempList.size() - 1);
+    }
+}
