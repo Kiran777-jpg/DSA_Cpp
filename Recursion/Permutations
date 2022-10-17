@@ -1,7 +1,39 @@
 leetcode: https://leetcode.com/problems/permutations/
 
 
+
 ****************************************************************
+Tc: o(n! * n), Sc : o(n)+o(n), Asc : o(n);
+
+class Solution {
+public:
+    void permuteUtil(vector<int> &nums, vector<int> &v, vector<bool> &isPresent, vector<vector<int>> &ans)
+    {
+        if(v.size() == nums.size()) ans.push_back(v);
+        for(int i=0;i<nums.size();i++)
+        {
+            if(!isPresent[i])
+            {
+                v.push_back(nums[i]);
+                isPresent[i] = true;
+                permuteUtil(nums, v, isPresent, ans);
+                isPresent[i] = false;
+                v.pop_back();
+            }
+        }
+    }
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> ans;
+        vector<int> v;
+        vector<bool> isPresent(nums.size(), false);
+        permuteUtil(nums, v, isPresent, ans);
+        return ans;
+    }
+};
+
+****************************************************************
+Tc: o(n! * n)+o(n), Sc : o(n)+o(n), Asc : o(n);
+
 class Solution {
 public:
     void permuteUtil(vector<int> &nums, vector<int> v, vector<vector<int>> &ans)
