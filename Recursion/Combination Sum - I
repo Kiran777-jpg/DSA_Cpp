@@ -1,0 +1,34 @@
+leetcode: https://leetcode.com/problems/combination-sum/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/combination-sum-1587115620/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=combination-sum
+
+
+**************************************************
+Recursion:
+
+
+class Solution {
+public:
+    void combinationSumUtil(vector<int> &arr, int target, int i, vector<int> v, vector<vector<int>> &ans)
+    {
+        if(i==arr.size())
+        {
+            if(target==0)
+                ans.push_back(v);
+            return;
+        }
+
+        if(arr[i]<=target)
+        {
+            v.push_back(arr[i]);
+            combinationSumUtil(arr, target-arr[i], i, v, ans);
+            v.pop_back();
+        }
+        combinationSumUtil(arr, target, i+1, v, ans);
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        vector<int> v;
+        combinationSumUtil(candidates, target, 0, v, ans);
+        return ans;
+    }
+};
