@@ -32,3 +32,33 @@ public:
         return ans;
     }
 };
+
+**************************************************************
+
+
+class Solution {
+public:
+    void combinationSumUtil(vector<int>& arr, int target, int start, vector<int> v, vector<vector<int>> &ans)
+    {
+        if(target==0)
+        {
+            ans.push_back(v);
+            return;
+        }
+        for(int i=start;i<arr.size();i++)
+        {
+            if(arr[i]<=target)
+            {
+                v.push_back(arr[i]);
+                combinationSumUtil(arr, target-arr[i], i, v, ans);
+                v.pop_back();
+            }
+        }
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        vector<int> v;
+        combinationSumUtil(candidates, target, 0, v, ans);
+        return ans;
+    }
+};
