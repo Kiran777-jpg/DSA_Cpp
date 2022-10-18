@@ -1,0 +1,72 @@
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/subset-sums2234/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=subset-sums
+
+
+****************************************************************************
+
+{
+public:
+    void subsetSumsUtil(vector<int> &arr, int N, int start, int sum, vector<int> &ans)
+    {
+       ans.push_back(sum);
+       for(int i=start;i<N;i++)
+           subsetSumsUtil(arr, N, i+1, sum+arr[i], ans);
+    }
+    vector<int> subsetSums(vector<int> arr, int N)
+    {
+        // Write Your Code here
+        vector<int> ans;
+        subsetSumsUtil(arr, N, 0, 0, ans);
+        return ans;
+    }
+};
+
+
+*******************************************************************************
+
+
+{
+public:
+    void subsetSumsUtil(vector<int> &arr, int N, int start, int sum, vector<int> &ans)
+    {
+        ans.push_back(sum);
+        for(int i=start;i<N;i++)
+        {
+            sum += arr[i];
+            subsetSumsUtil(arr, N, i+1, sum, ans);
+            sum -= arr[i];
+        }
+    }
+    vector<int> subsetSums(vector<int> arr, int N)
+    {
+        // Write Your Code here
+        vector<int> ans;
+        subsetSumsUtil(arr, N, 0, 0, ans);
+        return ans;
+    }
+};
+
+
+*************************************************************
+
+{
+public:
+    void subsetSumsUtil(vector<int> &arr, int N, int i, int sum, vector<int> &ans)
+    {
+       if(i == N)
+       {
+           ans.push_back(sum);
+           return;
+       }
+       subsetSumsUtil(arr, N, i+1, sum+arr[i], ans);
+       subsetSumsUtil(arr, N, i+1, sum, ans);
+    }
+    vector<int> subsetSums(vector<int> arr, int N)
+    {
+        // Write Your Code here
+        vector<int> ans;
+        subsetSumsUtil(arr, N, 0, 0, ans);
+        return ans;
+    }
+};
+
+********************************************************************
