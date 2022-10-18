@@ -3,24 +3,18 @@
 #include <algorithm>
 using namespace std;
 
-bool subsets(vector<int> &arr, vector<int> &v, int i, int target, int sum, vector<vector<int>> &ans)
+void subsets(vector<int> &arr, vector<int> &v, int i, int target, int sum, vector<vector<int>> &ans)
 {
     if(i==arr.size())
     {
         if(sum==target)
-        {
             ans.push_back(v);
-            return true;
-        }
-        return false;
+        return;
     }
     v.push_back(arr[i]);
-    if(subsets(arr, v, i+1, target, sum+arr[i], ans))
-        return true;
+    subsets(arr, v, i+1, target, sum+arr[i], ans);
     v.pop_back();
-    if(subsets(arr, v, i+1, target, sum, ans))
-        return true;
-    return false;
+    subsets(arr, v, i+1, target, sum, ans);
 }
 
 int main()
