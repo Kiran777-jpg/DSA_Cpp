@@ -1,8 +1,76 @@
 leetcode: https://leetcode.com/problems/combination-sum-ii/description/
 
 
-***********************************************************
-correct Solution But TIME LIMIT EXCEEDED
+
+*********************************************************************************************************
+
+class Solution {
+public:
+    void combinationSum2Util(vector<int> &arr, int target, int start, vector<int> v, vector<vector<int>> &ans)
+    {
+        if(target < 0) return;
+        if(target == 0)
+        {
+            ans.push_back(v);
+            return;
+        }
+        // unordered_set<int> hashset;
+        for(int i=start;i<arr.size();i++)
+        {
+            if(i>start && arr[i]==arr[i-1]) continue;
+            // if(hashset.find(arr[i])!=hashset.end()) continue;
+            // hashset.insert(arr[i]);
+            v.push_back(arr[i]);
+            combinationSum2Util(arr, target-arr[i], i+1, v, ans);
+            v.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        vector<int> v;
+        sort(candidates.begin(), candidates.end());
+        combinationSum2Util(candidates, target, 0, v, ans);
+        return ans;
+    }
+};
+
+
+****************************************************************************************************************
+
+class Solution {
+public:
+    void combinationSum2Util(vector<int> &arr, int target, int start, vector<int> v, vector<vector<int>> &ans)
+    {
+        if(target < 0) return;
+        if(target == 0)
+        {
+            ans.push_back(v);
+            return;
+        }
+        unordered_set<int> hashset;
+        for(int i=start;i<arr.size();i++)
+        {
+            // if(i>start && arr[i]==arr[i-1]) continue;
+            if(hashset.find(arr[i])!=hashset.end()) continue;
+            hashset.insert(arr[i]);
+            v.push_back(arr[i]);
+            combinationSum2Util(arr, target-arr[i], i+1, v, ans);
+            v.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        vector<int> v;
+        sort(candidates.begin(), candidates.end());
+        combinationSum2Util(candidates, target, 0, v, ans);
+        return ans;
+    }
+};
+
+
+****************************************************************************************************************
+
+correct Solution But TIME LIMIT EXCEEDED - (Hint - we need to stop that unwanted calls means the duplicate calls)
 
 class Solution {
 public:
