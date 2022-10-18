@@ -1,0 +1,25 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+bool subsets(vector<int> &arr, int i, int target, int sum)
+{
+    if(i==arr.size())
+    {
+        if(sum==target)
+            return true;
+        return false;
+    }
+    if(subsets(arr, i+1, target, sum+arr[i]))
+        return true;
+    if(subsets(arr, i+1, target, sum))
+        return true;
+    return false;
+}
+
+int main()
+{
+    vector<int> arr = {1,2,3};
+    cout<<subsets(arr, 0, 3, 0);
+}
