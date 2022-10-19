@@ -1,0 +1,85 @@
+leetcode: https://leetcode.com/problems/combination-sum-iii/
+
+
+***********************************************************
+
+class Solution {
+public:
+    void combinationSum3Util(vector<int> &arr, int k, int target, int start, vector<int> v, vector<vector<int>> &ans)
+    {
+        if(k==0)
+        {
+            if(target==0) 
+                ans.push_back(v);
+            return;
+        }
+        for(int i=start;i<arr.size();i++)
+        {
+            if(arr[i]>target) break;
+            v.push_back(arr[i]);
+            combinationSum3Util(arr, k-1, target-arr[i], i+1, v, ans);
+            v.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int>> ans;
+        if(k>n) return ans;
+        vector<int> arr = {1,2,3,4,5,6,7,8,9};
+        vector<int> v;
+        combinationSum3Util(arr, k, n, 0, v, ans);
+        return ans;
+    }
+};
+
+****************************************************
+
+class Solution {
+public:
+    void combinationSum3Util(int k, int target, int num, vector<int> v, vector<vector<int>> &ans)
+    {
+        if(k==0)
+        {
+            if(target==0)
+                ans.push_back(v);
+            return;
+        }
+        if(num>9 || num>target) return;
+
+        v.push_back(num);
+        combinationSum3Util(k-1, target-num, num+1, v, ans);
+        v.pop_back();
+        combinationSum3Util(k, target, num+1, v, ans);
+    }
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int>> ans;
+        vector<int> v;
+        combinationSum3Util(k, n, 1, v, ans);
+        return ans;
+    }
+};
+
+*******************************************************
+
+class Solution {
+public:
+    void combinationSum3Util(vector<int> &arr, int k, int target, int start, vector<int> v, vector<vector<int>> &ans)
+    {
+        if(target==0 && v.size()==k) 
+            ans.push_back(v);
+        for(int i=start;i<arr.size();i++)
+        {
+            if(arr[i]>target) break;
+            v.push_back(arr[i]);
+            combinationSum3Util(arr, k, target-arr[i], i+1, v, ans);
+            v.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int>> ans;
+        if(k>n) return ans;
+        vector<int> arr = {1,2,3,4,5,6,7,8,9};
+        vector<int> v;
+        combinationSum3Util(arr, k, n, 0, v, ans);
+        return ans;
+    }
+};
