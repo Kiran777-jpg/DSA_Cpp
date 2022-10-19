@@ -1,0 +1,41 @@
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/palindromic-patitioning4845/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=palindromic-patitioning
+
+
+**************************************************
+TIME LIMIT EXCEEDED
+
+
+class Solution{
+public:
+    bool isPalindrome(string s, int start, int end)
+    {
+        while(start<end)
+        {
+            if(s[start++]!=s[end--]) return false;
+        }
+        return true;
+    }
+    void palindromicPartitionUtil(string str, int start, int count, int &minValue)
+    {
+        if(count > minValue) return;
+        if(start==str.size())
+        {
+            minValue = min(minValue, count);
+            return;
+        }
+        
+        for(int i=start;i<str.size();i++)
+        {
+            if(count>minValue) break;
+            if(i==start || isPalindrome(str, start, i))
+                palindromicPartitionUtil(str, i+1, count+1, minValue);
+        }
+    }
+    int palindromicPartition(string str)
+    {
+        // code here
+        int minValue = INT_MAX;
+        palindromicPartitionUtil(str, 0, 0, minValue);
+        return minValue-1;
+    }
+};
