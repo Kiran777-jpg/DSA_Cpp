@@ -1,0 +1,33 @@
+leetcode: https://leetcode.com/problems/letter-combinations-of-a-phone-number/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/possible-words-from-phone-digits-1587115620/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=possible-words-from-phone-digits
+
+
+**************************************************
+class Solution {
+public:
+    void letterCombinationsUtil(string digits, string mapping[], int start, string output, vector<string> &ans)
+    {
+        if(start == digits.size())
+        {
+            ans.push_back(output);
+            return;
+        }
+
+        int num = digits[start]-'0';
+        string value = mapping[num];
+        for(int i=0;i<value.size();i++)
+        {
+            output.push_back(value[i]);
+            letterCombinationsUtil(digits, mapping, start+1, output, ans);
+            output.pop_back();
+        }
+    }
+    vector<string> letterCombinations(string digits) {
+        vector<string> ans;
+        if(digits.size()==0) return ans;
+        string mapping[10] = {"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        string output = "";
+        letterCombinationsUtil(digits, mapping, 0, output, ans);
+        return ans;
+    }
+};
