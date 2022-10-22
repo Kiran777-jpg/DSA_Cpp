@@ -1,0 +1,87 @@
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/word-break-part-23249/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=word-break-part-2
+
+
+*********************************************************************************************
+
+class Solution{
+public:
+    bool isValid(string str, unordered_set<string> &hashset)
+    {
+        if(hashset.find(str)!=hashset.end()) return true;
+        return false;
+    }
+    void wordBreak(int n, unordered_set<string> &hashset, string s, int start, vector<string> &v, vector<string> &ans)
+    {
+        if(start==s.size())
+        {
+            string combine = "";
+            for(auto item : v)
+                combine += item+" ";
+            combine.pop_back();
+            ans.push_back(combine);
+            return;
+        }
+        
+        for(int i=start;i<s.size();i++)
+        {
+            if(isValid(s.substr(start, i-start+1), hashset))
+            {
+                v.push_back(s.substr(start, i-start+1));
+                wordBreak(n, hashset, s, i+1, v, ans);
+                v.pop_back();
+            }
+        }
+    }
+    vector<string> wordBreak(int n, vector<string>& dict, string s)
+    {
+        // code here
+        vector<string> v;
+        vector<string> ans;
+        unordered_set<string> hashset(dict.begin(), dict.end());
+        wordBreak(n, hashset, s, 0, v, ans);
+        return ans;
+    }
+};
+
+
+*********************************************************************************************
+
+
+class Solution{
+public:
+    bool isValid(string str, vector<string> &dict)
+    {
+        if(find(dict.begin(), dict.end(), str)!=dict.end()) return true;
+        return false;
+    }
+    void wordBreak(int n, vector<string> &dict, string s, int start, vector<string> &v, vector<string> &ans)
+    {
+        if(start==s.size())
+        {
+            string combine = "";
+            for(auto item : v)
+                combine += item+" ";
+            combine.pop_back();
+            ans.push_back(combine);
+            return;
+        }
+        
+        for(int i=start;i<s.size();i++)
+        {
+            if(isValid(s.substr(start, i-start+1), dict))
+            {
+                v.push_back(s.substr(start, i-start+1));
+                wordBreak(n, dict, s, i+1, v, ans);
+                v.pop_back();
+            }
+        }
+    }
+    vector<string> wordBreak(int n, vector<string>& dict, string s)
+    {
+        // code here
+        vector<string> v;
+        vector<string> ans;
+        wordBreak(n, dict, s, 0, v, ans);
+        return ans;
+    }
+};
