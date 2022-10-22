@@ -1,0 +1,88 @@
+leetcode: https://leetcode.com/problems/word-search/description/
+
+
+***************************************************************
+class Solution {
+public:
+
+    void existUtil(int i, int j, int k, vector<vector<char>> &board, string &word, bool &isExist)
+    {
+        if(k==word.size())
+        {
+            isExist=true;
+            return;
+        }
+
+        if(i<0 || j<0 || i==board.size() || j==board[i].size() || board[i][j]=='0')
+            return;
+        
+        if(board[i][j]==word[k])
+        {
+            char temp = board[i][j];
+            board[i][j] = '0';
+
+            existUtil(i, j+1, k+1, board, word, isExist);
+            existUtil(i+1, j, k+1, board, word, isExist);
+            existUtil(i, j-1, k+1, board, word, isExist);
+            existUtil(i-1, j, k+1, board, word, isExist);
+
+            board[i][j] = temp;
+        }
+        return;
+    }
+    bool exist(vector<vector<char>>& board, string word) {
+        bool isExist = false;
+        for(int i=0;i<board.size();i++)
+        {
+            for(int j=0;j<board[i].size();j++)
+            {
+                if(board[i][j]==word[0])
+                    existUtil(i, j, 0, board, word, isExist);
+            }
+        }
+        return isExist;
+    }
+};
+
+***************************************************************************
+
+class Solution {
+public:
+
+    bool existUtil(int i, int j, int k, vector<vector<char>> &board, string &word)
+    {
+        if(k==word.size())
+            return true;
+
+        if(i<0 || j<0 || i==board.size() || j==board[i].size() || board[i][j]=='0')
+            return false;
+        
+        if(board[i][j]==word[k])
+        {
+            char temp = board[i][j];
+            board[i][j] = '0';
+
+            if(existUtil(i, j+1, k+1, board, word)) return true;
+            if(existUtil(i+1, j, k+1, board, word)) return true;
+            if(existUtil(i, j-1, k+1, board, word)) return true;
+            if(existUtil(i-1, j, k+1, board, word)) return true;
+
+            board[i][j] = temp;
+        }
+        return false;
+    }
+    bool exist(vector<vector<char>>& board, string word) {
+        
+        for(int i=0;i<board.size();i++)
+        {
+            for(int j=0;j<board[i].size();j++)
+            {
+                if(board[i][j]==word[0])
+                    if(existUtil(i, j, 0, board, word)) return true;
+            }
+        }
+        return false;
+    }
+};
+
+******************************************************
