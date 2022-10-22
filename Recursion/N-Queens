@@ -1,0 +1,213 @@
+leetcode: https://leetcode.com/problems/n-queens/
+
+
+************************************************
+
+class Solution {
+public:
+    void nQueensUtil(vector<string> &board, int n, int row, vector<int> &colArr, vector<int> &leftD, vector<int> &rightD, vector<vector<string>> &ans)
+{
+    if(row == n)
+    {
+        ans.push_back(board);
+        return;
+    }
+    
+     for(int col=0;col<n;col++)
+    {
+        if(colArr[col]==0 && leftD[n-1+(col-row)]==0 && rightD[col+row]==0)
+        {
+            board[row][col]='Q';
+            colArr[col]=1;
+            leftD[n-1+(col-row)]=1;
+            rightD[col+row]=1;
+            nQueensUtil(board, n, row+1, colArr, leftD, rightD, ans);
+            rightD[col+row]=0;
+            leftD[n-1+(col-row)]=0;
+            colArr[col]=0;
+            board[row][col]='.';
+        }
+    }
+}
+    vector<vector<string>> solveNQueens(int n) {
+        string s(n, '.');
+        vector<string> board(n, s);
+        vector<vector<string>> ans;
+        vector<int> colArr(n, 0);
+        vector<int> leftD(2*n-1, 0);
+        vector<int> rightD(2*n-1, 0);
+        nQueensUtil(board, n, 0, colArr, leftD, rightD, ans);
+        return ans;
+    }
+};
+
+*****************************************************8
+
+class Solution {
+public:
+
+    bool isPlace(vector<string> &board, int n, int row, int col)
+    {
+        //column check
+        for(int i=0;i<row;i++)
+        {
+            if(board[i][col]=='Q') return false;
+        }
+
+        //left diagonal check
+        for(int i=row-1, j=col-1; i>=0 && j>=0; i--, j--)
+        {
+            if(board[i][j]=='Q') return false;
+        }
+
+        //right diagonal check
+        for(int i=row-1, j=col+1; i>=0 && j<n; i--, j++)
+        {
+            if(board[i][j]=='Q') return false;
+        }
+
+        return true;
+    }
+
+    void solveNQueensUtil(vector<string> &board, int n, int row, vector<vector<string>> &ans)
+    {
+        if(row==n)
+        {
+            // vector<string> v;
+            // for(int i=0;i<n;i++)
+            // {
+            //     string combine="";
+            //     for(int j=0;j<n;j++)
+            //     {
+            //         combine += board[i][j];
+            //     }
+            //     v.push_back(combine);
+            // }
+            // ans.push_back(v);
+            ans.push_back(board);
+            return;
+        }
+
+        for(int col=0;col<n;col++)
+        {
+            if(isPlace(board, n, row, col))
+            {
+                board[row][col]='Q';
+                solveNQueensUtil(board, n, row+1, ans);
+                board[row][col]='.';
+            }
+        }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        // vector<vector<char>> board(n, vector<char>(n,'.'));
+        string s(n, '.');
+        vector<string> board(n,s);
+        vector<vector<string>> ans;
+        solveNQueensUtil(board, n, 0, ans);
+        return ans;
+    }
+};
+
+************************************************************************************
+
+class Solution {
+public:
+    void nQueensUtil(vector<string> &board, int n, int row, vector<int> &colArr, vector<int> &leftD, vector<int> &rightD, vector<vector<string>> &ans)
+{
+    if(row == n)
+    {
+        ans.push_back(board);
+        return;
+    }
+    
+     for(int col=0;col<n;col++)
+    {
+        if(colArr[col]==0 && leftD[n-1-(col-row)]==0 && rightD[col+row]==0)
+        {
+            board[row][col]='Q';
+            colArr[col]=1;
+            leftD[n-1-(col-row)]=1;
+            rightD[col+row]=1;
+            nQueensUtil(board, n, row+1, colArr, leftD, rightD, ans);
+            rightD[col+row]=0;
+            leftD[n-1-(col-row)]=0;
+            colArr[col]=0;
+            board[row][col]='.';
+        }
+    }
+}
+    vector<vector<string>> solveNQueens(int n) {
+        string s(n, '.');
+        vector<string> board(n, s);
+        vector<vector<string>> ans;
+        vector<int> colArr(n, 0);
+        vector<int> leftD(2*n-1, 0);
+        vector<int> rightD(2*n-1, 0);
+        nQueensUtil(board, n, 0, colArr, leftD, rightD, ans);
+        return ans;
+    }
+};
+
+************************************************************************************
+
+class Solution {
+public:
+
+    bool isPlace(vector<vector<char>> &board, int n, int row, int col)
+    {
+        //column check
+        for(int i=0;i<row;i++)
+        {
+            if(board[i][col]=='Q') return false;
+        }
+
+        //left diagonal check
+        for(int i=row-1, j=col-1; i>=0 && j>=0; i--, j--)
+        {
+            if(board[i][j]=='Q') return false;
+        }
+
+        //right diagonal check
+        for(int i=row-1, j=col+1; i>=0 && j<n; i--, j++)
+        {
+            if(board[i][j]=='Q') return false;
+        }
+
+        return true;
+    }
+
+    void solveNQueensUtil(vector<vector<char>> &board, int n, int row, vector<vector<string>> &ans)
+    {
+        if(row==n)
+        {
+            vector<string> v;
+            for(int i=0;i<n;i++)
+            {
+                string combine="";
+                for(int j=0;j<n;j++)
+                {
+                    combine += board[i][j];
+                }
+                v.push_back(combine);
+            }
+            ans.push_back(v);
+            return;
+        }
+
+        for(int i=0;i<n;i++)
+        {
+            if(isPlace(board, n, row, i))
+            {
+                board[row][i]='Q';
+                solveNQueensUtil(board, n, row+1, ans);
+                board[row][i]='.';
+            }
+        }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<char>> board(n, vector<char>(n,'.'));
+        vector<vector<string>> ans;
+        solveNQueensUtil(board, n, 0, ans);
+        return ans;
+    }
+};
