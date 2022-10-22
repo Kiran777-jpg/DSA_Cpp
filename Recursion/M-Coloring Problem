@@ -33,3 +33,55 @@ public:
         return graphColoringUtil(graph, nodeColors, m, n, 0);
     }
 };
+
+********************************************************************************
+
+#include <iostream>
+#include <vector>
+#include <cstring>
+using namespace std;
+
+bool isValid(bool graph[][101], vector<int> &nodeColors, int n, int node, int color)
+{
+    for(int i=0;i<n;i++)
+    {
+        if(i!=node && graph[node][i]==1 && nodeColors[i]==color)
+            return false;
+    }
+    return true;
+}
+
+bool graphColoring(bool graph[][101], vector<int> &nodeColors, int m, int n, int node)
+{
+    if(node==n) return true;
+    for(int i=1;i<=m;i++)
+    {
+        if(isValid(graph, nodeColors, n, node, i))
+        {
+            nodeColors[node] = i;
+            if(graphColoring(graph, nodeColors, m, n, node+1)) return true;
+            nodeColors[node] = 0;
+        }
+    }
+    return false;
+}
+
+int main()
+{
+  int N = 4;
+  int m = 2;
+
+  bool graph[101][101];
+  memset(graph, false, sizeof graph);
+
+  // Edges are (0, 1), (1, 2), (2, 3), (3, 0), (0, 2)
+  graph[0][1] = 1; graph[1][0] = 1;
+  graph[1][2] = 1; graph[2][1] = 1;
+  graph[2][3] = 1; graph[3][2] = 1;
+  graph[3][0] = 1; graph[0][3] = 1;
+  graph[0][2] = 1; graph[2][0] = 1;
+  
+  vector<int> nodeColors(N,0);
+  cout << graphColoring(graph, nodeColors, m, N, 0);
+
+}
