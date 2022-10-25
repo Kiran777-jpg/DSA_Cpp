@@ -265,3 +265,105 @@ public:
     }
 };
 
+
+****************************************************************
+
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <unordered_map>
+#include <climits>
+using namespace std;
+
+int postfixevalution(string s)
+{
+    stack<int> st;
+    for(int i=0;i<s.size();i++)
+    {
+        if((s[i]>='0'&&s[i]<='9') || (s[i]>='a'&&s[i]<='z') || (s[i]>='A'&&s[i]<='Z'))
+            st.push(s[i]-'0');
+        else
+        {
+            int op2 = st.top();
+            st.pop();
+            int op1 = st.top();
+            long opt3=0;
+            st.pop();
+            if(s[i]=='+') opt3 = (op1+op2);
+            if(s[i]=='-') opt3 = (op1-op2);
+            if(s[i]=='*') opt3 = (op1*op2);
+            // if(s[i]=='/') opt3 = (op1/op2);
+            if(opt3<0) opt3 = opt3%INT_MIN;
+            else opt3 = opt3%INT_MAX;
+            st.push(opt3);
+        }
+    }
+    return st.top();
+}
+
+int infixPostfix(string s)
+{
+    // string s = "2+3*2";
+    // string s = "k+l-m*n+(o^p)*w/u/v*T+Q";
+    // string s = "k+l-m*n";
+    stack<int> st;
+    string ans="";
+    unordered_map<char, int> hashmap;
+    hashmap[')']=1;hashmap['+']=2;hashmap['-']=2;hashmap['*']=3;hashmap['/']=3;hashmap['^']=4;
+    for(int i=0;i<s.size();i++)
+    {
+        if((s[i]>='0'&&s[i]<='9') || (s[i]>='a'&&s[i]<='z') || (s[i]>='A'&&s[i]<='Z'))
+            ans+=s[i];
+        else
+        {
+            if(st.empty() || s[i]=='(' || st.top()=='(') st.push(s[i]);
+            else
+            {
+                while(!st.empty() && hashmap[s[i]]<=hashmap[st.top()] && st.top()!='(')
+                {
+                    ans+=st.top();
+                    st.pop();
+                }
+                if(!st.empty() && st.top()=='(') st.pop();
+                if(s[i]!=')') st.push(s[i]);
+            }
+        }
+    }
+    while(!st.empty())
+    {
+        ans+=st.top();
+        st.pop();
+    }
+    // cout<<s<<": "<<ans<<" "<<postfixevalution(ans)<<endl;
+    return postfixevalution(ans);
+}
+
+void addOperators(string s, int start, string str, vector<string> &ans, int target)
+{
+    if(start==s.size())
+    {
+        cout<<str<<endl;
+        if(infixPostfix(str)==target)
+            ans.push_back(str);
+        return;
+    }
+    
+    int num = s[start]-'0';
+    addOperators(s, start+1, str+'+'+s[start], ans, target);
+    addOperators(s, start+1, str+'-'+s[start], ans, target);
+    addOperators(s, start+1, str+'*'+s[start], ans, target);
+    // addOperators(s, start+1, str+'/'+s[start], ans, target);
+}
+
+int main()
+{
+    string s="105";
+    int target=5;
+    // vector<char> operators = {'+','-','*','/'};
+    string str="";
+    vector<string> ans;
+    addOperators(s, 1, str+s[0], ans, target);
+    // cout<<ans.size()<<endl;
+    for(auto item : ans)
+        cout<<item<<endl;
+}
