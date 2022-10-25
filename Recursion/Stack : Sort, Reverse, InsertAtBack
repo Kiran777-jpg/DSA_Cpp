@@ -1,0 +1,117 @@
+**********************************************
+stack
+
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+stack<int> insertAtBack(stack<int> st, int data)
+{
+    if(st.empty())
+    {
+        st.push(data);
+        return st;
+    }
+    
+    int temp = st.top();
+    st.pop();
+    st = insertAtBack(st, data);
+    st.push(temp);
+    return st;
+}
+
+int main()
+{
+    stack<int> st;
+    st.push(4);st.push(3);st.push(2);st.push(1);
+    st = insertAtBack(st, 5);
+    while(!st.empty())
+    {
+        cout<<st.top()<<" ";
+        st.pop();
+    }
+}
+
+***************************************
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+void insertAtBack(stack<int> &st, int data)
+{
+    if(st.empty())
+    {
+        st.push(data);
+        return;
+    }
+    
+    int temp = st.top();
+    st.pop();
+    insertAtBack(st, data);
+    st.push(temp);
+}
+
+void reverse(stack<int> &st)
+{
+    if(st.empty()) return;
+    int temp = st.top();
+    st.pop();
+    reverse(st);
+    insertAtBack(st, temp);
+}
+
+int main()
+{
+    stack<int> st;
+    st.push(4);st.push(3);st.push(2);st.push(1);
+    reverse(st);
+    while(!st.empty())
+    {
+        cout<<st.top()<<" ";
+        st.pop();
+    }
+}
+
+***************************************************88
+
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+void sortStack(stack<int> &st, int data)
+{
+    if(st.empty() || st.top()>=data)
+    {
+        st.push(data);
+        return;
+    }
+    
+    int temp = st.top();
+    st.pop();
+    sortStack(st, data);
+    st.push(temp);
+}
+
+void reverse(stack<int> &st)
+{
+    if(st.empty()) return;
+    int temp = st.top();
+    st.pop();
+    reverse(st);
+    sortStack(st, temp);
+}
+
+int main()
+{
+    stack<int> st;
+    st.push(1);st.push(8);st.push(4);st.push(30);st.push(5);
+    reverse(st);
+    while(!st.empty())
+    {
+        cout<<st.top()<<" ";
+        st.pop();
+    }
+}
