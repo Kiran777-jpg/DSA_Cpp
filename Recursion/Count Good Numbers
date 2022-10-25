@@ -1,0 +1,144 @@
+leetcode: https://leetcode.com/problems/count-good-numbers/
+
+
+******************************************
+
+class Solution {
+public:
+    int mod=1e9+7;
+    long long power(long long x, long long y)
+    {
+        if(y==0) return 1;
+        long long res = power(x, y/2);
+        if(y%2==0)
+            return (res*res)%mod;
+        else
+            return (((x*res)%mod) * res)%mod;
+    }
+
+    int countGoodNumbers(long long n) {
+        return (power(4, n/2)%mod * power(5, (n+1)/2)%mod)%mod;
+
+    }
+};
+
+********************************************
+
+#define ll long long 
+class Solution {
+public:
+    int p = 1e9+7;
+    long long power(long long x, long long y)
+    {
+        ll res = 1;
+        
+        while(y>0)
+        {
+            //odd step -> y is even, multiply x with result
+            if(y&1) res = (res*x)%p;
+
+            //even step -> make y to even i.e -> y>>1 = y/2
+            y=y>>1;
+            x=(x*x)%p;
+        }
+        return res;
+    }
+    int countGoodNumbers(long long n) {
+        ll count4 = n/2;
+        ll count5 = n-count4;
+        ll res = ((power(4LL, count4)%p)*(power(5LL, count5)%p))%p;
+        return (int)res;
+    }
+};
+
+
+*****************************************************
+
+#define ll long long 
+class Solution {
+public:
+    int p = 1e9+7;
+    long long power(long long x, long long y)
+    {
+        ll res = 1;
+        
+        while(y>0)
+        {
+            //odd step -> y is even, multiply x with result
+            if(y&1) res = (res*x)%p;
+
+            //even step -> make y to even i.e -> y>>1 = y/2
+            y=y>>1;
+            x=(x*x)%p;
+        }
+        return res;
+    }
+    int countGoodNumbers(long long n) {
+        ll count4 = n/2;
+        ll count5 = n-count4;
+        ll res = (power(4, count4)*power(5, count5))%p;
+        return res;
+    }
+};
+
+*********************************************************
+
+#define ll long long 
+class Solution {
+public:
+    int p = 1e9+7;
+    long long power(long long x, long long y)
+    {
+        ll res = 1;
+        while(y>0)
+        {
+            if(y&1) res = (res*x)%p;
+
+            y=y>>1;
+            x=(x*x)%p;
+        }
+        return res;
+    }
+    int countGoodNumbers(long long n) {
+        ll count4 = n/2;
+        ll count5 = n-count4;
+        ll res = (power(4LL, count4)*power(5LL, count5))%p;
+        return res;
+    }
+};
+
+
+******************************************
+
+#define ll long long 
+class Solution {
+public:
+    int p = 1e9+7;
+    long long power(long long x, long long y)
+    {
+        ll res = 1;
+        
+        while(y>0)
+        {
+            //odd step -> y is even, multiply x with result
+            if(y&1) res = (res*x)%p;
+
+            //even step -> make y to even i.e -> y>>1 = y/2
+            y=y>>1;
+            x=(x*x)%p;
+        }
+        return res;
+    }
+    int countGoodNumbers(long long n) {
+        ll count4 = n/2;
+        ll count5 = n-count4;
+        ll res = (power(4LL, count4)*power(5LL, count5))%p;
+        return res;
+    }
+};
+
+**************************************************
+
+
+
+
