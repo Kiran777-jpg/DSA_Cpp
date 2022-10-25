@@ -1,0 +1,35 @@
+leetcode: https://leetcode.com/problems/string-to-integer-atoi/
+
+
+************************************************************
+class Solution {
+public:
+    void myAtoiUtil(string &s, long &sum, int i)
+    {
+        if(i==s.size() || s[i]<'0' || s[i]>'9' || sum>=INT_MAX) return;
+        sum = (sum*10)+(s[i]-48);
+        myAtoiUtil(s, sum, i+1);
+    }
+    int myAtoi(string s) {
+        int n = s.length();
+        bool isPositive = true;
+        int i=0;
+        while(s[i]==' ') i++;
+        if(s[i]=='-') i++, isPositive=false;
+        else if(s[i]=='+') i++;
+        long sum=0;
+
+        myAtoiUtil(s, sum, i);
+        if(!isPositive)
+        {
+            sum *= -1;
+            if(sum<=INT_MIN) return INT_MIN;
+        }
+        if(sum>=INT_MAX) return INT_MAX;
+        return sum;
+
+    }
+};
+
+*******************************************************
+
