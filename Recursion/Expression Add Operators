@@ -1,0 +1,267 @@
+leetcode: https://leetcode.com/problems/expression-add-operators/
+
+
+************************************************************
+
+class Solution {
+public:
+    void addOperatorsUtil(string &s, int target, int start, string path, long resSoFar, long prevNum, vector<string> &ans)
+    {
+        // if(resSoFar<0) resSoFar = resSoFar%INT_MIN;
+        // else resSoFar = resSoFar%INT_MAX;
+        if(start==s.size())
+        {
+            if(resSoFar==target) ans.push_back(path);
+            return;
+        }
+        // string numstr="";
+        // long num=0;
+        for(int i=start;i<s.size();i++)
+        {
+            string numstr = s.substr(start, i-start+1);
+    
+            if(i>start && s[start]=='0') break;
+            // numstr += s[i];
+            // num = num*10 + s[i]-'0';
+            long num = stol(numstr);
+
+            if(start==0)
+                addOperatorsUtil(s, target, i+1, path+numstr, num, num, ans);
+            else
+            {
+                addOperatorsUtil(s, target, i+1, path+"+"+numstr, resSoFar+num, num, ans);
+                addOperatorsUtil(s, target, i+1, path+"-"+numstr, resSoFar-num, -num, ans);
+                addOperatorsUtil(s, target, i+1, path+"*"+numstr, resSoFar-prevNum+prevNum*num, prevNum*num, ans);
+            }
+
+        }
+    }
+    vector<string> addOperators(string num, int target) {
+        vector<string> ans;
+        addOperatorsUtil(num, target, 0, "", 0, 0, ans);
+        return ans;
+    }
+};
+
+************************************************
+
+class Solution {
+public:
+    vector<string> ans;
+    void dfs(int i, string path, long resSoFar, long prevNum, const string &s, const int &target){
+        if(i==s.size() and resSoFar==target){
+            ans.push_back(path);
+            return;
+        }
+        
+        string curNumStr = "";
+        long curNum=0;
+        for(int j=i;j<s.size();++j){
+            if(j>i and s[i]=='0') break; //leading zero not allowed
+            //eg:105 --> 1*05=5(but 05 is now allowed)
+            curNumStr.push_back(s[j]);
+            curNum = (curNum*10)+(s[j]-'0');
+            if(i==0){
+                dfs(j+1, path+curNumStr, curNum, curNum, s, target);
+            }else{
+                dfs(j+1, path+"+"+curNumStr, resSoFar+curNum, curNum, s, target);
+                dfs(j+1, path+"-"+curNumStr, resSoFar-curNum, -curNum, s, target);
+                dfs(j+1, path+"*"+curNumStr, resSoFar-prevNum+(curNum*prevNum), prevNum*curNum, s, target);
+            }
+        }
+        return;
+    }
+    
+    vector<string> addOperators(string &num, int target) {
+        dfs(0,"",0,0,num,target);
+        return ans;
+    }
+};
+
+**************************************************************
+
+class Solution {
+public:
+    vector<string> expressions;
+    vector<string> addOperators(string num, int target) {
+        dfs(num , target , 0 , "" , 0 , 0);
+        return expressions;
+    }
+    void dfs(string &num , int target , int index , string path , long int res , long int prev)
+    {
+        if(index == num.size() and res == target)
+        {
+            expressions.push_back(path);
+            return;
+        }
+        
+        long int number = 0;
+        string sub_string = "";
+        
+        for(int i = index ; i < num.size() ; ++i)
+        {
+            sub_string += num[i];
+            number = (number * 10) + num[i] - '0';
+            
+            if(sub_string.size() > 1 and sub_string[0] == '0') // skipping numbers with leading 0's
+                break;
+            
+            if(index == 0) // first number of expression is picked without operator
+            {
+                dfs(num , target , i + 1 , sub_string , number, number);
+            }
+            else
+            {
+                // (1) + operation inserted
+                dfs(num , target , i + 1 , path  + "+" + sub_string , res  + number , number);
+                    
+                // (2) - operation inserted
+                dfs(num , target , i + 1 , path + "-" + sub_string , res  - number , -number);
+                
+                // (3) * operation inserted
+                dfs(num , target , i + 1 , path + "*" + sub_string , (res - prev)  + (prev * number) , prev * number);
+            }
+        }
+            
+    }
+    
+};
+
+***************************************************************8
+
+class Solution {
+public:
+    void addOperatorsUtil(string s, int target, int start, string path, long resSoFar, long prevNum, vector<string> &ans)
+    {
+        if(resSoFar<0) resSoFar = resSoFar%INT_MIN;
+        else resSoFar = resSoFar%INT_MAX;
+        if(start==s.size())
+        {
+            if(resSoFar==target) ans.push_back(path);
+            return;
+        }
+        // string numstr="";
+        // long num=0;
+        for(int i=start;i<s.size();i++)
+        {
+            string numstr = s.substr(start, i-start+1);
+    
+            if(i>start && s[start]=='0') break;
+            // numstr += s[i];
+            // num = num*10 + s[i]-'0';
+            long num = stol(numstr);
+
+            if(start==0)
+                addOperatorsUtil(s, target, i+1, path+numstr, num, num, ans);
+            else
+            {
+                addOperatorsUtil(s, target, i+1, path+"+"+numstr, resSoFar+num, num, ans);
+                addOperatorsUtil(s, target, i+1, path+"-"+numstr, resSoFar-num, -num, ans);
+                addOperatorsUtil(s, target, i+1, path+"*"+numstr, resSoFar-prevNum+prevNum*num, prevNum*num, ans);
+            }
+
+        }
+    }
+    vector<string> addOperators(string num, int target) {
+        vector<string> ans;
+        if(stol(num) == INT_MAX) 
+        {
+            ans.push_back(num);
+            return ans;
+        }
+        addOperatorsUtil(num, target, 0, "", 0, 0, ans);
+        return ans;
+    }
+};
+
+****************************************************************
+
+class Solution {
+public:
+    int postfixevalution(string s)
+    {
+        stack<int> st;
+        for(int i=0;i<s.size();i++)
+        {
+            if((s[i]>='0'&&s[i]<='9') || (s[i]>='a'&&s[i]<='z') || (s[i]>='A'&&s[i]<='Z'))
+                st.push(s[i]-'0');
+            else
+            {
+                int op2 = st.top();
+                st.pop();
+                int op1 = st.top();
+                long opt3=0;
+                st.pop();
+                if(s[i]=='+') opt3 = (op1+op2);
+                else if(s[i]=='-') opt3 = (op1-op2);
+                else if(s[i]=='*') opt3 = (op1*op2);
+                // else if(s[i]=='/') opt3 = (op1/op2);
+                if(opt3<0) opt3 = opt3%INT_MIN;
+                else opt3 = opt3%INT_MAX;
+                st.push(opt3);
+            }
+        }
+        return st.top();
+    }
+    int infixPostfix(string s)
+    {
+        stack<int> st;
+        string ans="";
+        unordered_map<char, int> hashmap;
+        hashmap[')']=1;hashmap['+']=2;hashmap['-']=2;hashmap['*']=3;hashmap['/']=3;hashmap['^']=4;
+        for(int i=0;i<s.size();i++)
+        {
+            if((s[i]>='0'&&s[i]<='9') || (s[i]>='a'&&s[i]<='z') || (s[i]>='A'&&s[i]<='Z'))
+                ans+=s[i];
+            else
+            {
+                if(st.empty() || s[i]=='(' || st.top()=='(') st.push(s[i]);
+                else
+                {
+                    while(!st.empty() && hashmap[s[i]]<=hashmap[st.top()] && st.top()!='(')
+                    {
+                        ans+=st.top();
+                        st.pop();
+                    }
+                    if(!st.empty() && st.top()=='(') st.pop();
+                    if(s[i]!=')') st.push(s[i]);
+                }
+            }
+        }
+        while(!st.empty())
+        {
+            ans+=st.top();
+            st.pop();
+        }
+        return postfixevalution(ans);
+    }
+    void addOperatorsUtil(string s, int start, string str, vector<string> &ans, int target)
+    {
+        if(start==s.size())
+        {
+            if(infixPostfix(str)==target)
+                ans.push_back(str);
+            return;
+        }
+        
+        int num = s[start]-'0';
+        addOperatorsUtil(s, start+1, str+'+'+s[start], ans, target);
+        addOperatorsUtil(s, start+1, str+'-'+s[start], ans, target);
+        addOperatorsUtil(s, start+1, str+'*'+s[start], ans, target);
+        // addOperatorsUtil(s, start+1, str+'/'+s[start], ans, target);
+    }
+    vector<string> addOperators(string num, int target) {
+        string str="";
+        vector<string> ans;
+        for(int i=0;i<num.size();i++)
+        {
+            if(num[i]!='0')
+            {
+                addOperatorsUtil(num, 1, str+num[i], ans, target);
+                break;
+            }
+        }
+        return ans;
+    }
+};
+
