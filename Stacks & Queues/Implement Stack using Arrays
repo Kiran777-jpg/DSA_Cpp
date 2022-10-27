@@ -1,0 +1,178 @@
+
+********************************************************************
+
+#include <iostream>
+using namespace std;
+
+class SolutionStack
+{
+    private:
+        int N;
+        int *stack1;
+        int top;
+    public:
+        SolutionStack()
+        {
+            this->N = 5;
+            this->top = -1;
+            this->stack1 = new int[N];
+        }
+        
+        void display()
+        {
+            for(int i=top;i>=0;i--)
+                cout<<stack1[i]<<" ";
+            cout<<endl;
+        }
+        
+        void push(int data)
+        {
+            if(top==N-1)
+            {
+                cout<<"OverFlow"<<endl;
+                return;
+            }
+            
+            top++;
+            stack1[top] = data;
+        }
+        
+        void pop()
+        {
+            if(top==-1)
+            {
+                cout<<"underflow"<<endl;
+                return;
+            }
+            
+            int temp = stack1[top];
+            top--;
+            cout<<"Deleted_Item: "<<temp<<endl;
+        }
+        
+        int toporPeek()
+        {
+            if(top==-1)
+            {
+                cout<<"underflow"<<endl;
+                return -1;
+            }
+            return stack1[top];
+        }
+        
+        bool empty()
+        {
+            return (top==-1);
+        }
+        
+        int size()
+        {
+            return top+1;
+        }
+};
+
+int main()
+{
+    SolutionStack st;
+    st.push(1);
+    st.push(2);
+    st.push(3);
+    st.push(4);
+    st.push(5);
+    st.display();
+    st.push(6);
+    st.pop();
+    st.pop();
+    st.display();
+    cout<<st.empty()<<endl;
+    cout<<st.toporPeek()<<endl;
+    cout<<st.size()<<endl;
+}
+
+***********************************************************************
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class SolutionStack
+{
+    public:
+        // int N;
+        vector<int> stack1;
+        int top;
+    
+        SolutionStack()
+        {
+            // this->N = 5;
+            this->top = -1;
+            // this->stack1[5];
+        }
+        
+        void display()
+        {
+            for(int i=top;i>=0;i--)
+                cout<<stack1[i]<<" ";
+            cout<<endl;
+        }
+        
+        void push(int data)
+        {
+        //     if(top==N-1)
+        //     {
+        //         cout<<"OverFlow"<<endl;
+        //         return;
+        //     }
+            
+            // top++;
+            // stack1[top] = data;
+            stack1.push_back(data);
+        }
+        
+        void pop()
+        {
+            if(top==-1)
+            {
+                cout<<"underflow"<<endl;
+                return;
+            }
+            
+            int temp = stack1[top];
+            // top--;
+            cout<<"Deleted_Item: "<<temp<<endl;
+        }
+        
+        int toporPeek()
+        {
+            if(top==-1)
+            {
+                cout<<"underflow"<<endl;
+                return -1;
+            }
+            return stack1[top];
+        }
+        
+        bool empty()
+        {
+            return (top==-1);
+        }
+};
+
+int main()
+{
+    SolutionStack st;
+    st.push(1);
+    st.push(2);
+    st.push(3);
+    st.push(4);
+    st.push(5);
+    st.display();
+    st.push(6);
+    st.pop();
+    st.pop();
+    st.display();
+    cout<<st.empty()<<endl;
+    cout<<st.toporPeek()<<endl;
+}
+
+*********************************************8
