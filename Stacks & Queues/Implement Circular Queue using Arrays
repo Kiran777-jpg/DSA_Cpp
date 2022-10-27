@@ -1,0 +1,94 @@
+
+********************************************************************
+
+#include <iostream>
+using namespace std;
+
+class solutionQueue
+{
+    private:
+        int N;
+        int *arr;
+        int front;
+        int rear;
+    
+    public:
+    
+        solutionQueue()
+        {
+            this->N=5;
+            this->arr = new int[N];
+            this->front=-1;
+            this->rear=-1;
+        }
+        
+        void push(int data)
+        {
+            if((rear+1)%N == front)
+            {
+                cout<<"overflow"<<endl;
+                return;
+            }
+            if(front==-1 && rear==-1)
+                front=0;
+            rear = (rear+1)%N;
+            cout<<"rear: "<<rear<<endl;
+            arr[rear] = data;
+        }
+        
+        void pop()
+        {
+            if(front==-1)
+            {
+                cout<<"underflow"<<endl;
+                return;
+            }
+            if(front == rear)
+                front=rear=-1;
+            else
+                front = (front+1)%N;
+        }
+        
+        void display()
+        {
+            for(int i=front;i!=rear;i=(i+1)%N)
+                cout<<arr[i]<<" ";
+            cout<<arr[rear]<<endl;
+        }
+        
+        int top()
+        {
+            if(front==-1) return -1;
+            return arr[front];
+        }
+        
+        int size()
+        {
+            if(front==-1 && rear==-1) return -1;
+            if(front>rear) front-rear+N+1;
+            else rear-front+1;
+        }
+};
+
+int main()
+{
+    solutionQueue q;
+    q.push(1);
+    q.push(2);
+    q.push(3);
+    q.push(4);
+    q.push(5);
+    q.display();
+    q.pop();
+    q.pop();
+    q.display();
+    q.push(1);
+    q.push(2);
+    q.push(6);
+    q.display();
+    cout<<q.top()<<endl;
+    cout<<q.size()<<endl;
+}
+
+
+********************************************************************
