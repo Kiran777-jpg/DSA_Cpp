@@ -1,0 +1,51 @@
+leetcode: https://leetcode.com/problems/valid-parentheses/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/parenthesis-checker2744/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=parenthesis-checker
+
+
+**************************************************************
+
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> st;
+        for(int i=0;i<s.size();i++)
+        {
+            if(s[i]=='('||s[i]=='['||s[i]=='{') st.push(s[i]);
+            else
+            {
+                char open = s[i]==')'?'(':s[i]==']'?'[':'{';
+                if(!st.empty() && st.top()==open) st.pop();
+                else return false;
+            }
+        }
+        return st.size()==0;   (or) return st.empty();
+    }
+};
+
+
+*************************************************************
+
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> st;
+        if(s.size()%2==0)
+        {
+            for(int i=0;i<s.size();i++)
+            {
+                if(s[i]=='('||s[i]=='['||s[i]=='{') st.push(s[i]);
+                else
+                {
+                    char open = s[i]==')'?'(':s[i]==']'?'[':'{';
+                    if(!st.empty() && st.top()==open) st.pop();
+                    else return false;
+                }
+            }
+            return st.empty();
+        }
+        else
+            return false;
+    }
+};
+
+********************************************************
