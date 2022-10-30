@@ -1,0 +1,32 @@
+geeksforgeeks: https://www.geeksforgeeks.org/prefix-postfix-conversion/
+
+
+*********************************************************
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main()
+{
+    // string s= "*+AB-CD";
+    string s= "*-A/BC-/AKL";
+    stack<string> st;
+    
+    for(int i=s.size()-1;i>=0;i--)
+    {
+        if((s[i]>='a'&&s[i]<='z')||(s[i]>='A'&&s[i]<='Z'))
+            st.push(string(1, s[i]));
+        else if(!st.empty())
+        {
+            string oprd1 = st.top();
+            st.pop();
+            string oprd2 = st.top();
+            st.pop();
+            st.push(oprd1+oprd2+s[i]);
+        }
+    }
+    cout<<st.top()<<endl;
+}
+
+*********************************************************
