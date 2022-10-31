@@ -1,0 +1,91 @@
+leetcode: https://leetcode.com/problems/next-greater-element-ii/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/next-larger-element-1587115620/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=next-larger-element
+
+
+*************************************************************
+
+class Solution {
+public:
+    vector<int> nextGreaterElements(vector<int>& nums) {
+        stack<int> st;
+        int n = nums.size();
+        vector<int> ans(n, -1);
+        for(int i=2*n-1;i>=0;i--)
+        {
+            while(!st.empty() && st.top()<=nums[i%n])
+                st.pop();
+            if(i<n)
+            {
+               if(!st.empty()) ans[i] = st.top();
+            }
+            st.push(nums[i%n]);
+        }
+        return ans;
+    }
+};
+
+
+*************************************************************
+
+
+class Solution {
+public:
+    vector<int> nextGreaterElements(vector<int>& nums) {
+        stack<int> st;
+        int n = nums.size();
+        for(int i=2*n-1;i>=0;i--)
+        {
+            while(!st.empty() && st.top()<=nums[i%n])
+                st.pop();
+            if(i<n)
+            {
+                int temp;
+                if(st.empty()) temp=-1;
+                else temp = st.top();
+                st.push(nums[i]);
+                nums[i]=temp;
+            }
+            else
+                st.push(nums[i%n]);
+        }
+        return nums;
+    }
+};
+
+
+
+*************************************************************
+
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+int main()
+{
+    vector<int> arr = {5,7,1,2,6,0};
+    int n = arr.size();
+    stack<int> st;
+    int temp;
+    
+    for(int i=2*n-1;i>=0;i--)
+    {
+        while(!st.empty() && st.top()<=arr[i%n])
+            st.pop();
+            
+        if(i<n)
+        {
+            if(st.empty()) temp=-1;
+            else temp=st.top();
+            st.push(arr[i]);
+            arr[i]=temp;
+        }
+        else
+            st.push(arr[i%n]);
+    }
+    
+    for(int x : arr)
+        cout<<x<<" ";
+ }
+ 
+ *************************************************************
