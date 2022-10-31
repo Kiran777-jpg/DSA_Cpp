@@ -1,0 +1,32 @@
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/immediate-smaller-element1142/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=immediate-smaller-element
+
+
+******************************************************
+
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+int main()
+{
+    vector<int> arr = {5, 6, 2, 3, 1, 7};
+    int n  =arr.size();
+    stack<int> st;
+    
+    for(int i=n-1;i>=0;i--)
+    {
+        while(!st.empty() && st.top()>=arr[i])
+            st.pop();
+        int temp;
+        if(st.empty()) temp=-1;
+        else temp=st.top();
+        st.push(arr[i]);
+        arr[i]=temp;
+    }
+    
+    for(int x : arr)
+        cout<<x<<" ";
+}
+
+******************************************************
