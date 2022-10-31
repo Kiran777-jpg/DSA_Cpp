@@ -1,0 +1,37 @@
+leetcode: https://leetcode.com/problems/next-greater-element-i/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/next-larger-element-1587115620/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=next-larger-element
+
+
+******************************************************************
+
+
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+int main()
+{
+    vector<int> arr={5,7,1,2,6,0};
+    int n=arr.size();
+    stack<int> st;
+    int temp;
+    
+    for(int i=n-1;i>=0;i--)
+    {
+        while(!st.empty() && st.top()<=arr[i])
+            st.pop();   
+            
+        if(st.empty()) temp=-1;
+        else temp=st.top();
+        
+        st.push(arr[i]);
+        arr[i]=temp;
+    }
+    
+    for(int x : arr)
+        cout<<x<<" ";
+}
+
+
+******************************************************************
