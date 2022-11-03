@@ -1,0 +1,116 @@
+leetcode: https://leetcode.com/problems/online-stock-span/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/stock-span-problem-1587115621/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=stock-span-problem
+
+
+**********************************************************
+
+class StockSpanner {
+public:
+    stack<pair<int, int>> st;
+    int i;
+    StockSpanner() {
+        i=-1;
+    }
+    
+    int next(int price) {
+        i++;
+        while(!st.empty() && st.top().first<=price)
+            st.pop();
+
+        int span = (st.empty())?i+1:i-st.top().second;    
+        st.push({price, i});
+        return span;
+    }
+};
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner* obj = new StockSpanner();
+ * int param_1 = obj->next(price);
+ */
+ 
+ **********************************************************
+ 
+ class StockSpanner {
+public:
+    stack<pair<int, int>> st;
+    StockSpanner() {
+        
+    }
+    
+    int next(int price) {
+        int ans = 1;
+        while (!st.empty() && st.top().first <= price) {
+            ans += st.top().second;
+            st.pop();
+        }
+        
+        st.push({price, ans});
+        return ans;
+    }
+};
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner* obj = new StockSpanner();
+ * int param_1 = obj->next(price);
+ */
+ 
+ **********************************************************
+ 
+ 
+ 
+class Solution
+{
+    public:
+    //Function to calculate the span of stockâ€™s price for all n days.
+    vector <int> calculateSpan(int price[], int n)
+    {
+       // Your code here
+       stack<int> st;
+       vector<int> prevCount(n);
+       for(int i=0;i<=n;i++)
+       {
+           while(!st.empty() && (i==n || price[st.top()]<=price[i]))
+           {
+               int idx = st.top();
+               st.pop();
+               prevCount[idx] = (st.empty())?idx+1:idx-st.top();
+           }
+           st.push(i);
+       }
+       return prevCount;
+    }
+};
+
+ 
+ **********************************************************
+ 
+ #include <iostream>
+#include <stack>
+#include <vector>
+using namespace std;
+
+int main()
+{
+    vector<int> arr = {100,80,60,70,60,75,85};
+    int n = arr.size();
+    stack<int> st;
+    vector<int> prevCount(n, -1);
+    
+    for(int i=0;i<=n;i++)
+    {
+        while(!st.empty() && (i==n || arr[st.top()]<=arr[i]))
+        {
+            int idx = st.top();
+            st.pop();
+            prevCount[idx] = (st.empty())?idx+1:idx-st.top();
+        }
+        st.push(i);
+    }
+    
+    for(int x : prevCount)
+        cout<<x<<" ";
+}
+ 
+ **********************************************************
