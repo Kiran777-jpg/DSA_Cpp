@@ -1,0 +1,204 @@
+leetcode: https://leetcode.com/problems/largest-rectangle-in-histogram/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/maximum-rectangular-area-in-a-histogram-1587115620/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=maximum-rectangular-area-in-a-histogram
+
+
+**************************************************************
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        int n = heights.size();
+        stack<int> st;
+        int maxRec = heights[0];
+
+        for(int i=0;i<=n;i++)
+        {
+            while(!st.empty() && (i==n || heights[st.top()]>=heights[i]))
+            {
+                int idx = st.top();
+                st.pop();
+
+                int width = (st.empty())?i:i-st.top()-1;
+                maxRec = max(width*heights[idx], maxRec);
+            }
+            st.push(i);
+        }
+        return maxRec;   
+    }
+};
+
+**************************************************************
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        int n = heights.size();
+        stack<int> st;
+        int maxRec = heights[0];
+
+        for(int i=0;i<=n;i++)
+        {
+            while(!st.empty() && (i==n || heights[st.top()]>=heights[i]))
+            {
+                int idx = st.top();
+                st.pop();
+
+                int width = (st.empty())?idx+(i-idx):(idx-st.top()-1)+(i-idx);
+                maxRec = max(width*heights[idx], maxRec);
+            }
+            st.push(i);
+        }
+        return maxRec;   
+    }
+};
+
+**************************************************************
+
+#include <bits/stdc++.h>
+
+using namespace std;
+class Solution {
+  public:
+    int largestRectangleArea(vector < int > & heights) {
+      int n = heights.size();
+      stack < int > st;
+      int leftsmall[n], rightsmall[n];
+      for (int i = 0; i < n; i++) {
+        while (!st.empty() && heights[st.top()] >= heights[i]) {
+          st.pop();
+        }
+        if (st.empty())
+          leftsmall[i] = 0;
+        else
+          leftsmall[i] = st.top() + 1;
+        st.push(i);
+      }
+      // clear the stack to be re-used
+      while (!st.empty())
+        st.pop();
+
+      for (int i = n - 1; i >= 0; i--) {
+        while (!st.empty() && heights[st.top()] >= heights[i])
+          st.pop();
+
+        if (st.empty())
+          rightsmall[i] = n - 1;
+        else
+          rightsmall[i] = st.top() - 1;
+
+        st.push(i);
+      }
+      int maxA = 0;
+      for (int i = 0; i < n; i++) {
+        maxA = max(maxA, heights[i] * (rightsmall[i] - leftsmall[i] + 1));
+      }
+      return maxA;
+    }
+};
+int main() {
+  vector<int> heights = {2, 1, 5, 6, 2, 3, 1};
+  Solution obj;
+  cout << "The largest area in the histogram is " << obj.largestRectangleArea(heights); 
+  return 0;
+}
+
+**************************************************************
+
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+int largest_rect(vector<int> arr)
+{
+    int n = arr.size();
+    stack<int> s;
+    
+    vector<int> left_small(n);
+    vector<int> right_small(n);
+    
+    for(int i=0;i<n;i++)
+    {
+        while(!s.empty() && arr[s.top()]>=arr[i])
+        {
+            s.pop();
+        }
+        
+        if(s.empty())
+        {
+            left_small[i] = 0;
+        }
+        else{
+            left_small[i] = s.top()+1;
+        }
+        
+        s.push(i);
+    }
+    
+    while(!s.empty())
+    {
+        s.pop();
+    }
+    
+    
+    int max_area = 0;
+    
+    for(int i=n-1;i>=0;i--)
+    {
+        while(!s.empty() && arr[s.top()]>=arr[i])
+        {
+            s.pop();
+        }
+        
+        if(s.empty())
+        {
+            right_small[i] = n-1;
+        }
+        else{
+            right_small[i] = s.top()-1;
+        }
+        
+        s.push(i);
+        
+         max_area = max(max_area, arr[i]*((right_small[i]-left_small[i])+1));
+    }
+    
+    // int max_area = 0;
+    // for(int i=0;i<n;i++)
+    // {
+    //     max_area = max(max_area, arr[i]*((right_small[i]-left_small[i])+1));
+    // }
+    
+    return max_area;
+}
+
+
+int main()
+{
+    vector<int> arr = {6,2,5,4,5,1,6};
+    cout<<largest_rect(arr);
+}
+
+**************************************************************
+
+using namespace std;
+// Brute Force Approach to find largest rectangle area in Histogram
+int largestarea(int arr[], int n) {
+  int maxArea = 0;
+  for (int i = 0; i < n; i++) {
+    int minHeight = INT_MAX;
+    for (int j = i; j < n; j++) {
+      minHeight = min(minHeight, arr[j]);
+      maxArea = max(maxArea, minHeight * (j - i + 1));
+    }
+  }
+  return maxArea;
+}
+int main() {
+  int arr[] = {2, 1, 5, 6, 2, 3, 1};
+  int n = 7;
+  cout << "The largest area in the histogram is " << largestarea(arr, n); // Printing the largest rectangle area
+  return 0;
+}
+
+**************************************************************
