@@ -1,0 +1,102 @@
+leetcode: https://leetcode.com/problems/sum-of-subarray-ranges/description/
+
+
+
+*********************************************************************
+
+class Solution {
+public:
+    long long subArrayRanges(vector<int>& nums) {
+        int n = nums.size();
+        stack<long long> st;
+        long long minCountSum = 0;
+        long long maxCountSum = 0;
+
+        for(int i=0;i<=n;i++)
+        {
+            while(!st.empty() && (i==n || nums[st.top()]>=nums[i]))
+            {
+                long long temp = nums[st.top()];
+                int idx = st.top();
+                st.pop();
+                minCountSum += (st.empty())?(idx+1)*(i-idx)*temp:(idx-st.top())*(i-idx)*temp;
+            }
+            st.push(i);
+        }
+        st.pop();
+        for(int i=0;i<=n;i++)
+        {
+            while(!st.empty() && (i==n || nums[st.top()]<=nums[i]))
+            {
+                long long temp = nums[st.top()];
+                int idx = st.top();
+                st.pop();
+
+                maxCountSum += (st.empty())?(idx+1)*(i-idx)*temp:(idx-st.top())*(i-idx)*temp;
+            }
+            st.push(i);
+        }
+
+        return maxCountSum-minCountSum;
+    }
+};
+
+
+*********************************************************************
+
+class Solution {
+public:
+    long long subArrayRanges(vector<int>& nums) {
+        int n = nums.size();
+        long long answer = 0;
+        stack<int> stk;
+        
+        // Find the sum of all the minimum.
+        for (int right = 0; right <= n; ++right) {
+            while (!stk.empty() && (right == n || nums[stk.top()] >= nums[right])) {
+                int mid = stk.top();
+                stk.pop();
+                int left = stk.empty() ? -1 : stk.top();
+                answer -= (long long)nums[mid] * (right - mid) * (mid - left);
+            }
+            stk.push(right); 
+        }
+        
+        // Find the sum of all the maximum.
+        stk.pop();
+        for (int right = 0; right <= n; ++right) {
+            while (!stk.empty() && (right == n || nums[stk.top()] <= nums[right])) {
+                int mid = stk.top();
+                stk.pop();
+                int left = stk.empty() ? -1 : stk.top();
+                answer += (long long)nums[mid] * (right - mid) * (mid - left);
+            }
+            stk.push(right); 
+        }
+        return answer;
+    }
+};
+
+
+*********************************************************************
+
+class Solution {
+public:
+    long long subArrayRanges(vector<int>& nums) {
+        int n = int(nums.size());
+        long long answer = 0;
+        
+        for (int left = 0; left < n; ++left) {
+            int minVal = nums[left], maxVal = nums[left];
+            for (int right = left; right < n; ++right) {
+                maxVal = max(maxVal, nums[right]);
+                minVal = min(minVal, nums[right]);
+                answer += maxVal - minVal;
+            }
+        }
+        
+        return answer;
+    }
+};
+
+*********************************************************************
