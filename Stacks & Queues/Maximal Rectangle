@@ -1,0 +1,53 @@
+leetcode: https://leetcode.com/problems/maximal-rectangle/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/max-rectangle/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=max-rectangle
+
+
+
+******************************************************************
+
+class Solution {
+public:
+
+    int largestHistogram(vector<int> &histogram, int n)
+    {
+        stack<int> st;
+        int maxRec = 0;
+
+        for(int i=0;i<=n;i++)
+        {
+            while(!st.empty() && (i==n || histogram[st.top()]>=histogram[i]))
+            {
+                int idx = st.top();
+                st.pop();
+
+                int width = (st.empty())?i:i-st.top()-1;
+                maxRec = max(histogram[idx]*width, maxRec);
+            }
+            st.push(i);
+        }
+        return maxRec;
+    }
+
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        int rows = matrix.size();
+        int cols = matrix[0].size();
+        int result = 0;
+        
+        vector<int> histogram(cols, 0);
+        for(int i=0;i<rows;i++)
+        {
+            for(int j=0;j<cols;j++)
+            {
+                if(matrix[i][j]=='1')
+                    histogram[j]++;
+                else 
+                    histogram[j]=0;
+            }
+
+            result = max(result, largestHistogram(histogram, cols));
+        }
+        return result;
+    }
+};
+
+******************************************************************
