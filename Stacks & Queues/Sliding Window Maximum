@@ -3,7 +3,7 @@ geeksforgeeks: https://practice.geeksforgeeks.org/problems/maximum-of-all-subarr
 
 
 ***********************************************************************
-Deque
+Deque : Tc: o(n), sc:o(k)
 
 class Solution {
 public:
@@ -27,7 +27,7 @@ public:
 
 ***********************************************************************
 
-priority_queue
+priority_queue : Tc:o(nlong), Sc:o(n)
 
 class Solution {
 public:
