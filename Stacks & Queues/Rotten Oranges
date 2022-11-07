@@ -1,0 +1,53 @@
+leetcode: https://leetcode.com/problems/rotting-oranges/description/
+geekforgeeks: https://practice.geeksforgeeks.org/problems/rotten-oranges2536/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=rotten-oranges
+
+
+*************************************************************
+Breadth First Search(BFS)
+
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        if(grid.size()==0) return 0;
+        int m = grid.size();
+        int n = grid[0].size();
+
+        int count_fresh = 0;
+        int timer = 0;
+        queue<pair<int, int>> q;
+
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(grid[i][j]==2) q.push({i,j});
+                else if(grid[i][j]==1) count_fresh++;
+            }
+        }
+
+        int dx[4] = {0, 0, 1, -1};
+        int dy[4] = {1, -1, 0, 0};
+        while(!q.empty())
+        {
+            int k = q.size();
+            while(k--)
+            {
+                int x = q.front().first, y = q.front().second;
+                q.pop();
+
+                for(int i=0;i<4;i++)
+                {
+                    int mx = x+dx[i], ny = y+dy[i];
+                    if(mx < 0 || ny < 0 || mx >= m || ny >= n || grid[mx][ny]!=1) continue;
+                    q.push({mx, ny});
+                    grid[mx][ny] = 2;
+                    count_fresh--;
+                }
+            }
+            if(!q.empty()) timer++;
+        }
+        return (count_fresh==0)?timer:-1;
+    }
+};
+
+*************************************************************
