@@ -1,0 +1,352 @@
+leetcode: https://leetcode.com/problems/lfu-cache/description/
+
+
+**************************************************************
+
+
+class Node
+{
+    public:
+        int key, data, count;
+        Node* next;
+        Node* prev;
+        
+        Node(int key, int data)
+        {
+            this->key = key;
+            this->data = data;
+            count = 1;
+            next = NULL;
+            prev = NULL;
+        }
+};
+
+class List
+{
+    public:
+        Node* head;
+        Node* tail;
+        int size;
+        
+        List()
+        {
+            head = new Node(-1, -1);
+            tail = new Node(-1, -1);
+            head->next = tail;
+            tail->prev = head;
+            size = 0;
+        }
+        
+        void addNode(Node* newnode)
+        {
+            newnode->next = head->next;
+            head->next->prev = newnode;
+            newnode->prev = head;
+            head->next = newnode;
+            size++;
+        }
+        
+        void removeNode(Node* delNode)
+        {
+            delNode->prev->next = delNode->next;
+            delNode->next->prev = delNode->prev;
+            size--;
+        }
+};
+
+class LFUCache
+{
+    unordered_map<int, Node*> keyNodeMap;
+    unordered_map<int, List*> freqListMap;
+    int maxSizeCache;
+    int currSize;
+    int minFreq;
+    
+    public:
+        
+        LFUCache(int capacity)
+        {
+            maxSizeCache = capacity;
+            minFreq = 0;
+            currSize = 0;
+        }
+        
+        void updateFreqListMap(Node* node)
+        {
+            freqListMap[node->count]->removeNode(node);
+            if(node->count == minFreq && freqListMap[node->count]->size==0)
+                minFreq++;
+                
+            List* higherFreqList = new List();
+            if(freqListMap.find(node->count+1)!=freqListMap.end())
+            {
+                higherFreqList = freqListMap[node->count+1];
+            }
+            node->count += 1;
+            higherFreqList->addNode(node);
+            freqListMap[node->count] = higherFreqList;
+        }
+        
+        int get(int key)
+        {
+            if(keyNodeMap.find(key)!=keyNodeMap.end())
+            {
+                Node* node = keyNodeMap[key];
+                int val = node->data;
+                updateFreqListMap(node);
+                return val;
+            }
+            return -1;
+        }
+    
+        void put(int key, int value)
+        {
+            if(maxSizeCache == 0) return;
+            if(keyNodeMap.find(key)!=keyNodeMap.end())
+            {
+                Node* node = keyNodeMap[key];
+                node->data = value;
+                updateFreqListMap(node);
+            }
+            else
+            {
+                
+                if(currSize == maxSizeCache)
+                {
+                    List* list = freqListMap[minFreq];
+                    keyNodeMap.erase(list->tail->prev->key);
+                    list->removeNode(list->tail->prev);
+                    currSize--;
+                }
+                
+                currSize++;
+                minFreq = 1;
+                List* listFreq = new List();
+                if(freqListMap.find(minFreq)!=freqListMap.end())
+                {
+                    listFreq = freqListMap[minFreq];
+                }
+                
+                Node* newnode = new Node(key, value);
+                listFreq->addNode(newnode);
+                keyNodeMap[key] = newnode;
+                freqListMap[minFreq] = listFreq;
+            }
+        }
+};
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache* obj = new LFUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
+
+**************************************************************
+
+using STL:
+
+
+class LFUCache {
+public:
+    unordered_map<int, pair<int, int>> values;
+    unordered_map<int, list<int>::iterator> itrs;
+    unordered_map<int, list<int>> freqKeys;
+    int maxSize;
+    int currSize;
+    int minFreq;
+
+    LFUCache(int capacity) {
+        maxSize = capacity;
+        currSize = 0;
+        minFreq = 0;
+    }
+    
+    void update(int key)
+    {
+        int freq = values[key].second;
+        auto itr = itrs[key];
+        freqKeys[freq].erase(itr);
+        values[key].second++;
+        freqKeys[freq+1].push_front(key);
+        itrs[key] = freqKeys[freq+1].begin();
+        if(freq == minFreq && freqKeys[minFreq].empty())
+            minFreq++;
+    }
+
+    int get(int key) {
+        if(values.find(key)!=values.end())
+        {
+            update(key);
+            return values[key].first;
+        }
+        return -1;
+    }
+    
+    void put(int key, int value) {
+        if(maxSize == 0) return;
+
+        if(values.find(key)!=values.end())
+        {
+            values[key].first = value;
+            update(key);
+        }
+        else
+        {
+            if(currSize == maxSize)
+            {
+                int evictKey = freqKeys[minFreq].back();
+                freqKeys[minFreq].pop_back();
+                values.erase(evictKey);
+                itrs.erase(evictKey);
+                currSize--;
+            }
+
+            currSize++;
+            minFreq = 1;
+            values[key] = {value, 1};
+            freqKeys[minFreq].push_front(key);
+            itrs[key] = freqKeys[minFreq].begin();
+        }
+    }
+};
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache* obj = new LFUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
+
+
+**************************************************************
+
+The C++ solution using 2 hashmap and doubly linked list. (See comment for explanation)
+
+In my design, the doubly linked list's front element is the least recently used element. That is, we call push_back() on the list when new element is used.
+
+One thing to note is that frequency should be updated in both get() and put() operation. In put() function, we call get() first, which implicitly update the frequency.
+
+
+class LFUCache {
+public:
+	// Data structure: 
+    // 1. A hashmap that map frequence to a doubly linked list, the list stores <key, value> pair and recently used order
+    // 2. A hashmap that map key to <freq, list iterator> pair
+    unordered_map<int, list<pair<int, int>>> freqs;
+    unordered_map<int, pair<int, list<pair<int, int>>::iterator>> keys;
+	
+    int capacity;
+    int minFreq;
+    
+    LFUCache(int capacity) : capacity(capacity), minFreq(0) {
+    }
+    
+    int get(int key) {
+        if (keys.count(key)) {
+            // Get value 
+            int freq = keys[key].first;
+            auto it = keys[key].second;
+            int value = it->second;
+            
+			// Update frequency and maintain least recently used order
+            freqs[freq].erase(it);
+            freqs[freq+1].push_back({key, value});
+            
+            keys[key].first = freq+1;
+            keys[key].second = --freqs[freq+1].end();
+            
+			// Update minFreq
+            if (freqs[minFreq].size() == 0) {
+                minFreq++;
+            }
+            
+            return value;
+            
+        } else {
+            return -1;
+        }
+    }
+    
+    void put(int key, int value) {
+        if (capacity <= 0) return;
+        
+        if (get(key) != -1) {
+            // Update value. 
+			// Note: frequency is already updated in get() function call last line.
+            auto it = keys[key].second;
+            it->second = value;
+            
+        } else {
+            if (keys.size() == capacity) {
+                // remove least frequently and least recently used key
+                auto it = freqs[minFreq].begin();
+                int removeKey = it->first;
+                freqs[minFreq].erase(it);
+                
+                keys.erase(removeKey);
+            }
+            
+            minFreq = 1;
+            freqs[minFreq].push_back({key, value});
+            
+            keys[key].first = minFreq;
+            keys[key].second = --freqs[minFreq].end();
+            
+        }
+    }
+};
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache* obj = new LFUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
+
+**************************************************************
+
+
+
+
+**************************************************************
+using priorityQueue
+
+class LFUCache {
+public:
+    priority_queue<pair<int,pair<int,int>>, vector<pair<int,pair<int,int>>>, greater<pair<int,pair<int,int>>>> pq;
+    unordered_map<int,int> m;
+    unordered_map<int,int> freq;
+    int cap;
+    LFUCache(int capacity) {
+        cap = capacity;
+    }
+    
+    int get(int key) {
+        if(m.find(key)==m.end()) return -1;
+        put(key,m[key]);
+        return m[key];
+    }
+    
+    void put(int key, int value) {
+        if(cap==0){
+            return;
+        }
+        if(m.find(key)==m.end()&&m.size()==cap){
+            while(m.size()==cap){
+                auto x = pq.top();
+                if(freq[x.second.second]==x.first){
+                    m.erase(x.second.second);
+                    freq.erase(x.second.second);
+                }
+                pq.pop();
+            }            
+        }
+        m[key] = value;
+        freq[key]++;
+        pq.push({freq[key],{t++,key}});
+    }
+};
+
+
+**************************************************************
