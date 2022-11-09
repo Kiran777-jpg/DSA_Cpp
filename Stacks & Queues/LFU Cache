@@ -144,7 +144,7 @@ class LFUCache
 
 **************************************************************
 
-using STL:
+using STL: 3 hashMaps
 
 
 class LFUCache {
@@ -220,6 +220,82 @@ public:
 
 
 **************************************************************
+
+using STL: 2 hashMaps
+
+
+class LFUCache {
+public:
+    unordered_map<int, list<pair<int, pair<int, int>>>> freqKeyMaps;
+    unordered_map<int, list<pair<int, pair<int, int>>> :: iterator> itrKeysMap;
+    int maxSize;
+    int currSize;
+    int minFreq;
+
+    LFUCache(int capacity) {
+        maxSize = capacity;
+        currSize = 0;
+        minFreq = 0;
+    }
+
+    void update(int key)
+    {
+        auto it = itrKeysMap[key];
+        int freq = it->second.second;
+        int value = it->second.first;
+        freqKeyMaps[freq].erase(it);
+        freqKeyMaps[freq+1].push_front({key, {value, freq+1}});
+        itrKeysMap[key] = freqKeyMaps[freq+1].begin();
+        if(freq == minFreq && freqKeyMaps[minFreq].empty())
+            minFreq++;
+    }
+    
+    int get(int key) {
+        if(itrKeysMap.find(key)!=itrKeysMap.end())
+        {
+            int value = itrKeysMap[key]->second.first;
+            update(key);
+            return value;
+        }
+        return -1;
+    }
+    
+    void put(int key, int value) {
+        if(maxSize == 0) return;
+        
+        if(itrKeysMap.find(key)!=itrKeysMap.end())
+        {
+            itrKeysMap[key]->second.first = value;
+            update(key);
+        }
+        else
+        {
+            if(currSize == maxSize)
+            {
+                int evictKey = freqKeyMaps[minFreq].back().first;
+                freqKeyMaps[minFreq].pop_back();
+                itrKeysMap.erase(evictKey);
+                currSize--;
+            }
+
+            currSize++;
+            minFreq = 1;
+            freqKeyMaps[minFreq].push_front({key, {value, 1}});
+            itrKeysMap[key] = freqKeyMaps[minFreq].begin();
+        }
+    }
+};
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache* obj = new LFUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
+ 
+ 
+ **************************************************************
+ 
 
 The C++ solution using 2 hashmap and doubly linked list. (See comment for explanation)
 
