@@ -39,3 +39,44 @@ int main()
 
 
 ***************************************************
+
+int Solution::solve(vector<int> &A, int B) {
+    int n = A.size();
+    vector<int> prefix(n);
+    vector<int> suffix(n);
+
+    prefix[0] = A[0];
+    for(int i=1;i<n;i++)
+        prefix[i] = prefix[i-1]+A[i];
+
+    suffix[n-1] = A[n-1];
+    for(int i=n-2;i>=0;i--)
+        suffix[i] = suffix[i+1]+A[i];
+
+    int maxSum = prefix[B-1], j=n-1;
+    for(int i=B-1;i>=0;i--)
+    {
+        maxSum = max(prefix[i]-A[i]+suffix[j], maxSum);
+        j--;
+    }
+    return maxSum;
+}
+
+***************************************************
+
+int Solution::solve(vector<int> &A, int B) {
+    int currSum = 0, maxSum = 0;
+    for(int i=0;i<B;i++)
+        currSum += A[i];
+    maxSum = currSum;
+    int j=A.size()-1;
+    for(int i=B-1;i>=0;i--)
+    {
+        currSum += A[j]-A[i];
+        maxSum = max(currSum, maxSum);
+        j--;
+    }
+    return maxSum;
+}
+
+***************************************************
