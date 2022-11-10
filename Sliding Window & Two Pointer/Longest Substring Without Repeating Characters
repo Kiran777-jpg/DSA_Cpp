@@ -1,0 +1,144 @@
+leetcode: https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/length-of-the-longest-substring3036/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=length-of-the-longest-substring
+
+
+************************************************************************
+most optimal : Tc: o(n), Sc:o(n)
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int n = s.length();
+        if(n<=1) return n;
+
+        int left = 0, right=0, ans=0;
+        unordered_map<char, int> hashmap;
+
+        while(right<n)
+        {
+            if(hashmap.count(s[right]) && hashmap[s[right]]>=left)
+            {
+                ans = max(right-left, ans);
+                left = hashmap[s[right]]+1;
+            }
+
+            hashmap[s[right]] = right;
+            right++;
+        }
+
+        ans = max(right-left, ans);
+        return ans;
+    }
+};
+
+************************************************************************
+optimal but time complexity is o(2n) using hashmap : Tc: o(2n), Sc:o(n)
+
+
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int n = s.length();
+        if(n<=1) return n;
+        int left = 0, right = 0, ans=0;
+        unordered_map<char, int> hashmap;
+
+        while(right<n)
+        {
+            if(hashmap.count(s[right]))
+            {
+                ans = max(right-left, ans);
+                while(left <= hashmap[s[right]])
+                {
+                    hashmap.erase(s[left]);
+                    left++;
+                }
+            }
+
+            hashmap[s[right]] = right;
+            right++;
+        }
+
+        ans = max(right-left, ans);
+        return ans;
+    }
+};
+
+************************************************************************
+optimal but time complexity is o(2n) using hashSet : Tc: o(2n), Sc:o(n)
+
+
+
+#include <bits/stdc++.h>
+
+#include<unordered_set>
+
+using namespace std;
+
+int solve(string str) {
+
+  if(str.size()==0)
+      return 0;
+  int maxans = INT_MIN;
+  unordered_set < int > set;
+  int l = 0;
+  for (int r = 0; r < str.length(); r++) // outer loop for traversing the string
+  {
+    if (set.find(str[r]) != set.end()) //if duplicate element is found
+    {
+      while (l < r && set.find(str[r]) != set.end()) {
+        set.erase(str[l]);
+        l++;
+      }
+    }
+    set.insert(str[r]);
+    maxans = max(maxans, r - l + 1);
+  }
+  return maxans;
+}
+
+int main() {
+  string str = "takeUforward";
+  cout << "The length of the longest substring without repeating characters is " << 
+  solve(str);
+  return 0;
+}
+
+************************************************************************
+Brute force
+
+
+#include<bits/stdc++.h>
+
+using namespace std;
+
+int solve(string str) {
+
+  if(str.size()==0)
+      return 0;
+  int maxans = INT_MIN;
+  for (int i = 0; i < str.length(); i++) // outer loop for traversing the string
+  {
+    unordered_set < int > set;
+    for (int j = i; j < str.length(); j++) // nested loop for getting different string starting with str[i]
+    {
+      if (set.find(str[j]) != set.end()) // if element if found so mark it as ans and break from the loop
+      {
+        maxans = max(maxans, j - i);
+        break;
+      }
+      set.insert(str[j]);
+    }
+  }
+  return maxans;
+}
+
+int main() {
+  string str = "takeUforward";
+  cout << "The length of the longest substring without repeating characters is " << 
+  solve(str);
+  return 0;
+}
+
+************************************************************************
