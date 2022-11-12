@@ -1,0 +1,129 @@
+geeksforgeeks: https://www.geeksforgeeks.org/sum-of-all-subarrays/
+
+
+
+*********************************************************
+
+long Solution::subarraySum(vector<int> &A) {
+    int n = A.size();
+    long sum = 0;
+
+    for(int i=0;i<n;i++)
+    {
+        long a =A[i];
+        sum = sum+a*(n-i)*(i+1);
+    }
+    return sum;
+}
+
+
+
+*********************************************************
+
+
+long Solution::subarraySum(vector<int> &A) {
+    int n = A.size();
+    long sum = 0;
+
+    for(int i=0;i<n;i++)
+        sum += (long)A[i]*(n-i)*(i+1);
+    return sum;
+}
+
+*********************************************************
+
+#include <iostream>
+using namespace std;
+ 
+typedef long long ll;
+ 
+// Construct prefix-sum array
+void buildPrefixSumArray(int arr[], int n,
+                         int prefixSumArray[])
+{
+    prefixSumArray[0] = arr[0];
+   
+    // Adding present element with previous element
+    for (int i = 1; i < n; i++)
+        prefixSumArray[i] = prefixSumArray[i - 1] + arr[i];
+}
+ 
+// Computes sum all sub-array
+ll SubArraySum(int arr[], int n)
+{
+    ll result = 0, sum = 0;
+    int prefixSumArr[n] = { 0 };
+    buildPrefixSumArray(arr, n, prefixSumArr);
+   
+    // Pick starting point
+    for (int i = 0; i < n; i++)
+    {
+       
+        // Pick ending point
+        sum = 0;
+        for (int j = i; j < n; j++)
+        {
+           
+            // sum subarray between current
+            // starting and ending points
+            if (i != 0) {
+                sum = prefixSumArr[j] - prefixSumArr[i - 1];
+            }
+            else
+                sum = prefixSumArr[j];
+            result += sum;
+        }
+    }
+ 
+    return result;
+}
+ 
+/* Driver program to test above function */
+int main()
+{
+    int arr[] = { 1, 2, 3, 4 };
+    int n = sizeof(arr) / sizeof(arr[0]);
+ 
+    ll ans = SubArraySum(arr, n);
+    cout << "Sum of SubArray : " << ans << endl;
+ 
+    return 0;
+}
+
+*********************************************************
+
+#include<bits/stdc++.h>
+using namespace std;
+ 
+// Computes sum all sub-array
+long int SubArraySum(int arr[], int n)
+{
+    long int result = 0,temp=0;
+ 
+    // Pick starting point
+    for (int i=0; i <n; i++)
+    {
+        // Pick ending point
+        temp=0;
+        for (int j=i; j<n; j++)
+        {
+            // sum subarray between current
+            // starting and ending points
+            temp+=arr[j];
+            result += temp ;
+        }
+    }
+    return result ;
+}
+ 
+// driver program to test above function
+int main()
+{
+    int arr[] = {1, 2, 3} ;
+    int n = sizeof(arr)/sizeof(arr[0]);
+    cout << "Sum of SubArray : "
+          << SubArraySum(arr, n) << endl;
+    return 0;
+}
+
+*********************************************************
