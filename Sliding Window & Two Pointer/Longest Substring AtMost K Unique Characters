@@ -1,0 +1,30 @@
+leetcode: https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/
+
+
+*****************************************************************
+
+class Solution{
+  public:
+    int longestKSubstr(string s, int k) {
+        // your code here
+        int i=0, j=0, ans=-1;
+        unordered_map<char, int> hashmap;
+        while(j<s.length())
+        {
+            hashmap[s[j]]++;
+            while(hashmap.size()>k)
+            {
+                hashmap[s[i]]--;
+                if(hashmap[s[i]]==0)
+                    hashmap.erase(s[i]);
+                i++;
+            }
+            
+            ans=max(ans, j-i+1);
+            j++;
+        }
+        return ans;
+    }
+};
+
+*****************************************************************
