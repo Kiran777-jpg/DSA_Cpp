@@ -1,0 +1,78 @@
+leetcode: https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/count-substring/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=count-substring
+
+
+manraj solution: https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/solutions/516955/java-elegant-no-sliding-window-explained-no-of-sub-strings-ending-at-curr-index/
+
+
+************************************************************
+
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+        int n=s.length();
+        int i=0, res=0;
+        unordered_map<char, int> hashmap;
+
+        for(int j=0;j<n;j++)
+        {
+            hashmap[s[j]]++;
+            while(i<n && hashmap.size()==3)
+            {
+                res += n-j;
+                hashmap[s[i]]--;
+                if(hashmap[s[i]]==0)
+                    hashmap.erase(s[i]);
+                i++;
+            }
+        }
+        return res;
+    }
+};
+
+************************************************************
+
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+        int l1=-1, l2=-1, l3=-1;
+        int res=0;
+        for(int i=0;i<s.length();i++)
+        {
+            if(s[i]=='a') l1=i;
+            else if(s[i]=='b') l2=i;
+            else l3=i;
+
+            if(l1==-1 || l2==-1 || l3==-1) continue;
+            res += 1 + min(l1, min(l2,l3));
+        }
+        return res;
+    }
+};
+
+************************************************************
+
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+        int left=0, right=0, count=0, n= s.size()-1 ;
+        unordered_map<char, int> mpp ;
+        
+        while(right < s.size()){
+            mpp[s[right]]++ ;
+            
+            while(mpp['a']  &&  mpp['b']  &&  mpp['c']){
+                count += 1+ (n - right) ;
+                
+                mpp[s[left]]-- ;
+                left++ ;
+            }
+            
+            right++ ;
+        }
+        
+        return count ;
+    }
+};
+
+************************************************************
