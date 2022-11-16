@@ -1,0 +1,125 @@
+leetcode: https://leetcode.com/problems/count-number-of-nice-subarrays/description/
+
+
+lee solution: https://leetcode.com/problems/count-number-of-nice-subarrays/solutions/419378/java-c-python-sliding-window-o-1-space/
+
+
+
+*******************************************************
+
+class Solution {
+public:
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        int i=0, odds=0, count=0, total=0;
+        for(int j=0;j<nums.size();j++)
+        {
+            if(nums[j]&1)
+            {
+                odds++;
+
+                if(odds>=k)
+                {
+                    count=1;
+                    while(!(nums[i++]&1))
+                        count++;
+                    total += count;
+                }
+            }
+            else if(odds>=k) total += count;
+        }
+        return total;
+    }
+};
+
+*******************************************************
+
+class Solution {
+public:
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        int i=0, j=0;
+        int odds=0, count=0, res=0;
+
+        while(j<nums.size())
+        {
+            if(nums[j]&1)
+            {
+                odds++;
+
+                if(odds==k)
+                {
+                    count=0;
+                    while(odds==k)
+                    {
+                        odds -= nums[i++]&1;
+                        count++;
+                    }
+                    res += count;
+                }
+            }
+            else res += count;
+            j++;
+        }
+        return res;
+    }
+};
+
+*******************************************************
+
+class Solution {
+public:
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        deque<int> dq = {-1};
+        int res=0;
+        for(int i=0;i<nums.size();i++)
+        {
+            if(nums[i]&1)
+                dq.push_back(i);
+            if(dq.size()>k+1)
+                dq.pop_front();
+            if(dq.size()==k+1)
+                res += dq[1]-dq[0];
+        }
+        return res;
+    }
+};
+
+*******************************************************
+
+class Solution {
+public:
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        for(int &x : nums)
+            x = x%2;
+        unordered_map<int, int> hashmap;
+        hashmap[0] = 1;
+        int sum=0, res=0;
+        for(int i=0;i<nums.size();i++)
+        {
+            sum += nums[i];
+            if(hashmap.count(sum-k))
+                res += hashmap[sum-k];
+            hashmap[sum]++;
+        }
+        return res;
+    }
+};
+
+*******************************************************
+
+  int numberOfSubarrays(vector<int>& A, int k) {
+        return atMost(A, k) - atMost(A, k - 1);
+    }
+
+    int atMost(vector<int>& A, int k) {
+        int res = 0, i = 0, n = A.size();
+        for (int j = 0; j < n; j++) {
+            k -= A[j] % 2;
+            while (k < 0)
+                k += A[i++] % 2;
+            res += j - i + 1;
+        }
+        return res;
+    }
+    
+   *******************************************************
+   
