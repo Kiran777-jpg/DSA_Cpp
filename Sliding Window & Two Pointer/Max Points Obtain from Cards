@@ -1,0 +1,78 @@
+leetcode: https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/description/
+
+
+Shaun : https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/solutions/2197791/reframing-the-question-java-explained/
+Super Explanation with diff approach, last one is his code
+
+
+
+*****************************************************************
+
+
+class Solution {
+public:
+    int maxScore(vector<int>& cardPoints, int k) {
+        int sum=0, maxValue=0;
+        for(int i=0;i<k;i++)
+            sum += cardPoints[i];
+        maxValue = sum;
+        int i=k-1, j=cardPoints.size()-1;
+        while(i>=0)
+        {
+            sum += cardPoints[j--]-cardPoints[i--];
+            maxValue = max(maxValue, sum);
+        }
+        // for(int i=k-1;i>=0;i--)
+        // {
+        //     sum += cardPoints[j--]-cardPoints[i];
+        //     maxValue = max(maxValue, sum);
+        // } 
+        return maxValue;
+    }
+};
+
+
+*****************************************************************
+
+class Solution {
+public:
+    int maxScore(vector<int>& cardPoints, int k) {
+        int n=cardPoints.size();
+        vector<int> prefix(n);
+        vector<int> suffix(n);
+
+        prefix[0]=cardPoints[0];
+        for(int i=1;i<n;i++)
+            prefix[i] = prefix[i-1]+cardPoints[i];
+        
+        suffix[n-1]=cardPoints[n-1];
+        for(int i=n-2;i>=0;i--)
+            suffix[i] = suffix[i+1]+cardPoints[i];
+
+        int maxValue=prefix[k-1], j=n-1; 
+        for(int i=k-1;i>=0;i--)
+            maxValue = max(maxValue, prefix[i]-cardPoints[i]+suffix[j--]);
+            
+        return maxValue;
+    }
+};
+
+*****************************************************************
+
+public int maxScore(int[] cardPoints, int k) {
+	int n = cardPoints.length, totalSum = 0, minSubarray = 0;
+
+	for (int i=0, currSum=0; i<n; i++) {
+		totalSum += cardPoints[i];
+		currSum += cardPoints[i];
+		if (i < n-k) minSubarray += cardPoints[i];
+		else {
+			currSum -= cardPoints[i-(n-k)];
+			minSubarray = Math.min(minSubarray, currSum);
+		}
+	}
+
+	return totalSum - minSubarray;
+}
+
+*****************************************************************
