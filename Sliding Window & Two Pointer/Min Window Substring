@@ -1,0 +1,91 @@
+leetcode: https://leetcode.com/problems/minimum-window-substring/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/smallest-window-in-a-string-containing-all-the-characters-of-another-string-1587115621/1
+
+
+
+***************************************************************
+
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        int n=s.length(), m=t.length();
+        int i=0, j=0, minLength=INT_MAX;
+        unordered_map<char, int> hashmap;
+        string ans="";
+
+        for(char ch:t)
+            hashmap[ch]++;
+        int count=hashmap.size();
+
+        while(j<n)
+        {
+            if(hashmap.find(s[j]) != hashmap.end())
+            {
+                hashmap[s[j]]--;
+                if(hashmap[s[j]]==0)
+                    count--;
+            }
+
+            while(count==0)
+            {
+                if(j-i+1<minLength)
+                {
+                    minLength=j-i+1;
+                    ans=s.substr(i, j-i+1);
+                }
+
+                if(hashmap.find(s[i])!=hashmap.end())
+                {
+                    hashmap[s[i]]++;
+                    if(hashmap[s[i]]>0) count++;
+                }
+                i++;
+            }
+            j++;
+        }
+        return ans;
+    }
+};
+
+***************************************************************
+
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        int n=s.length(), m=t.length();
+        int i=0, j=0, minLength=INT_MAX;
+        string ans="";
+        unordered_map<char, int> t_hashmap;
+        unordered_map<char, int> s_hashmap;
+
+        for(char ch : t)
+            t_hashmap[ch]++;
+
+        int count=0;
+        while(j<n)
+        {
+            s_hashmap[s[j]]++;
+            if(t_hashmap.find(s[j])!=t_hashmap.end() && s_hashmap[s[j]]<=t_hashmap[s[j]])
+                count++;
+            while(count==m)
+            {
+                if(t_hashmap.find(s[i])!=t_hashmap.end())
+                {
+                    if(j-i+1<minLength)
+                    {
+                        minLength=j-i+1;
+                        ans=s.substr(i, j-i+1);
+                    }
+
+                    s_hashmap[s[i]]--;
+                    if(s_hashmap[s[i]]<t_hashmap[s[i]]) count--;
+                }
+                i++;
+            }
+            j++;
+        }
+        return ans;
+    }
+};
+
+***************************************************************
