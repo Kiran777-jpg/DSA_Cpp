@@ -1,0 +1,74 @@
+letcode: https://leetcode.com/problems/subarrays-with-k-different-integers/description/
+
+
+
+super solutions: 
+votrubac : https://leetcode.com/problems/subarrays-with-k-different-integers/solutions/235235/c-java-with-picture-prefixed-sliding-window/
+lee: https://leetcode.com/problems/subarrays-with-k-different-integers/solutions/523136/JavaC++Python-Sliding-Window/
+
+***************************************************************
+
+class Solution {
+public:
+    int AtMostK(vector<int> &nums, int k)
+    {
+        int i=0, j=0, res=0;
+        unordered_map<int, int> hashmap;
+        while(j<nums.size())
+        {
+            hashmap[nums[j]]++;
+            while(hashmap.size()>k)
+            {
+                hashmap[nums[i]]--;
+                if(hashmap[nums[i]]==0)
+                    hashmap.erase(nums[i]);
+                i++;
+            }
+            res += j-i+1;
+            j++;
+        }
+        return res;
+    }
+    int subarraysWithKDistinct(vector<int>& nums, int k) {
+        return AtMostK(nums, k)-AtMostK(nums, k-1);
+    }
+};
+
+***************************************************************
+
+class Solution {
+public:
+    int subarraysWithKDistinct(vector<int>& nums, int k) {
+        int i=0, j=0, count=0, prefix=0, ans=0;
+        unordered_map<int, int> hashmap;
+
+        while(j<nums.size())
+        {
+            hashmap[nums[j]]++;
+            if(hashmap[nums[j]]==1)
+                count++;
+            
+            if(count>k)
+            {
+                hashmap[nums[i]]--;
+                i++;
+                prefix=0;
+                count--;
+            }
+
+            while(hashmap[nums[i]]>1)
+            {
+                hashmap[nums[i]]--;
+                prefix++;
+                i++;
+            }
+
+            if(count==k)
+                ans += prefix+1;
+            j++;
+        }
+        return ans;
+    }
+};
+
+***************************************************************
