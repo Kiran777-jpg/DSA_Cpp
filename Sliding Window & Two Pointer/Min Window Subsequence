@@ -1,0 +1,40 @@
+leetcode:  https://leetcode.com/problems/minimum-window-subsequence/
+
+
+
+******************************************************
+
+string minWindow(string S, string T)
+{
+	// Write your Code here
+    int n=S.length(), m=T.length();
+    if(m>n || n==0 || m==0) return "";
+    int i=0, k=0, start=-1, minValue=INT_MAX;
+    while(i<n)
+    {
+        if(S[i]==T[k])
+            k++;
+        if(k==m)
+        {
+            int end=i;
+            k--;
+            while(k>=0)
+            {
+                if(S[i]==T[k])
+                    k--;
+                i--;
+            }
+            i++;
+            k++;
+            if(end-i+1<minValue)
+            {
+                start=i;
+                minValue=end-i+1;
+            }
+        }
+        i++;
+    }
+    return (start==-1)?"":S.substr(start,minValue);
+}
+
+******************************************************
