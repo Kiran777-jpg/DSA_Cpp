@@ -1,0 +1,77 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Heap
+{
+    vector<int> arr;
+    public:
+        Heap()
+        {
+            arr.push_back(-1);            
+        }
+        void push(int data)
+        {
+            arr.push_back(data);
+            int idx=arr.size()-1;
+            while(idx/2>0 && arr[idx/2]<arr[idx])
+            {
+                swap(arr[idx/2], arr[idx]);
+                idx=idx/2;
+            }
+        }
+        void pop()
+        {
+            int idx=arr.size()-1;
+            swap(arr[1], arr[idx]);
+            arr.pop_back();
+            idx=1;
+            while(idx<arr.size())
+            {
+                int maxIdx=idx;
+                if(2*idx<arr.size() && arr[2*idx]>arr[maxIdx])
+                    maxIdx=2*idx;
+                if(2*idx+1<arr.size() && arr[2*idx+1]>arr[maxIdx])
+                    maxIdx=2*idx+1;
+                
+                if(maxIdx!=idx)
+                {
+                    swap(arr[idx], arr[maxIdx]);
+                    idx=maxIdx;
+                }
+                else
+                    break;
+            }
+        }
+        int getMax()
+        {
+            return (arr.size()>1)?arr[1]:-1;
+        }
+        bool empty()
+        {
+            return arr.size()==1;
+        }
+        void print()
+        {
+            for(int i=0;i<arr.size();i++)
+                cout<<arr[i]<<" ";
+            cout<<endl;
+        }
+};
+
+#include <iostream>
+#include "Heap.h"
+using namespace std;
+
+int main()
+{
+    Heap h;
+    h.push(100);h.push(40);h.push(50);h.push(10);h.push(15);h.push(40);
+    h.print();
+    h.push(120);
+    h.print();
+    cout<<h.getMax()<<endl;
+    h.pop();
+    h.print();
+    cout<<h.getMax()<<endl;
+}
