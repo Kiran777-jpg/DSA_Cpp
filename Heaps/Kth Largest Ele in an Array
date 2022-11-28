@@ -1,0 +1,91 @@
+leetcode: https://leetcode.com/problems/kth-largest-element-in-an-array/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/k-largest-elements3736/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=k-largest-elements
+
+
+
+*****************************************************************************
+using priority_queue
+
+
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        priority_queue<int> pq(nums.begin(), nums.end());
+        while(!pq.empty() && --k)
+            pq.pop();
+        return pq.top();
+    }
+};
+
+
+*****************************************************************************
+using Quick Select Algo
+
+
+
+#define nums arr
+class Solution {
+public:
+    int partition(vector<int>& arr, int start, int end)
+    {
+        int pivot=arr[start], i=start+1, j=end;
+        while(i<=j)
+        {
+            if(arr[i]<pivot && arr[j]>pivot)
+                swap(arr[i], arr[j]), i++, j--;
+            if(arr[i]>=pivot) i++;
+            if(arr[j]<=pivot) j--;
+        }
+        swap(arr[start], arr[j]);
+        return j;
+    }
+
+    int findKthLargest(vector<int>& nums, int k) {
+        int start=0, end=arr.size()-1;
+        while(start<=end)
+        {
+            int p=partition(arr, start, end);
+            if(p==k-1)
+                return arr[p];
+            else if(p>k-1)
+                end=p-1;
+            else if(p<k-1)
+                start=p+1;
+        }
+        return -1;
+    }
+};
+
+
+*****************************************************************************
+Brute Force
+
+
+#include <bits/stdc++.h>
+using namespace std ;
+
+class Solution {
+
+public:
+
+void kth_Largest_And_Smallest_By_AscendingOrder(vector<int>&arr, int k) {
+
+        sort(arr.begin(), arr.end())  ;
+        int n = arr.size()  ;
+
+        cout << "kth Largest element " << arr[n - k] << ", " << 
+        "kth Smallest element " << arr[k - 1];
+    }
+} ;
+int main() {
+
+    vector<int>arr = {1, 2, 6, 4, 5, 3}  ;
+
+    Solution obj ;
+    
+    obj.kth_Largest_And_Smallest_By_AscendingOrder(arr, 3) ;
+
+    return 0 ;
+}
+
+*****************************************************************************
