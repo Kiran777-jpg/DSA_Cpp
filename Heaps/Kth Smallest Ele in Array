@@ -1,0 +1,101 @@
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/kth-smallest-element5635/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=kth-smallest-element
+
+
+
+*************************************************************************
+
+using priority_queue
+
+
+//User function template for C++
+
+class Solution{
+    public:
+    // arr : given array
+    // l : starting index of the array i.e 0
+    // r : ending index of the array i.e size-1
+    // k : find kth smallest element and return using this function
+    int kthSmallest(int arr[], int l, int r, int k) {
+        //code here
+        priority_queue<int, vector<int>, greater<int>>pq(arr, arr+r+1);
+        while(!pq.empty() && --k)
+            pq.pop();
+        return pq.top();
+    }
+};
+
+*************************************************************************
+
+using Quick Select Algo
+
+
+class Solution{
+    public:
+    // arr : given array
+    // l : starting index of the array i.e 0
+    // r : ending index of the array i.e size-1
+    // k : find kth smallest element and return using this function
+    int partition(int arr[], int start, int end)
+    {
+        int pivot=arr[start];
+        int i=start+1, j=end;
+        while(i<=j)
+        {
+            if(arr[i]>pivot && arr[j]<pivot)
+                swap(arr[i], arr[j]), i++, j--;
+            if(arr[i]<=pivot) i++;
+            if(arr[j]>=pivot) j--;
+        }
+        swap(arr[start], arr[j]);
+        return j;
+    }
+    
+    int kthSmallest(int arr[], int l, int r, int k) {
+        //code here
+        if(l<=r)
+        {
+            int p=partition(arr, l, r);
+            if(p==k-1)
+                return arr[p];
+            else if(p>k-1)
+                return kthSmallest(arr, l, p-1, k);
+            else
+                return kthSmallest(arr, p+1, r, k);
+        }
+        return -1;
+    }
+};
+
+
+*************************************************************************
+Brute Force
+
+
+#include <bits/stdc++.h>
+using namespace std ;
+
+class Solution {
+
+public:
+
+void kth_Largest_And_Smallest_By_AscendingOrder(vector<int>&arr, int k) {
+
+        sort(arr.begin(), arr.end())  ;   //sort(arr.begin(), arr.end(), greater<int>())  ; 
+        int n = arr.size()  ;
+
+        cout << "kth Largest element " << arr[n - k] << ", " << 
+        "kth Smallest element " << arr[k - 1];
+    }
+} ;
+int main() {
+
+    vector<int>arr = {1, 2, 6, 4, 5, 3}  ;
+
+    Solution obj ;
+    
+    obj.kth_Largest_And_Smallest_By_AscendingOrder(arr, 3) ;
+
+    return 0 ;
+}
+
+*************************************************************************
