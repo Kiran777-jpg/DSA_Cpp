@@ -1,0 +1,107 @@
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/merge-k-sorted-arrays/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=merge-k-sorted-arrays
+
+
+
+*****************************************************************************
+Tc: O(K^2*Log(K)), SC:O(k)
+
+
+class Solution
+{
+    public:
+    vector<int> mergeKArrays(vector<vector<int>> arr, int K)
+    {
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>minheap;
+        vector<int> ptr(arr[0].size(), 0);
+        vector<int> ans;
+        for(int i=0;i<arr.size();i++)
+            minheap.push({arr[i][0], i});
+        while(!minheap.empty())
+        {
+            pair<int, int> p = minheap.top();
+            ans.push_back(p.first);
+            ptr[p.second]++;
+            if(ptr[p.second]<K)
+                minheap.push({arr[p.second][ptr[p.second]], p.second});
+            minheap.pop();
+        }
+        return ans;
+    }
+};
+
+*****************************************************************************
+Tc: O(K^2*Log(K^2)), SC:O(k^2)
+
+
+class Solution
+{
+    public:
+    vector<int> mergeKArrays(vector<vector<int>> arr, int K)
+    {
+        vector<int> ans;
+        priority_queue<int, vector<int>, greater<int>>minHeap;
+        
+        for(int i=0;i<arr.size();i++)
+        {
+            for(int j=0;j<arr[i].size();j++)
+                minHeap.push(arr[i][j]);
+        }
+        while(!minHeap.empty())
+        {
+            ans.push_back(minHeap.top());
+            minHeap.pop();
+        }
+        return ans;
+    }
+};
+*****************************************************************************
+TC:O(k^2*log(k^2)), Sc:O(K^2)
+
+class Solution
+{
+    public:
+    //Function to merge k sorted arrays.
+    vector<int> mergeKArrays(vector<vector<int>> arr, int K)
+    {
+        //code here
+        vector<int> ans;
+        // priority_queue<int, vector<int>, greater<int>>minHeap;
+        
+        for(int i=0;i<arr.size();i++)
+        {
+            for(int j=0;j<arr[i].size();j++)
+                ans.push_back(arr[i][j]);
+        }
+        // while(!minHeap.empty())
+        // {
+        //     ans.push_back(minHeap.top());
+        //     minHeap.pop();
+        // }
+        sort(ans.begin(), ans.end());
+        return ans;
+    }
+};
+
+*****************************************************************************
+
+class Solution
+{
+    public:
+    vector<int> mergeKArrays(vector<vector<int>> arr, int K)
+    {
+        vector<int> ans;
+        multiset<int> hashset;
+        
+        for(int i=0;i<arr.size();i++)
+        {
+            for(int j=0;j<arr[i].size();j++)
+                hashset.insert(arr[i][j]);
+        }
+        
+        for(auto it=hashset.begin();it!=hashset.end();it++)
+            ans.push_back(*it);
+        return ans;
+    }
+};
+
+*****************************************************************************
