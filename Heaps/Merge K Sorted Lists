@@ -1,0 +1,161 @@
+leetcode: https://leetcode.com/problems/merge-k-sorted-lists/description/
+
+
+
+***************************************************************************************
+Heap:  TC:O(NlogK), SC:O(1),  N->no of elements in total lists
+
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        ListNode *head=NULL, *tail=NULL;
+        priority_queue<pair<int, ListNode*>, vector<pair<int, ListNode*>>, greater<pair<int, ListNode*>>>minheap;
+        for(ListNode* node : lists)
+            if(node!=NULL)  minheap.push({node->val, node});
+        while(!minheap.empty())
+        {
+            pair<int, ListNode*> p = minheap.top();
+            minheap.pop();
+             if(p.second->next != NULL)
+                minheap.push({p.second->next->val, p.second->next});
+            if(head==NULL)
+                head=p.second;
+            else tail->next=p.second;
+            tail=p.second;
+        }
+        return head;
+    }
+};
+
+***************************************************************************************
+Divide & Conquer:  TC:O(NlogK), SC:O(1),  N->no of elements in total lists
+
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* merge(vector<ListNode*> &lists, int left, int right)
+    {
+        if(left==right)
+            return lists[left];
+        ListNode *head, *h1, *h2, *ptr;
+        head=h1=h2=NULL;
+        h1=merge(lists, left, (left+right)/2);
+        h2=merge(lists, (left+right)/2+1, right);
+
+        if(!h1) return h2;
+        if(!h2) return h1;
+
+        if(h1->val>h2->val)
+            head=h2, h2=h2->next;
+        else
+            head=h1, h1=h1->next;
+        ptr=head;
+        while(h1 or h2)
+        {
+            if(!h1)
+            {   ptr->next = h2; h2=h2->next;}
+            else if(!h2)
+            {   ptr->next = h1; h1=h1->next;}
+            else if(h1->val < h2->val)
+            {   ptr->next=h1; h1=h1->next;}
+            else
+            {   ptr->next=h2; h2=h2->next;}
+            ptr=ptr->next;
+        }
+        return head;
+    }
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        int k=lists.size();
+        if(k==0) return NULL;
+        if(k==1) return lists[0];
+        ListNode *head, *h1, *h2, *ptr;
+        head=h1=h2=NULL;
+        h1 = merge(lists, 0, k/2); 
+        if(k/2+1<=k-1)
+            h2 = merge(lists, k/2+1, k-1);
+
+        if(!h1) return h2;
+        if(!h2) return h1;
+        if(h1->val>h2->val)
+            head=h2, h2=h2->next;
+        else
+            head=h1, h1=h1->next;
+        ptr=head;
+        while(h1 or h2)
+        {
+            if(!h1)
+            {   ptr->next = h2; h2=h2->next;}
+            else if(!h2)
+            {   ptr->next = h1; h1=h1->next;}
+            else if(h1->val < h2->val)
+            {   ptr->next=h1; h1=h1->next;}
+            else
+            {   ptr->next=h2; h2=h2->next;}
+            ptr=ptr->next;
+        }
+        return head;
+    }
+};
+
+***************************************************************************************
+Heap:  TC:O(NlogK), SC:O(N),  N->no of elements in total lists
+
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        ListNode *head=NULL, *tail=NULL;
+        priority_queue<pair<int, ListNode*>, vector<pair<int, ListNode*>>, greater<pair<int, ListNode*>>>minheap;
+        for(ListNode* node : lists)
+            if(node!=NULL)  minheap.push({node->val, node});
+        while(!minheap.empty())
+        {
+            pair<int, ListNode*> p = minheap.top();
+            minheap.pop();
+            ListNode* newnode = new ListNode(p.first);
+            if(head==NULL)
+                head=newnode;
+            else tail->next=newnode;
+            tail=newnode;
+            if(p.second->next != NULL)
+                minheap.push({p.second->next->val, p.second->next});
+        }
+        return head;
+    }
+};
+
+***************************************************************************************
