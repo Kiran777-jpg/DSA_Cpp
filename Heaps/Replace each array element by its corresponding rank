@@ -1,0 +1,51 @@
+leetcode: https://leetcode.com/problems/rank-transform-of-an-array/solutions/
+geeksforgeeks: https://www.geeksforgeeks.org/replace-each-element-of-array-with-its-corresponding-rank/
+
+
+
+****************************************************************
+
+class Solution {
+public:
+    vector<int> arrayRankTransform(vector<int>& arr) {
+        int n=arr.size();
+        vector<int> dummy=arr;
+        sort(dummy.begin(), dummy.end());
+        unordered_map<int, int> hashmap;
+        int rank=1;
+        for(int i=0;i<n;i++)
+        {
+            if(hashmap[dummy[i]]==0)
+            {
+                hashmap[dummy[i]]=rank;
+                rank++;
+            }
+        }
+        for(int i=0;i<n;i++)
+            arr[i]=hashmap[arr[i]];
+        return arr;
+    }
+};
+
+
+****************************************************************
+
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int n = 6;
+	int arr[n] = {20, 15, 26, 2, 98, 6};
+	for (int i = 0; i < n; i++) {
+		set<int>s;
+		for (int j = 0; j < n; j++) {
+			if (arr[j] < arr[i]) {
+				s.insert(arr[j]);
+			}
+		}
+		cout << s.size() + 1 << " ";
+	}
+
+}
+
+****************************************************************
