@@ -1,0 +1,78 @@
+leetcode: https://leetcode.com/problems/task-scheduler/description/
+
+
+
+*************************************************************
+
+
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        int timer=0;
+        unordered_map<char, int> hashmap;
+        priority_queue<int> maxheap;
+        queue<pair<int,int>> q;
+
+        for(char x : tasks)
+            hashmap[x]++;
+        for(auto x : hashmap)
+            maxheap.push(x.second);
+        
+        while(!maxheap.empty() || !q.empty())
+        {
+            timer++;
+            if(!maxheap.empty())
+            {
+                int task = maxheap.top();
+                if(task-1>0)
+                    q.push({task-1, timer+n});
+                maxheap.pop();
+            }
+
+            if(!q.empty() && q.front().second==timer)
+            {
+                maxheap.push(q.front().first);
+                q.pop();
+            }
+        }
+        return timer;
+    }
+};
+
+
+*************************************************************
+
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        vector<int> counter(26,0);
+        for(char ch : tasks)
+            counter[ch-'A']++;
+        sort(counter.begin(), counter.end());
+        int maxFreq=counter[25];
+        int idleSpaces=(maxFreq-1)*n;
+        for(int i=24;i>=0;i--)
+            idleSpaces -= min(maxFreq-1, counter[i]);
+        idleSpaces=max(0, idleSpaces);
+        return tasks.size()+idleSpaces;
+    }
+};
+
+*************************************************************
+
+
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        unordered_map<char, int> hashmap;
+        int maxFreq=0;
+        for(char ch : tasks)
+            hashmap[ch]++, maxFreq=max(maxFreq, hashmap[ch]);
+        int ans=(maxFreq-1)*(n+1);
+        for(auto item : hashmap)
+            if(item.second==maxFreq) ans++;
+        return max((int)tasks.size(), ans);
+    }
+};
+
+*************************************************************
