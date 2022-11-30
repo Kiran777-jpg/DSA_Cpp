@@ -1,0 +1,106 @@
+leetcode: https://leetcode.com/problems/hand-of-straights/description/
+
+
+
+**************************************************************************
+
+
+class Solution {
+public:
+    bool isNStraightHand(vector<int>& hand, int groupSize) {
+        int n=hand.size();
+        if(n%groupSize) return false;
+        unordered_map<int, int> hashmap;
+        priority_queue<int, vector<int>, greater<int>> minheap;
+        queue<int> q;
+
+        for(int card : hand)
+            hashmap[card]++;
+        for(auto card : hashmap)
+            minheap.push(card.first);
+        int last=-1, count=0;
+        while(!minheap.empty() || !q.empty())
+        {
+            if(!minheap.empty())
+            {
+                int card = minheap.top();
+                minheap.pop();
+                if(last!=-1 && last+1!=card) return false;
+                hashmap[card]--;
+                if(hashmap[card]>0)
+                    q.push(card);
+                last=card;
+                count++;
+            }
+            if(minheap.empty() && count!=groupSize) return false;
+            if(count==groupSize)
+            {
+                while(!q.empty())
+                {
+                    minheap.push(q.front());
+                    q.pop();
+                }
+                count=0;
+                last=-1;
+            }
+        }
+        return true;
+    }
+};
+
+
+**************************************************************************
+
+
+class Solution {
+public:
+    bool isNStraightHand(vector<int>& hand, int groupSize) {
+        map<int, int> mp;
+        for(int card : hand)
+            mp[card]++;
+        for(auto it=mp.begin();it!=mp.end();)
+        {
+            if(it->second>0)
+            {
+                for(int i=0;i<groupSize;i++)
+                {
+                    if(mp[it->first+i]>0)
+                        mp[it->first+i]--;
+                    else
+                        return false;
+                }
+            }
+            else
+                it++;
+        }
+        return true;
+    }
+};
+
+**************************************************************************
+
+class Solution {
+public:
+    bool isNStraightHand(vector<int>& hand, int groupSize) {
+        map<int, int> mp;
+        for(int card : hand)
+            mp[card]++;
+        
+        for(auto i : mp)
+        {
+            int value=i.second;
+            if(value)
+            {
+                for(int j=0;j<groupSize;j++)
+                {
+                    if(mp[i.first+j]<value)
+                        return false;
+                    mp[i.first+j] -= value;
+                }
+            }
+        }
+        return true;
+    }
+};
+
+**************************************************************************
