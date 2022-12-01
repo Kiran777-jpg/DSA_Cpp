@@ -1,0 +1,202 @@
+leetcode: https://leetcode.com/problems/design-twitter/description/
+
+
+
+**************************************************************
+
+
+class Twitter {
+    struct node
+    {
+        int count, userId, tweetId, index;
+        node(int count, int userId, int tweetId, int index)
+        {
+            this->count = count;
+            this->userId = userId;
+            this->tweetId = tweetId;
+            this->index = index;
+        }
+    };
+
+    struct compare
+    {
+        bool operator()(node a, node b)
+        {
+            return a.count<b.count;
+        }
+    };
+
+    unordered_map<int, unordered_set<int>> userhashmap;
+    unordered_map<int, vector<pair<int, int>>> tweethashmap;
+    int count;
+
+public:
+    Twitter() {
+        count=0;
+    }
+    
+    void postTweet(int userId, int tweetId) {
+        tweethashmap[userId].push_back({++count, tweetId});
+    }
+    
+    vector<int> getNewsFeed(int userId) {
+        vector<int> ans;
+        priority_queue<node, vector<node>, compare> maxheap;
+        userhashmap[userId].insert(userId);
+        for(auto user : userhashmap[userId])
+        {
+            if(tweethashmap.count(user))
+            {
+                int index=tweethashmap[user].size()-1;
+                pair<int, int> tweet = tweethashmap[user][index];
+                maxheap.push(node(tweet.first, user, tweet.second, index-1));
+            }
+        }
+
+        while(!maxheap.empty() && ans.size()<10)
+        {
+            node recent = maxheap.top();
+            maxheap.pop();
+            ans.push_back(recent.tweetId);
+            if(recent.index>=0)
+            {
+                pair<int, int> tweet = tweethashmap[recent.userId][recent.index];
+                maxheap.push(node(tweet.first, recent.userId, tweet.second, recent.index-1));
+            }
+        }
+        return ans;
+    }
+    
+    void follow(int followerId, int followeeId) {
+        userhashmap[followerId].insert(followeeId);
+    }
+    
+    void unfollow(int followerId, int followeeId) {
+        if(userhashmap[followerId].count(followeeId))
+            userhashmap[followerId].erase(followeeId);
+    }
+};
+
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * Twitter* obj = new Twitter();
+ * obj->postTweet(userId,tweetId);
+ * vector<int> param_2 = obj->getNewsFeed(userId);
+ * obj->follow(followerId,followeeId);
+ * obj->unfollow(followerId,followeeId);
+ */
+
+
+**************************************************************
+
+
+#include <iostream>
+#include <unordered_map>
+#include <unordered_set>
+#include <queue>
+using namespace std;
+
+
+class Twitter
+{
+    struct node
+    {
+        int count;
+        int userId;
+        int tweetId;
+        int index;
+        node(int count, int userId, int tweetId, int index)
+        {
+            this->count=count;
+            this->userId=userId;
+            this->tweetId=tweetId;
+            this->index=index;
+        }
+    };
+    
+    struct compare {
+        bool operator()(node a, node b)
+        {
+            return a.count<b.count;
+        }
+    };
+
+    unordered_map<int, unordered_set<int>> usershashmap;
+    unordered_map<int, vector<pair<int, int>>> tweethashmap;
+    int count;
+    
+    public:
+        Twitter()
+        {
+            count=0;
+        }
+        
+        void postTweet(int userId, int tweetId)
+        {
+            tweethashmap[userId].push_back({++count, tweetId});
+        }
+        
+        vector<int> getNewsFeed(int userId)
+        {
+            vector<int> ans;
+            priority_queue<node, vector<node>, compare> maxheap;
+            
+            usershashmap[userId].insert(userId);
+            for(int user : usershashmap[userId])
+            {
+                if(tweethashmap.count(user))
+                {
+                    int index=tweethashmap[user].size()-1;
+                    pair<int, int> tweet = tweethashmap[user][index];
+                    maxheap.push(node(tweet.first, user, tweet.second, index-1));
+                }
+            }
+            
+            while(!maxheap.empty() && ans.size()<10)
+            {
+                node recent = maxheap.top();
+                maxheap.pop();
+                ans.push_back(recent.tweetId);
+                if(recent.index>=0)
+                {
+                    pair<int, int> tweet=tweethashmap[recent.userId][recent.index];
+                    maxheap.push(node(tweet.first, recent.userId, tweet.second, recent.index-1));
+                }
+            }
+            return ans;
+        }
+        
+        void follow(int followerId, int followeeId)
+        {
+            usershashmap[followerId].insert(followeeId);
+        }
+        
+        void unfollow(int followerId, int followeeId)
+        {
+            if(usershashmap[followerId].count(followeeId))
+                usershashmap[followerId].erase(followeeId);
+        }
+};
+
+void print(vector<int> v)
+{
+    // cout<<v.size()<<endl;
+    for(int x : v)
+        cout<<x<<" ";
+    cout<<endl;
+}
+
+int main()
+{
+    Twitter t;
+    t.postTweet(1,5);
+    print(t.getNewsFeed(1));
+    t.follow(1,2);
+    t.postTweet(2,6);
+    print(t.getNewsFeed(1));
+    t.unfollow(1,2);
+    print(t.getNewsFeed(1));
+    t.unfollow(1,3);
+}
+
+**************************************************************
