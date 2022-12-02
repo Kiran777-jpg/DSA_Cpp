@@ -1,0 +1,59 @@
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/minimum-cost-of-ropes-1587115620/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=minimum-cost-of-ropes
+
+
+
+*****************************************************************
+
+class Solution
+{
+    public:
+    //Function to return the minimum cost of connecting the ropes.
+    long long minCost(long long arr[], long long n) {
+        // Your code here
+        priority_queue<long long, vector<long long>, greater<long long>> minheap(arr, arr+n);
+        long long ans=0;
+        while(minheap.size()>1)
+        {
+            long long first=minheap.top();
+            minheap.pop();
+            long long second=minheap.top();
+            minheap.pop();
+            ans+=first+second;
+            minheap.push(first+second);
+        }
+        return ans;
+    }
+};
+
+*****************************************************************
+
+
+class Solution
+{
+    public:
+    //Function to return the minimum cost of connecting the ropes.
+    long long minCost(long long arr[], long long n) {
+        // Your code here
+        if(n<=1)
+            return 0;
+        priority_queue<long long, vector<long long>, greater<long long>> minheap(arr,arr+n);
+        long long sum=0, cost=0;
+        while(!minheap.empty())
+        {
+            sum=minheap.top();
+            minheap.pop();
+            if(!minheap.empty())
+            {
+                sum+=minheap.top();
+                minheap.pop();
+            }
+            else
+                break;
+            cost+=sum;
+            minheap.push(sum);
+        }
+        return cost;
+    }
+};
+
+*****************************************************************
