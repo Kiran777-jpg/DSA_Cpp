@@ -1,0 +1,127 @@
+leetcode: https://leetcode.com/problems/kth-largest-element-in-a-stream/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/kth-largest-element-in-a-stream2220/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=kth-largest-element-in-a-stream
+
+
+
+***************************************************************
+
+class KthLargest {
+    int k;
+    priority_queue<int, vector<int>, greater<int>> minheap;
+public:
+    KthLargest(int k, vector<int>& nums) {
+        this->k=k;
+        for(int x : nums)
+            add(x);
+    }
+    
+    int add(int val) {
+        if(minheap.size()<k) minheap.push(val);
+        else
+        {
+            if(val>minheap.top())
+            {
+                minheap.pop();
+                minheap.push(val);
+            }
+        }
+        return minheap.top();
+    }
+};
+
+***************************************************************
+
+class KthLargest {
+    int k, n;
+    multiset<int> set1;
+public:
+    KthLargest(int k, vector<int>& nums) {
+        this->k=k;
+        for(int x : nums)
+            add(x);
+    }
+    
+    int add(int val) {
+        if(set1.size()<k) set1.insert(val);
+        else if(val>*set1.begin())
+        {
+            set1.erase(set1.begin());
+            set1.insert(val);
+        }
+        return *set1.begin();
+    }
+};
+
+***************************************************************
+
+class KthLargest {
+    int k, n;
+    priority_queue<int, vector<int>, greater<int>> minheap;
+public:
+    KthLargest(int k, vector<int>& nums) {
+        this->k=k;
+        for(int x : nums)
+        {
+            if(minheap.size()<k)
+                minheap.push(x);
+            else
+            {
+                if(x>minheap.top())
+                {
+                    minheap.pop();
+                    minheap.push(x);
+                }
+            }
+        }
+    }
+    
+    int add(int val) {
+        if(minheap.size()<k) minheap.push(val);
+        else
+        {
+            if(val>minheap.top())
+            {
+                minheap.pop();
+                minheap.push(val);
+            }
+        }
+        return minheap.top();
+    }
+};
+
+***************************************************************
+
+
+class KthLargest {
+    int k, n;
+    priority_queue<int, vector<int>, greater<int>> minheap;
+public:
+    KthLargest(int k, vector<int>& nums) {
+        this->k=k;
+        n=nums.size();
+        if(nums.size()>0)
+        {
+            int start=0;
+            sort(nums.begin(), nums.end());
+            if(n>=k) start=n-k;
+            for(int i=start;i<n;i++)
+                minheap.push(nums[i]);
+        }
+    }
+    
+    int add(int val) {
+        // cout<<val<<": "<<minheap.size()<<endl;
+        if(minheap.empty() || minheap.size()<k) minheap.push(val);
+        else if(val>=minheap.top())
+        {
+            minheap.pop();
+            minheap.push(val);
+        }
+        return minheap.top();
+    }
+};
+
+***************************************************************
+
+
+***************************************************************
