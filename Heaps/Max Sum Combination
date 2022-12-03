@@ -1,0 +1,89 @@
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/maximum-sum-combination/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=maximum-sum-combination
+
+
+
+*********************************************************
+
+class Solution {
+  public:
+    vector<int> maxCombinations(int N, int K, vector<int> &A, vector<int> &B) {
+        // code here
+        sort(A.begin(), A.end());
+        sort(B.begin(), B.end());
+        
+        priority_queue<pair<int, pair<int, int>>> maxheap;
+        set<pair<int, int>> set1;
+        vector<int> ans;
+        
+        maxheap.push({A[N-1]+B[N-1], {N-1, N-1}});
+        set1.insert({N-1, N-1});
+        
+        while(!maxheap.empty() && K--)
+        {
+            pair<int, pair<int, int>> temp=maxheap.top();
+            maxheap.pop();
+            ans.push_back(temp.first);
+            int i=temp.second.first;
+            int j=temp.second.second;
+            
+            if(i-1>=0 && j>=0 && set1.find({i-1, j})==set1.end())
+            {
+                int sum=A[i-1]+B[j];
+                maxheap.push({sum, {i-1, j}});
+                set1.insert({i-1, j});
+            }
+            if(i>=0 && j-1>=0 && set1.find({i, j-1})==set1.end())
+            {
+                int sum=A[i]+B[j-1];
+                maxheap.push({sum, {i, j-1}});
+                set1.insert({i, j-1});
+            }
+        }
+        return ans;
+    }
+};
+
+*********************************************************
+
+
+#include <bits/stdc++.h>
+using namespace std;
+ 
+// function to display first N maximum sum
+// combinations
+void KMaxCombinations(int A[], int B[],
+                      int N, int K)
+{
+    // max heap.
+    priority_queue<int> pq;
+ 
+    // insert all the possible combinations
+    // in max heap.
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
+            pq.push(A[i] + B[j]);
+ 
+    // pop first N elements from max heap
+    // and display them.
+    int count = 0;
+    while (count < K) {
+        cout << pq.top() << endl;
+        pq.pop();
+        count++;
+    }
+}
+ 
+// Driver Code.
+int main()
+{
+    int A[] = { 4, 2, 5, 1 };
+    int B[] = { 8, 0, 5, 3 };
+    int N = sizeof(A) / sizeof(A[0]);
+    int K = 3;
+   
+    // Function call
+    KMaxCombinations(A, B, N, K);
+    return 0;
+}
+
+*********************************************************
