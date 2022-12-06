@@ -1,0 +1,56 @@
+leetcode: https://leetcode.com/problems/top-k-frequent-elements/description/
+geeksforgeeks: https://practice.geeksforgeeks.org/problems/top-k-frequent-elements-in-array/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=top-k-frequent-elements-in-array
+
+
+********************************************************************************
+
+
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        vector<int> ans;
+        unordered_map<int, int> hashmap;
+        priority_queue<pair<int, int>> maxheap;
+        for(int x : nums)
+            hashmap[x]++;
+        for(auto element : hashmap)
+            maxheap.push({element.second, element.first});
+        while(k--)
+        {
+            ans.push_back(maxheap.top().second);
+            maxheap.pop();
+        }
+        return ans;
+    }
+};
+
+********************************************************************************
+
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        vector<int> ans;
+        unordered_map<int, int> hashmap;
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> minheap;
+        for(int x : nums)
+            hashmap[x]++;
+        for(auto element : hashmap)
+        {
+            if(!minheap.empty() && minheap.top().first<=element.second && minheap.size()==k)
+            {
+                minheap.pop();
+                minheap.push({element.second, element.first});
+            }
+            else if(minheap.size()<k)
+                minheap.push({element.second, element.first});
+        }
+        while(k--)
+        {
+            ans.push_back(minheap.top().second);
+            minheap.pop();
+        }
+        return ans;
+    }
+};
+
+********************************************************************************
