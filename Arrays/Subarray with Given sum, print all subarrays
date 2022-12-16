@@ -1,0 +1,202 @@
+Assuming input contains only non-negative numbers;
+constriants:
+ 1<=A[i]<=1e9
+ 
+ **********************************************************************************
+ using tow pointers/sliding window
+ 
+ 
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main()
+{
+    vector<int> arr={3,4,7,2,3,1,4,2,1};
+    // vector<int> arr={7,2,2,3,2,3,2,1};
+    // vector<int> arr={1,2,3,4,5};
+    int k=7, n=arr.size();
+    int left=0, right=0;
+    long sum=arr[left];
+    while(right<n && left<=right)
+    {
+        if(sum==k)
+        {
+            for(int i=left;i<=right;i++)
+                cout<<arr[i]<<" ";
+            cout<<endl;
+            if(++right<n) sum+=arr[right];
+        }
+        else if(sum<k)
+        {
+            if(++right<n) sum+=arr[right];
+        }
+        else
+        {
+            sum-=arr[left];
+            left++;
+            if(left>right && left<n)
+            {
+                right=left;
+                sum=arr[left];
+            }
+        }
+        
+    }
+}
+
+ **********************************************************************************
+ using hashing
+ 
+ 
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+int main()
+{
+    vector<int> arr={3,4,7,2,3,1,4,2,1};
+    // vector<int> arr={7,2,2,3,2,3,2,1};
+    //vector<int> arr={1,2,3,4,5};
+    int k=7, n=arr.size();
+    long sum=0;
+    unordered_map<long, int> hashmap;
+    hashmap[0]=-1;
+    for(int i=0;i<n;i++)
+    {
+        sum+=arr[i];
+        if(hashmap.find(sum-k)!=hashmap.end())
+        {
+            for(int j=hashmap[sum-k]+1;j<=i;j++)
+                cout<<arr[j]<<" ";
+            cout<<endl;
+        }
+        hashmap[sum]=i;
+    }
+}
+
+
+***********************************************************************************************************************************
+
+similar problem:
+
+
+
+Problem Description
+Given an array of positive integers A and an integer B, find and return first continuous subarray which adds to B.
+
+If the answer does not exist return an array with a single element "-1".
+
+First sub-array means the sub-array for which starting index in minimum.
+
+
+
+Problem Constraints
+1 <= length of the array <= 100000
+1 <= A[i] <= 109
+1 <= B <= 109
+
+
+
+Input Format
+The first argument given is the integer array A.
+
+The second argument given is integer B.
+
+
+
+Output Format
+Return the first continuous sub-array which adds to B and if the answer does not exist return an array with a single element "-1".
+
+
+
+Example Input
+Input 1:
+
+ A = [1, 2, 3, 4, 5]
+ B = 5
+Input 2:
+
+ A = [5, 10, 20, 100, 105]
+ B = 110
+
+
+Example Output
+Output 1:
+
+ [2, 3]
+Output 2:
+
+ -1
+
+
+Example Explanation
+Explanation 1:
+
+ [2, 3] sums up to 5.
+Explanation 2:
+
+ No subarray sums up to required number.
+ 
+ 
+ 
+ 
+**********************************************************************************
+
+vector<int> Solution::solve(vector<int> &A, int B) {
+    int n=A.size();
+    vector<int> ans;
+    int left=0, right=0;
+    long sum=A[left];
+    while(right<n && left<=right)
+    {
+        if(sum==B)
+        {
+            for(int i=left;i<=right;i++)
+                ans.push_back(A[i]);
+            return ans;
+        }
+        else if(sum<B)
+        {
+            if(++right<n) sum+=A[right];
+        }
+        else
+        {
+            sum-=A[left];
+            left++;
+            if(left>right && left<n)
+            {
+                right=left;
+                sum=A[left];
+            }
+        }
+    }
+    return {-1};
+}
+
+
+**********************************************************************************
+
+
+vector<int> Solution::solve(vector<int> &A, int B) {
+    long sum=0;
+    unordered_map<long, int> hashmap;
+    vector<int> ans={-1};
+    hashmap[0]=-1;
+    for(int i=0;i<A.size();i++)
+    {
+        sum+=A[i];
+        if(hashmap.find(sum-B)!=hashmap.end())
+        {
+            ans.pop_back();
+            for(int j=hashmap[sum-B]+1;j<=i;j++)
+                ans.push_back(A[j]);
+            return ans;
+        }
+        else hashmap[sum]=i;
+    }
+    return ans;
+}
+
+**********************************************************************************
