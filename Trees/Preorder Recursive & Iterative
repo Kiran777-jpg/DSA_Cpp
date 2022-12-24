@@ -1,0 +1,177 @@
+
+
+******************************************************************************
+
+Recursive:
+
+
+
+#include <iostream>
+using namespace std;
+
+class Node
+{
+    public:
+        int data;
+        Node* left;
+        Node* right;
+        
+        Node(int data)
+        {
+            this->data=data;
+            left=right=NULL;
+        }
+};
+
+Node* buildTree()
+{
+    int data;
+    cin>>data;
+    if(data==-1) return NULL;
+    Node* newnode = new Node(data);
+    cout<<"left: "<<newnode->data<<endl;
+    newnode->left = buildTree();
+    cout<<"right: "<<newnode->data<<endl;
+    newnode->right = buildTree();
+    return newnode;
+}
+
+
+void preorder(Node* root)
+{
+    if(root==NULL) return;
+    cout<<root->data<<" ";
+    preorder(root->left);
+    preorder(root->right);
+}
+
+int main()
+{
+    Node* root = buildTree();
+    preorder(root);
+    cout<<endl;
+}
+
+
+******************************************************************************
+
+Iterative:
+without using extra space & without changing structure of tree
+
+
+vector<int> Solution::preorderTraversal(TreeNode* A) {
+    vector<int> ans;
+    stack<TreeNode*> st;
+    st.push(A);
+
+    while(!st.empty())
+    {
+        TreeNode* root = st.top();
+        st.pop();
+        ans.push_back(root->val);
+
+        if(root->right)
+            st.push(root->right);
+
+        if(root->left)
+            st.push(root->left);
+    }
+    return ans;
+}
+
+
+
+******************************************************************************
+
+
+Iterative:
+with using extra space & without changing structure of tree
+
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+vector<int> Solution::preorderTraversal(TreeNode* A) {
+    stack<TreeNode* > st;
+    unordered_map<TreeNode*, bool> hashmap;
+    vector<int> ans;
+
+    st.push(A);
+    ans.push_back(A->val);
+    hashmap[A]=true;
+
+    while(!st.empty())
+    {
+        TreeNode* top = st.top();
+        if(top->left && !hashmap[top->left])
+        {
+            st.push(top->left);
+            ans.push_back(top->left->val);
+            hashmap[top->left]=true;
+        }
+        else
+        {
+            st.pop();
+            if(top->right)
+            {
+                st.push(top->right);
+                ans.push_back(top->right->val);
+            }
+        }
+    }
+    return ans;
+}
+
+
+******************************************************************************
+
+
+
+Iterative:
+without using extra space & with changing structure of tree
+
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+vector<int> Solution::preorderTraversal(TreeNode* A) {
+    stack<TreeNode*> st;
+    vector<int> ans;
+    if(st.empty()) st.push(A);
+    ans.push_back(A->val);
+
+    while(!st.empty())
+    {
+        TreeNode* top = st.top();
+        if(top->left)
+        {
+            st.push(top->left);
+            ans.push_back(top->left->val);
+            top->left=NULL;
+        }
+        else
+        {
+            st.pop();
+            if(top->right)
+            {
+                st.push(top->right);
+                ans.push_back(top->right->val);
+            }
+        }
+    }
+    return ans;
+}
+
+******************************************************************************
