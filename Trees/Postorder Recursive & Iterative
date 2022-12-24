@@ -1,0 +1,309 @@
+
+
+*****************************************************************************************
+
+Recursive:
+
+
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <unordered_map>
+using namespace std;
+
+class Node
+{
+    public:
+        int data;
+        Node* left;
+        Node* right;
+        
+        Node(int data)
+        {
+            this->data = data;
+            left=right=NULL;
+        }
+};
+
+Node* buildTree()
+{
+    int data;
+    cin>>data;
+    if(data==-1) return NULL;
+    Node* newnode = new Node(data);
+    cout<<"left: "<<newnode->data<<endl;
+    newnode->left=buildTree();
+    cout<<"right: "<<newnode->data<<endl;
+    newnode->right=buildTree();
+    return newnode;
+}
+
+void postorder(Node* root)
+{
+    if(root==NULL) return;
+    postorder(root->left);
+    postorder(root->right);
+    cout<<root->data<<" ";
+}
+
+int main()
+{
+    Node* root=buildTree();
+    postorder(root);
+}
+
+*****************************************************************************************
+
+Iterative:
+
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+vector<int> Solution::postorderTraversal(TreeNode* A) {
+    vector<int> ans;
+    stack<TreeNode*> st;
+    st.push(A);
+    while(!st.empty())
+    {
+        A=st.top();
+        st.pop();
+        ans.push_back(A->val);
+
+        if(A->left) st.push(A->left);
+        if(A->right) st.push(A->right);
+    }
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
+
+
+
+*****************************************************************************************
+
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+vector<int> Solution::postorderTraversal(TreeNode* A) {
+    vector<int> ans;
+    stack<TreeNode*> st;
+    TreeNode* root=A;
+    TreeNode* temp;
+
+    while(!st.empty() && root!=NULL)
+    {
+        if(root!=NULL)
+        {
+            st.push(root);
+            root=root->left;
+        }
+        else
+        {
+            temp=st.top()->right;
+            if(temp==NULL)
+            {
+                temp=st.top();
+                st.pop();
+                ans.push_back(temp->val);
+                while(!st.empty() && temp==st.top()->right)
+                {
+                    temp=st.top();
+                    st.pop();
+                    ans.push_back(temp->val);
+                }
+            }
+            else
+                root=temp;
+        }
+    }
+    return ans;
+}
+
+
+
+*****************************************************************************************
+
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+vector<int> Solution::postorderTraversal(TreeNode* A) {
+    vector<int> ans;
+    stack<TreeNode*> st;
+
+    st.push(A);
+
+    while(!st.empty())
+    {
+        TreeNode* root=st.top();
+        if(root->left)
+        {
+            st.push(root->left);
+            root->left=NULL;
+        }
+        else if(root->right)
+        {
+            st.push(root->right);
+            root->right=NULL;
+        }
+        else{
+            st.pop();
+            ans.push_back(root->val);
+        }
+    }
+    return ans;
+}
+
+
+*****************************************************************************************
+
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+vector<int> Solution::postorderTraversal(TreeNode* A) {
+    vector<int> ans;
+    stack<TreeNode*> st;
+    unordered_map<TreeNode*, bool> hashmap;
+
+    st.push(A);
+
+    while(!st.empty())
+    {
+        TreeNode* root=st.top();
+        if(root->left && !hashmap[root->left])
+        {
+            st.push(root->left);
+            hashmap[root->left]=true;
+        }
+        else if(root->right && !hashmap[root->right])
+        {
+            st.push(root->right);
+            hashmap[root->right]=true;
+        }
+        else{
+            st.pop();
+            ans.push_back(root->val);
+        }
+    }
+    return ans;
+}
+
+
+
+*****************************************************************************************
+
+
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+class Node
+{
+    public:
+        int data;
+        Node* left;
+        Node* right;
+        
+        Node(int data)
+        {
+            this->data = data;
+            left=right=NULL;
+        }
+};
+
+Node* buildTree()
+{
+    int data;
+    cin>>data;
+    if(data==-1) return NULL;
+    Node* newnode = new Node(data);
+    cout<<"left: "<<newnode->data<<endl;
+    newnode->left=buildTree();
+    cout<<"right: "<<newnode->data<<endl;
+    newnode->right=buildTree();
+    return newnode;
+}
+
+void postorder(Node* root)
+{
+    if(root==NULL) return;
+    postorder(root->left);
+    postorder(root->right);
+    cout<<root->data<<" ";
+}
+
+void iterativePostorder(Node* root)
+{
+    vector<int> ans;
+    stack<Node*> st;
+    Node* currNode=root;
+    Node* temp;
+    
+    while(!st.empty() || currNode!=NULL)
+    {
+        if(currNode!=NULL)
+        {
+            st.push(currNode);
+            currNode=currNode->left;
+        }
+        else
+        {
+            temp=st.top()->right;
+            if(temp==NULL)
+            {
+                temp=st.top();
+                st.pop();
+                ans.push_back(temp->data);
+                while(!st.empty() && temp==st.top()->right)
+                {
+                    temp=st.top();
+                    st.pop();
+                    ans.push_back(temp->data);
+                }
+            }
+            else
+                currNode=temp;
+        }
+    }
+    for(int x : ans)
+        cout<<x<<" ";
+    cout<<endl;
+}
+
+int main()
+{
+    Node* root=buildTree();
+    postorder(root);
+    cout<<endl;
+    iterativePostorder(root);
+}
+
+
+*****************************************************************************************
