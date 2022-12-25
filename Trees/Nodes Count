@@ -1,0 +1,59 @@
+
+
+
+**************************************************************
+
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+int Solution::solve(TreeNode* A) {
+    if(A==NULL) return 0;
+    int l=solve(A->left);
+    int r=solve(A->right);
+    return 1+(l+r);
+}
+
+
+
+**************************************************************
+
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+int Solution::solve(TreeNode* A) {
+    if(A==NULL) return 0;
+    return 1+(solve(A->left)+solve(A->right));
+}
+
+
+
+**************************************************************
+
+
+void count(TreeNode* A, int &ans){
+    if(A == NULL) return;
+    ans++;
+    count(A->left,ans);
+    count(A->right,ans);
+}
+int Solution::solve(TreeNode* A) {
+    int ans=0;
+    count(A,ans);
+    return ans;
+}
+
+**************************************************************
