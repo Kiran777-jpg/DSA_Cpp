@@ -1,0 +1,154 @@
+
+
+
+***********************************************************************************************************
+
+
+Problem Description
+
+Given a binary tree, find and return the sum of node value of all left leaves in it.
+
+
+
+Problem Constraints
+
+1 <= number of nodes <= 5 * 105
+
+1 <= node value <= 105
+
+
+
+Input Format
+
+First and only argument is a pointer to the root node of the Binary Tree, A.
+
+
+
+Output Format
+
+Return an integer denoting the sum of node value of all left leaves in it.
+
+
+
+Example Input
+
+Input 1:
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+Input 2:
+
+   1
+  / \
+ 6   2
+    /
+   3
+
+
+Example Output
+
+Output 1:
+
+ 24
+Output 2:
+
+ 9
+
+
+Example Explanation
+
+Explanation 1:
+
+ Left leaf node in the given tree are 9 and 15. Return 24 (9 + 15).
+Explanation 2:
+
+ Left leaf node in the given tree are 6 and 3. Return 9 (6 + 3).
+ 
+
+
+***********************************************************************************************************
+
+
+long solveHelper(TreeNode* root, bool isLeft)
+{
+    if(root==NULL) return 0;
+    long ans=0;
+    if(isLeft && !root->left && !root->right) ans=root->val;
+    return ans + solveHelper(root->left, true) + solveHelper(root->right, false);
+}
+
+int Solution::solve(TreeNode* A) {
+    return solveHelper(A, false);
+}
+
+
+
+***********************************************************************************************************
+
+
+long solveHelper(TreeNode* root, bool isLeft)
+{
+    if(root==NULL) return 0;
+    long ans=0;
+    if(isLeft && !root->left && !root->right) ans=root->val;
+    ans += solveHelper(root->left, true);
+    ans += solveHelper(root->right, false);
+    return ans;
+}
+
+int Solution::solve(TreeNode* A) {
+    return solveHelper(A, false);
+}
+
+
+***********************************************************************************************************
+
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+// A utility function to check if a given node is leaf or not
+bool isLeaf(TreeNode * node) {
+    if (node == NULL)
+        return false;
+    if (node -> left == NULL && node -> right == NULL)
+        return true;
+    return false;
+}
+
+// This function returns sum of all left leaves in a given binary tree
+int leftLeavesSum(TreeNode * root) {
+    // Initialize result
+    int res = 0;
+
+    // Update result if root is not NULL
+    if (root != NULL) {
+        // If left of root is leaf node, then add val of left child
+        if (isLeaf(root -> left))
+            res += root -> left -> val;
+        else // Else recur for left child of root
+            res += leftLeavesSum(root -> left);
+
+        // Recur for right child of root and update res
+        res += leftLeavesSum(root -> right);
+    }
+
+    // return result
+    return res;
+}
+
+int Solution::solve(TreeNode * A) {
+    return leftLeavesSum(A);
+}
+
+***********************************************************************************************************
