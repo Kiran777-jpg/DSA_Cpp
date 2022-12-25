@@ -1,0 +1,158 @@
+
+
+
+
+**************************************************************************************************
+
+
+Problem Description
+Given the root of a tree A with each node having a certain value, find the count of nodes with more value than all its ancestor.
+
+
+
+Problem Constraints
+1 <= Number of Nodes <= 200000
+
+1 <= Value of Nodes <= 2000000000
+
+
+
+Input Format
+The first and only argument of input is a tree node.
+
+
+
+Output Format
+Return a single integer denoting the count of nodes that have more value than all of its ancestors.
+
+
+
+Example Input
+Input 1:
+
+ 
+     3
+Input 2:
+
+ 
+    4
+   / \
+  5   2
+     / \
+    3   6
+
+
+Example Output
+Output 1:
+
+ 1 
+Output 2:
+
+ 3
+
+
+Example Explanation
+Explanation 1:
+
+ There's only one node in the tree that is the valid node.
+Explanation 2:
+
+ The valid nodes are 4, 5 and 6.
+ 
+ 
+ **************************************************************************************************
+ 
+ int solveHelper(TreeNode* root, int maxValue)
+{
+    if(root==NULL) return 0;
+    int count=0;
+    if(root->val>maxValue)  count=1, maxValue=root->val;
+    return count+solveHelper(root->left, maxValue)+solveHelper(root->right, maxValue);
+}
+
+int Solution::solve(TreeNode* A) {
+    return solveHelper(A, 0);
+}
+
+ **************************************************************************************************
+ 
+ 
+ int solveHelper(TreeNode* root, int maxValue)
+{
+    if(root==NULL) return 0;
+    int count=0;
+    if(root->val>maxValue)  count=1, maxValue=root->val;
+    return count+solveHelper(root->left, maxValue)+solveHelper(root->right, maxValue);
+}
+
+int Solution::solve(TreeNode* A) {
+    return solveHelper(A, A->val)+1;
+}
+ 
+ **************************************************************************************************
+ 
+ 
+ int solveHelper(TreeNode* root, int maxValue)
+{
+    if(root==NULL) return 0;
+    int count=0;
+    if(root->val>maxValue)  count=1, maxValue=root->val;
+    int l=solveHelper(root->left, maxValue);
+    int r=solveHelper(root->right, maxValue);
+    return count+l+r;
+}
+
+int Solution::solve(TreeNode* A) {
+    return solveHelper(A, A->val)+1;
+}
+ 
+ **************************************************************************************************
+ 
+ 
+ void solveHelper(TreeNode* root, int maxValue, int &count)
+{
+    if(root==NULL) return;
+    if(root->val>maxValue) count++, maxValue=root->val;
+    solveHelper(root->left, maxValue, count);
+    solveHelper(root->right, maxValue, count);
+}
+
+int Solution::solve(TreeNode* A) {
+    int count=1;
+    solveHelper(A, A->val, count);
+    return count;
+}
+
+ 
+ **************************************************************************************************
+ 
+ 
+ /**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+int dfs(TreeNode * root, int maxsofar) {
+    if (root == NULL) {
+        return 0;
+    }
+    int ans = 0;
+    if (root -> val > maxsofar) {
+        ans = 1;
+        maxsofar = root -> val;
+    }
+    ans += dfs(root -> left, maxsofar);
+    ans += dfs(root -> right, maxsofar);
+    return ans;
+}
+
+int Solution::solve(TreeNode * A) {
+    return dfs(A, 0);
+}
+ 
+ **************************************************************************************************
