@@ -1,0 +1,207 @@
+GeeksforGeeks: https://practice.geeksforgeeks.org/problems/job-sequencing-problem-1587115620/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=job-sequencing-problem
+
+
+
+**********************************************************************
+
+/*
+struct Job 
+{ 
+    int id;	 // Job Id 
+    int dead; // Deadline of job 
+    int profit; // Profit if job is over before or on deadline 
+};
+*/
+
+bool compare(Job a, Job b)
+{
+    return a.profit>b.profit;
+}
+
+class Solution 
+{
+    public:
+    //Function to find the maximum profit and the number of jobs done.
+    vector<int> JobScheduling(Job arr[], int n) 
+    { 
+        // your code here
+        int count=0, profit=0;
+        sort(arr, arr+n, compare);
+        int maxi=arr[0].dead;
+        for(int i=1;i<n;i++)
+            maxi=max(maxi, arr[i].dead);
+            
+        int freq[maxi+1] = {false};
+        
+        for(int i=0;i<n;i++)
+        {
+            int value=arr[i].dead;
+            while(value)
+            {
+                if(freq[value]==false)
+                {
+                    count++;
+                    profit+=arr[i].profit;
+                    freq[value]=true;
+                    break;
+                }
+                value--;
+            }
+        }
+        return {count, profit};
+    } 
+};
+
+**********************************************************************
+
+/*
+struct Job 
+{ 
+    int id;	 // Job Id 
+    int dead; // Deadline of job 
+    int profit; // Profit if job is over before or on deadline 
+};
+*/
+
+bool compare(Job a, Job b)
+{
+    return a.profit>b.profit;
+}
+
+class Solution 
+{
+    public:
+    //Function to find the maximum profit and the number of jobs done.
+    vector<int> JobScheduling(Job arr[], int n) 
+    { 
+        // your code here
+        int count=0, profit=0;
+        sort(arr, arr+n, compare);
+        int maxi=arr[0].dead;
+        for(int i=1;i<n;i++)
+            maxi=max(maxi, arr[i].dead);
+            
+        int freq[maxi+1] = {false};
+        
+        for(int i=0;i<n;i++)
+        {
+            int value=arr[i].dead;
+            while(value)
+            {
+                if(freq[value]==false)
+                {
+                    count++;
+                    profit+=arr[i].profit;
+                    freq[value]=true;
+                    break;
+                }
+                value--;
+            }
+        }
+        return {count, profit};
+    } 
+};
+
+**********************************************************************
+
+/*
+struct Job 
+{ 
+    int id;	 // Job Id 
+    int dead; // Deadline of job 
+    int profit; // Profit if job is over before or on deadline 
+};
+*/
+
+bool compare(Job a, Job b)
+{
+    return a.profit>b.profit;
+}
+
+class Solution 
+{
+    public:
+    //Function to find the maximum profit and the number of jobs done.
+    vector<int> JobScheduling(Job arr[], int n) 
+    { 
+        // your code here
+        int count=0, profit=0;
+        sort(arr, arr+n, compare);
+        int maxi=arr[0].dead;
+        for(int i=1;i<n;i++)
+            maxi=max(maxi, arr[i].dead);
+            
+        int freq[maxi+1] = {false};
+        
+        for(int i=0;i<n;i++)
+        {
+            int value=arr[i].dead;
+            while(value)
+            {
+                if(freq[value]==false)
+                {
+                    count++;
+                    profit+=arr[i].profit;
+                    freq[value]=true;
+                    break;
+                }
+                value--;
+            }
+        }
+        return {count, profit};
+    } 
+};
+
+
+**********************************************************************
+
+
+/*
+struct Job 
+{ 
+    int id;	 // Job Id 
+    int dead; // Deadline of job 
+    int profit; // Profit if job is over before or on deadline 
+};
+*/
+
+bool compare(Job a, Job b)
+{
+    return a.profit>b.profit;
+}
+
+class Solution 
+{
+    public:
+    //Function to find the maximum profit and the number of jobs done.
+    vector<int> JobScheduling(Job arr[], int n) 
+    { 
+        // your code here
+        int count=0, profit=0;
+        sort(arr, arr+n, compare);
+        int maxi=arr[0].dead;
+        for(int i=1;i<n;i++)
+            maxi=max(maxi, arr[i].dead);
+            
+        int freq[maxi+1] = {false};
+        
+        for(int i=0;i<n;i++)
+        {
+            int value=arr[i].dead;
+            while(value>0)
+            {
+                if(freq[value]==false)
+                {
+                    count++;
+                    profit+=arr[i].profit;
+                    freq[value]=true;
+                    break;
+                }
+                value--;
+            }
+        }
+        return {count, profit};
+    } 
+};
+
+**********************************************************************
