@@ -1,0 +1,121 @@
+GeeksforGeeks: https://practice.geeksforgeeks.org/problems/fractional-knapsack-1587115620/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=fractional-knapsack
+
+
+
+************************************************************************************************
+
+
+//class implemented
+/*
+struct Item{
+    int value;
+    int weight;
+};
+*/
+
+
+
+class Solution
+{
+    public:
+    //Function to get the maximum total value in the knapsack.
+    bool static compare(Item a, Item b)
+    {
+        double r1 = (double)a.value/(double)a.weight;
+        double r2 = (double)b.value/(double)b.weight;
+        return r1>r2;
+    }
+    
+    double fractionalKnapsack(int W, Item arr[], int n)
+    {
+        // Your code here
+        sort(arr, arr+n, compare);
+        double ans=0.0;
+        for(int i=0;i<n;i++)
+        {
+            if(arr[i].weight<=W)
+            {
+                ans+=arr[i].value;
+                W-=arr[i].weight;
+            }
+            else
+            {
+                ans+=(double)(arr[i].value*W)/(double)arr[i].weight;
+                break;
+            }
+        }
+        return ans;
+    }
+        
+};
+
+
+************************************************************************************************
+
+
+
+//class implemented
+/*
+struct Item{
+    int value;
+    int weight;
+};
+*/
+
+class Compare
+{
+    public:
+        bool operator()(Item a, Item b)
+        {
+            double r1 = (double)a.value/(double)a.weight;
+            double r2 = (double)b.value/(double)b.weight;
+            return r1<r2;
+        }
+};
+
+class Solution
+{
+    public:
+    //Function to get the maximum total value in the knapsack.
+    
+    double fractionalKnapsack(int W, Item arr[], int n)
+    {
+        // Your code here
+        // sort(arr, arr+n, compare);
+        priority_queue<Item, vector<Item>, Compare> maxheap(arr, arr+n);
+        double ans=0.0;
+        while(!maxheap.empty() && W)
+        {
+            Item item=maxheap.top();
+            if(item.weight<=W)
+            {
+                ans+=item.value;
+                W-=item.weight;
+            }
+            else
+            {
+                ans+=(double)(item.value*W)/(double)item.weight;
+                break;
+            }
+            maxheap.pop();
+        }
+        // for(int i=0;i<n;i++)
+        // {
+        //     if(arr[i].weight<=W)
+        //     {
+        //         ans+=arr[i].value;
+        //         W-=arr[i].weight;
+        //     }
+        //     else
+        //     {
+        //         ans+=(double)(arr[i].value*W)/(double)arr[i].weight;
+        //         break;
+        //     }
+        // }
+        return ans;
+    }
+        
+};
+
+
+************************************************************************************************
