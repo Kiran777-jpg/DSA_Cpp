@@ -1,0 +1,67 @@
+GeeksforGeeks: https://practice.geeksforgeeks.org/problems/candy/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=candy
+leetcode: https://leetcode.com/problems/candy/
+
+
+
+***********************************************************************
+
+class Solution {
+public:
+    int candy(vector<int>& ratings) {
+        int n=ratings.size(), candies=1, i=1;
+        while(i<n)
+        {
+            if(ratings[i]==ratings[i-1])
+            {
+                candies++;
+                i++;
+                continue;
+            }
+
+            int peak=1;
+            while(i<n && ratings[i]>ratings[i-1])
+            {
+                peak++;
+                candies+=peak;
+                i++;
+            }
+
+            int valley=0;
+            while(i<n && ratings[i]<ratings[i-1])
+            {
+                valley++;
+                candies+=valley;
+                i++;
+            }
+
+            if(peak<=valley)
+                candies+=valley+1-peak;
+        }
+        return candies;
+    }
+};
+
+***********************************************************************
+
+class Solution {
+public:
+    int candy(vector<int>& ratings) {
+        int n=ratings.size(), candies=0;
+        vector<int> ans(n, 1);
+        for(int i=1;i<n;i++)
+        {
+            if(ratings[i]>ratings[i-1])
+                ans[i]=ans[i-1]+1;
+        }
+        for(int i=n-2;i>=0;i--)
+        {
+            if(ratings[i]>ratings[i+1])
+                ans[i]=max(ans[i+1]+1, ans[i]);
+            candies+=ans[i];
+        }
+        candies+=ans[n-1];
+        return candies;
+    }
+};
+
+***********************************************************************
