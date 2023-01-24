@@ -1,0 +1,46 @@
+GeeksforGeeks: https://practice.geeksforgeeks.org/problems/assign-cookies/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=assign-cookies
+leetcode: https://leetcode.com/problems/assign-cookies/
+
+
+
+**********************************************************************
+
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        sort(g.begin(), g.end());
+        sort(s.begin(), s.end());
+        int i=0, j=0;
+        while(i<g.size() && j<s.size())
+        {
+            if(g[i]<=s[j])
+                i++;
+            j++;
+        }
+        return i;
+    }
+};
+
+**********************************************************************
+
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        priority_queue<int, vector<int>, greater<int>> minheap_g(g.begin(), g.end());
+        priority_queue<int, vector<int>, greater<int>> minheap_s(s.begin(), s.end());
+        int ans=0;
+
+        while(!minheap_g.empty() && !minheap_s.empty())
+        {
+            if(minheap_g.top()<=minheap_s.top())
+            {
+                ans++;
+                minheap_g.pop();
+            }
+            minheap_s.pop();
+        }
+        return ans;
+    }
+};
+
+**********************************************************************
