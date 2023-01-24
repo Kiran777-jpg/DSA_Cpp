@@ -1,0 +1,65 @@
+GeeksforGeeks: https://practice.geeksforgeeks.org/problems/8a644e94faaa94968d8665ba9e0a80d1ae3e0a2d/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=overlapping_intervals
+leetcode: https://leetcode.com/problems/merge-intervals/
+
+
+
+***************************************************************************************
+
+class Solution {
+public:
+    bool static compare(vector<int> a, vector<int> b)
+    {
+        return a[0]<b[0];
+    }
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        vector<vector<int>> ans;
+        int n=intervals.size();
+        sort(intervals.begin(), intervals.end(), compare);
+        vector<int> tempInterval=intervals[0];
+        for(auto it : intervals)
+        {
+            if(it[0]<=tempInterval[1])
+                tempInterval[1]=max(tempInterval[1], it[1]);
+            else
+                ans.push_back(tempInterval), tempInterval=it;
+        }
+        ans.push_back(tempInterval);
+        return ans;
+    }
+};
+
+***************************************************************************************
+
+
+class Solution {
+public:
+    bool static compare(vector<int> a, vector<int> b)
+    {
+        return a[0]<b[0];
+    }
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        vector<vector<int>> ans;
+        int n=intervals.size();
+        sort(intervals.begin(), intervals.end(), compare);
+        vector<int> newInterval=intervals[0];
+        for(int i=1;i<n;i++)
+        {
+            if(newInterval[1]<intervals[i][0])
+            {
+                ans.push_back(newInterval);
+                newInterval=intervals[i];
+            }
+            else if(intervals[i][1]<newInterval[0])
+                ans.push_back(intervals[i]);
+            else
+            {
+                newInterval[0]=min(newInterval[0], intervals[i][0]);
+                newInterval[1]=max(newInterval[1], intervals[i][1]);
+            }
+        }
+        ans.push_back(newInterval);
+        return ans;
+    }
+};
+
+***************************************************************************************
