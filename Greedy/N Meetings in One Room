@@ -1,0 +1,187 @@
+GeeksforGeeks: https://practice.geeksforgeeks.org/problems/n-meetings-in-one-room-1587115620/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=n-meetings-in-one-room
+
+
+
+******************************************************************************************
+
+class Solution
+{
+    public:
+    //Function to find the maximum number of meetings that can
+    //be performed in a meeting room.
+    
+    class meeting
+    {
+        public:
+            int start, end, pos;
+            meeting(int start, int end, int pos)
+            {
+                this->start=start;
+                this->end=end;
+                this->pos=pos;
+            }
+    };
+    
+    bool static compare(meeting* a, meeting* b)
+    {
+        if(a->end<b->end) return true;
+        else if(a->end>b->end) return false;
+        else if(a->pos<b->pos) return true;
+        return false;
+    }
+    
+    int maxMeetings(int start[], int end[], int n)
+    {
+        // Your code here
+        vector<meeting*> meet;
+        for(int i=0;i<n;i++)
+            meet.push_back(new meeting(start[i], end[i], i));
+        sort(meet.begin(), meet.end(), compare);
+        int ans=1, limit=meet[0]->end;
+        for(int i=1;i<n;i++)
+        {
+            if(meet[i]->start>limit)  
+                ans++, limit=meet[i]->end;
+        }
+        return ans;
+    }
+};
+
+
+******************************************************************************************
+
+class Solution
+{
+    public:
+    //Function to find the maximum number of meetings that can
+    //be performed in a meeting room.
+    
+    class meeting
+    {
+        public:
+            int start, end, pos;
+            meeting(int start, int end, int pos)
+            {
+                this->start=start;
+                this->end=end;
+                this->pos=pos;
+            }
+    };
+    
+    bool static compare(meeting* a, meeting* b)
+    {
+        if(a->end<b->end) return true;
+        else if(a->end>b->end) return false;
+        else if(a->pos<b->pos) return true;
+        return false;
+    }
+    
+    int maxMeetings(int start[], int end[], int n)
+    {
+        // Your code here
+        vector<meeting*> meet;
+        for(int i=0;i<n;i++)
+            meet.push_back(new meeting(start[i], end[i], i));
+        sort(meet.begin(), meet.end(), compare);
+        int ans=1, limit=meet[0]->end;
+        for(int i=1;i<n;i++)
+        {
+            if(meet[i]->start>limit)  
+                ans++, limit=meet[i]->end;
+        }
+        return ans;
+    }
+};
+
+******************************************************************************************
+
+
+class Solution
+{
+    public:
+    //Function to find the maximum number of meetings that can
+    //be performed in a meeting room.
+    
+    class meeting
+    {
+        public:
+            int start, end, pos;
+            meeting(int start, int end, int pos)
+            {
+                this->start=start;
+                this->end=end;
+                this->pos=pos;
+            }
+    };
+    
+    bool static compare(meeting a, meeting b)
+    {
+        if(a.end<b.end) return true;
+        else if(a.end>b.end) return false;
+        else if(a.pos<b.pos) return true;
+        else return false;
+    }
+    
+    int maxMeetings(int start[], int end[], int n)
+    {
+        // Your code here
+        vector<meeting> meet;
+        for(int i=0;i<n;i++)
+            meet.push_back(meeting(start[i], end[i], i));
+        sort(meet.begin(), meet.end(), compare);
+        int ans=1, limit=meet[0].end;
+        for(int i=1;i<n;i++)
+        {
+            if(meet[i].start>limit)  
+                ans++, limit=meet[i].end;
+        }
+        return ans;
+    }
+};
+
+******************************************************************************************
+
+
+class Solution
+{
+    public:
+    //Function to find the maximum number of meetings that can
+    //be performed in a meeting room.
+    
+    struct meeting
+    {
+        int start, end, pos;
+        meeting(int start, int end, int pos)
+        {
+            this->start=start;
+            this->end=end;
+            this->pos=pos;
+        }
+    };
+    
+    bool static compare(meeting a, meeting b)
+    {
+        if(a.end<b.end) return true;
+        else if(a.end>b.end) return false;
+        else if(a.pos<b.pos) return true;
+        else return false;
+    }
+    
+    int maxMeetings(int start[], int end[], int n)
+    {
+        // Your code here
+        vector<meeting> meet;
+        for(int i=0;i<n;i++)
+            meet.push_back(meeting(start[i], end[i], i));
+        sort(meet.begin(), meet.end(), compare);
+        int ans=1, limit=meet[0].end;
+        for(int i=1;i<n;i++)
+        {
+            if(meet[i].start>limit)  
+                ans++, limit=meet[i].end;
+        }
+        return ans;
+    }
+};
+
+******************************************************************************************
